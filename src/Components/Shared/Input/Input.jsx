@@ -1,6 +1,7 @@
 import React from 'react'
 
 export default function Input({label,type, placeholder, value, onChange,...rest}) {
+  console.log({...rest})
   return (
     <>
     

@@ -1018,7 +1018,7 @@ label{
     border-radius: 7px 0px 0px 7px;
 }
 
-.active-side-link .icon path,
+.active-side-link .icon svg path,
 .active-side-link .icon circle{
     stroke: var(--px-main-color-blue) !important;
 }
@@ -1084,27 +1084,16 @@ label{
     position: absolute;
     content: "";
     width: 5px;
-    height: 70%;
+    height: 80%;
     background-color: var(--px-light-blue);
     left: 0px;
-    top: 15%;
-    bottom: 15%;
+    top: 10%;
+    bottom: 10%;
     border-radius: 10px;
-}
-.nav-treeview {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.nav-treeview li {
-    position: relative;
-    padding: 10px 15px;
-    margin-bottom: 5px;
-    cursor: pointer;
 }
 
 .side-link {
+    cursor: pointer;
     text-decoration: none;
     color: inherit;
 }
@@ -1117,16 +1106,22 @@ label{
     content: "";
     border-radius: 10px;
     width: 5px;
-    height: 114%;
+    height: 100%;
     position: absolute;
-    bottom: -6px;
-    left: -17px;
+    bottom: 0;
+    left: -8.5%;
     background-color: var(--px-main-color-blue);
 }
 
 .side-text {
     margin-block: 0;
     padding-block: 7px !important;
+}
+p.side-text {
+    color: var(--px-text-color-gray);
+}
+.side-text-active{
+  color: var(--px-main-color-blue) !important
 }
 
 /* end sidebar */
@@ -1353,14 +1348,14 @@ header {
     font-weight: 400 !important;
 }
 
-.px-table-container::-webkit-scrollbar {
+.px-table-container .gMeyEf::-webkit-scrollbar {
     height: 7px;
     background-color: #E4E6EB;
 
 }
 
-.px-table-container::-webkit-scrollbar-thumb {
-    background-color: #83B9FF;
+.px-table-container  .gMeyEf::-webkit-scrollbar-thumb {
+    background-color: #989696;
     border-radius: 10px;
 }
 

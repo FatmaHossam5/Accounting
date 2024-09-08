@@ -19,6 +19,8 @@ import Companies from './Components/Controls/Companies/Companies.jsx'
 import Branches from './Components/Controls/Branches/Branches.jsx'
 import Departments from './Components/Controls/Departments/Departments.jsx'
 import Categories from './Components/Controls/Categories/Categories.jsx'
+import Dashboard from './Components/Controls/Dashboard/Dashboard.jsx'
+import ReverseCustomer from './Components/Controls/ReverseCustomer/ReverseCustomer.jsx'
 
 function App() {
  
@@ -49,6 +51,10 @@ const routes = createBrowserRouter([
       {path:'/Departments',element:<Departments/>},
       {path:'/Industries',element:<Departments/>},
       {path:'/Categories',element:<Categories/>},
+      {path:'/Dashboard',element:<Dashboard/>},
+      {path:'/ReverseCustomerI',element:<ReverseCustomer/>},
+
+
 
 
 
