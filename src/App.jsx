@@ -21,6 +21,7 @@ import Departments from './Components/Controls/Departments/Departments.jsx'
 import Categories from './Components/Controls/Categories/Categories.jsx'
 import Dashboard from './Components/Controls/Dashboard/Dashboard.jsx'
 import ReverseCustomer from './Components/Controls/ReverseCustomer/ReverseCustomer.jsx'
+import PageNotFound from './Components/Template/PageNotFound/PageNotFound.jsx'
 
 function App() {
  
@@ -29,16 +30,12 @@ const routes = createBrowserRouter([
     path:'/',
     element:(
       <MasterLayout/>
-    ),
+    ),errorElement:(<PageNotFound/>),
     children:[
       {index:true, element:<CustomersTable/>},
       {path:"cInvoice",element:<CustomerInvoices/>},
-    
-
-      
       {path:"suppliers",element:<Supplier/>},
       {path:"suppliersInvoices",element:<SupplierInvoices/>},
-
       {path:'/Add',element:<AddCustomerInvoice/>},
       {path:'/AddSupplierInvoice',element:<AddSupplierInvoice/>},
       {path:'/Products',element:<Products/>},
@@ -53,21 +50,15 @@ const routes = createBrowserRouter([
       {path:'/Categories',element:<Categories/>},
       {path:'/Dashboard',element:<Dashboard/>},
       {path:'/ReverseCustomerI',element:<ReverseCustomer/>},
-
-
-
-
-
-
-
-
-
-
-
-
-
     ]
-  }
+  },
+  // {
+  //   path: '/',
+  //   element: <PageNotFound />, // New sibling layout for admin section
+  //   children: [
+  //     { path: '*', element: <PageNotFound /> },
+  //   ],
+  // },
 ])
   return (
     <>

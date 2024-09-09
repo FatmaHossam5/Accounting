@@ -939,8 +939,17 @@ label{
     }
 }
 
+.error404-container{
+    height: 100vh;
+}
 
-
+.error404{
+    width: 60%;
+    height: 60%;
+    background-image: url("/src/assets/images/404\ Error\ Page\ not\ Found\ with\ people\ connecting\ a\ plug-cuate.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+}
 
 
 
