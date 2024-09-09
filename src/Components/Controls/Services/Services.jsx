@@ -57,9 +57,8 @@ export default function Services() {
     },
     {
       name: "Service Branch",
-      selector: (row) => (<div className='  ms-5'>
-        {row.branch}
-      </div>),
+      selector: (row) => row.branch
+     ,
       sortable: true,
     },
     {
@@ -67,7 +66,31 @@ export default function Services() {
       selector: (row) => row.type,
       sortable: true,
     },
-
+    {
+      name: "Unit Price",
+      selector: (row) => row.price,
+      sortable: true,
+    },
+    {
+      name: "Service Daily Income",
+      selector: (row) => row.daily,
+      sortable: true,
+    },
+    {
+      name: "Service Weekly Income",
+      selector: (row) => row.week,
+      sortable: true,
+    },
+    {
+      name: "Service Monthly Income",
+      selector: (row) => row.month,
+      sortable: true,
+    },
+    {
+      name: "Service Yearly Income",
+      selector: (row) => row.year,
+      sortable: true,
+    },
   ];
 
   const data = [
@@ -78,7 +101,11 @@ export default function Services() {
       department: "Marketing",
       branch: "All branches",
       type: 'Performance Marketing',
-
+      price:'100',
+      daily:'$200-$500/day',
+      week:'$1,000-$2,500/week',
+      month:'$4,000-$10,000/month',
+      year:'$48,000-$12,0000/year'
 
     },
     {
@@ -88,6 +115,11 @@ export default function Services() {
       department: "Public Relations",
       branch: "All branches",
       type: 'Direct Marketing',
+      price:'100',
+      daily:'$200-$500/day',
+      week:'$1,000-$2,500/week',
+      month:'$4,000-$10,000/month',
+      year:'$48,000-$12,0000/year'
 
 
     },
@@ -99,6 +131,11 @@ export default function Services() {
       department: "Sales and Business Development",
       branch: "All branches",
       type: 'Referral Marketing',
+      price:'100',
+      daily:'$200-$500/day',
+      week:'$1,000-$2,500/week',
+      month:'$4,000-$10,000/month',
+      year:'$48,000-$12,0000/year'
 
 
     },
@@ -107,20 +144,20 @@ export default function Services() {
     <>
 
       <Modal id='createService' className={'w-50'} title={'createNewService'}>
-        <div className='d-flex justify-content-center '>
-          <div className='me-2'>
+        <div className='row mb-3 '>
+          <div className='col-md-6'>
             <Input label={'Service English Name'} placeholder={'Enter service name'} />
           </div>
-          <div>
+          <div className='col-md-6'>
             <Input label={'Service Arabic Name'} placeholder={'Enter service name'} />
           </div>
 
         </div>
-        <div className='col-10  m-auto mt-3'>
+        <div className='mb-3'>
           <Input placeholder={'Enter description'} label={'Service Description'} />
         </div>
-        <div className='d-flex justify-content-center col-10 mt-3 m-auto g-5'>
-          <div className='me-4'>
+        <div className='row mb-3'>
+          <div className='col-md-4'>
             <Select
               label={'Service Department'}
 
@@ -135,7 +172,7 @@ export default function Services() {
               ]}
             />
           </div>
-          <div className='me-4'>
+          <div className='col-md-4'>
 
             <Select
               label={'Service Branch'}
@@ -151,7 +188,7 @@ export default function Services() {
               ]}
             />
           </div>
-          <div className=''>
+          <div className='col-md-4'>
 
             <Select
               label={'Service Type'}
@@ -168,19 +205,19 @@ export default function Services() {
             />
           </div>
         </div>
-        <div className='d-flex justify-content-center mt-3 '>
-          <div className='me-2 '>
+        <div className='row mb-3 '>
+          <div className='col-md-6 '>
             <Input label={'Unit Price'} placeholder={'Enter unit price'} />
           </div>
-          <div>
+          <div className='col-md-6 '>
             <Input label={'Service Tax'} placeholder={'Enter service tax'} />
           </div>
 
         </div>
-        {/* <div className="modal-footer w-100">
+        <div className="modal-footer w-100 mt-5">
           <button type="button" className="px-btn btn px-white-btn" data-bs-dismiss="modal">Cancel</button>
           <button type="button" className="px-btn px-blue-btn">save</button>
-        </div> */}
+        </div>
       </Modal>
       <CustomPage data={data}
         columns={columns}

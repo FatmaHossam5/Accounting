@@ -4,8 +4,9 @@ import Dropdown from '../../Shared/Dropdown/Dropdown';
 import Input from '../../Shared/Input/Input';
 import Modal from '../../Shared/Modal/Modal';
 import Select from '../../Shared/Select/Select';
+import Button from '../../Shared/Button/Button';
 
-export default function Products() {
+export default function Products({ButtonName,buttonAction,target}) {
   const handleClose = () => alert('close')
 
   const handleSave = () => alert('save')
@@ -395,6 +396,7 @@ options={[
           </div>
         </form>
       </Modal>
+    
       <CustomPage data={data}
         columns={columns}
         title='Products'
