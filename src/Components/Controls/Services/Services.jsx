@@ -1,17 +1,20 @@
 import React, { useState } from 'react'
 import Dropdown from '../../Shared/Dropdown/Dropdown';
 import CustomPage from '../../Shared/CustomPage/CustomPage';
+import Modal from '../../Shared/Modal/Modal';
+import Input from '../../Shared/Input/Input';
+import Select from '../../Shared/Select/Select';
 
 export default function Services() {
   const [openDropdownId, setopenDropdownId] = useState(null)
   const columns = [
     {
-      name: " Name",
+      name: "Service Name",
       selector: (row) => { row.name },
       sortable: true,
       cell: (row) => (
-        <div className="d-flex align-items-center ">
-          <span className="me-2">
+        <div className="d-flex align-items-center justify-content-between" style={{ minWidth: '150px' }}>
+          <span className="text-truncate" style={{ maxWidth: '150px' }}>
             {row.name}
           </span>
           <Dropdown
@@ -33,7 +36,7 @@ export default function Services() {
             openDropdownId={openDropdownId}
             setOpenDropdownId={setopenDropdownId}
           />
-        
+
         </div>
       ),
 
@@ -43,68 +46,49 @@ export default function Services() {
 
     },
     {
-      name: "BRAND",
-      selector: (row) => row.brand,
-      sortable: true,
-    },
-    {
-      name: "TAX",
-      selector: (row) => row.tax,
-      sortable: true,
-    },
-    {
-      name: "Taxable",
-      selector: (row) => row.Taxable,
-      sortable: true,
-    },
-    {
-      name: "Description",
+      name: "Service Description",
       selector: (row) => row.description,
       sortable: true,
     },
     {
-      name: "STOCK",
-      selector: (row) => row.stock,
+      name: "Service Department",
+      selector: (row) => row.department,
       sortable: true,
     },
     {
-      name: "Daily Income",
+      name: "Service Branch",
+      selector: (row) => row.branch
+      ,
+      sortable: true,
+    },
+    {
+      name: "Service Type",
+      selector: (row) => row.type,
+      sortable: true,
+    },
+    {
+      name: "Unit Price",
+      selector: (row) => row.price,
+      sortable: true,
+    },
+    {
+      name: "Service Daily Income",
       selector: (row) => row.daily,
       sortable: true,
     },
     {
-      name: "Weekly Income",
-      selector: (row) => row.weekly,
+      name: "Service Weekly Income",
+      selector: (row) => row.week,
       sortable: true,
     },
     {
-      name: "Monthly Income",
-      selector: (row) => row.monthly,
+      name: "Service Monthly Income",
+      selector: (row) => row.month,
       sortable: true,
     },
     {
-      name: "Yearly Income",
-      selector: (row) => row.yearly,
-      sortable: true,
-    },
-    {
-      name: "App Category",
-      selector: (row) => row.category,
-      sortable: true,
-    },
-    {
-      name: "Contact Email",
-      selector: (row) => row.email,
-      sortable: true,
-    },
-    {
-      name: "Address",
-      selector: (row) => row.address,
-      sortable: true,
-    },
-    {
-      name: "Postal Code",
-      selector: (row) => row.postal,
+      name: "Service Yearly Income",
+      selector: (row) => row.year,
       sortable: true,
     },
   ];
@@ -112,72 +96,139 @@ export default function Services() {
   const data = [
     {
       id: 1,
-      name:'pixi1',
-      brand: "PIXI",
-      tax: "25",
-      Taxable: "YES",
-      description: "Good",
-      stock: "yes",
-      daily: "1500",
-      weekly: '2500',
-      monthly: '5000',
-      yearly: '1000000',
-      category: '1',
-      email: "tomafhf@gmail.com",
-      address: 'Nasr',
-      postal: '154759',
-      
+      name: 'Marketing Facebook Ads',
+      description: "This service is for making ads ...",
+      department: "Marketing",
+      branch: "All branches",
+      type: 'Performance Marketing',
+      price: '100',
+      daily: '$200-$500/day',
+      week: '$1,000-$2,500/week',
+      month: '$4,000-$10,000/month',
+      year: '$48,000-$12,0000/year'
+
     },
     {
       id: 2,
-      name:'pixi2',
-      brand: "PIXI",
-      tax: "25",
-      Taxable: "YES",
-      description: "Good",
-      stock: "yes",
-      daily: "1500",
-      weekly: '2500',
-      monthly: '5000',
-      yearly: '1000000',
-      category: '1',
-      email: "tomafhf@gmail.com",
-      address: 'Nasr',
-      postal: '154759',
-      
+      name: 'Email Marketing Campaigns',
+      description: "Designing and executing tar ...",
+      department: "Public Relations",
+      branch: "All branches",
+      type: 'Direct Marketing',
+      price: '100',
+      daily: '$200-$500/day',
+      week: '$1,000-$2,500/week',
+      month: '$4,000-$10,000/month',
+      year: '$48,000-$12,0000/year'
+
+
     },
 
     {
       id: 3,
-      name:'pixi3',
-      brand: "PIXI",
-      tax: "25",
-      Taxable: "YES",
-      description: "Good",
-      stock: "yes",
-      daily: "1500",
-      weekly: '2500',
-      monthly: '5000',
-      yearly: '1000000',
-      category: '1',
-      email: "tomafhf@gmail.com",
-      address: 'Nasr',
-      postal: '154759',
-      
+      name: 'Influencer Marketing',
+      description: "Collaborating with influencers...",
+      department: "Sales and Business Development",
+      branch: "All branches",
+      type: 'Referral Marketing',
+      price: '100',
+      daily: '$200-$500/day',
+      week: '$1,000-$2,500/week',
+      month: '$4,000-$10,000/month',
+      year: '$48,000-$12,0000/year'
+
+
     },
   ];
   return (
     <>
+
+      <Modal id='createService' className={'w-50'} title={'createNewService'}>
+        <div className='row mb-3 '>
+          <div className='col-md-6'>
+            <Input label={'Service English Name'} placeholder={'Enter service name'} />
+          </div>
+          <div className='col-md-6'>
+            <Input label={'Service Arabic Name'} placeholder={'Enter service name'} />
+          </div>
+
+        </div>
+        <div className='mb-3'>
+          <Input placeholder={'Enter description'} label={'Service Description'} />
+        </div>
+        <div className='row mb-3'>
+          <div className='col-md-4'>
+            <Select
+              label={'Service Department'}
+
+              options={[
+                { value: '', label: 'Select Department' },
+                { value: 'Marketing', label: 'Marketing' },
+                { value: 'Sales and Business Development', label: 'Sales' },
+                { value: 'Public Relations', label: 'Public Relations' },
+                { value: 'Content Creation', label: 'Content Creation' },
+                { value: 'Advertising', label: 'Advertising' },
+
+              ]}
+            />
+          </div>
+          <div className='col-md-4'>
+
+            <Select
+              label={'Service Branch'}
+
+              options={[
+                { value: '', label: 'All Branches' },
+                { value: 'Marketing', label: 'Marketing' },
+                { value: 'Sales and Business Development', label: 'Sales' },
+                { value: 'Public Relations', label: 'Public Relations' },
+                { value: 'Content Creation', label: 'Content Creation' },
+                { value: 'Advertising', label: 'Advertising' },
+
+              ]}
+            />
+          </div>
+          <div className='col-md-4'>
+
+            <Select
+              label={'Service Type'}
+
+              options={[
+                { value: '', label: 'Select Type' },
+                { value: 'Marketing', label: 'Marketing' },
+                { value: 'Sales and Business Development', label: 'Sales' },
+                { value: 'Public Relations', label: 'Public Relations' },
+                { value: 'Content Creation', label: 'Content Creation' },
+                { value: 'Advertising', label: 'Advertising' },
+
+              ]}
+            />
+          </div>
+        </div>
+        <div className='row mb-3 '>
+          <div className='col-md-6 '>
+            <Input label={'Unit Price'} placeholder={'Enter unit price'} />
+          </div>
+          <div className='col-md-6 '>
+            <Input label={'Service Tax'} placeholder={'Enter service tax'} />
+          </div>
+
+        </div>
+        <div className="modal-footer w-100 mt-5">
+          <button type="button" className="px-btn btn px-white-btn" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" className="px-btn px-blue-btn">save</button>
+        </div>
+      </Modal>
       <CustomPage data={data}
         columns={columns}
         title='Services'
         ButtonName='CreateService'
         ModalTitle='CreateService'
         target='#createService'
-        targetId='createService'
+
       />
-    
-    
+
+
     </>
   )
 }

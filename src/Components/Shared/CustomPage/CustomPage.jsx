@@ -13,10 +13,13 @@ export default function CustomPage({ data, columns, title, ButtonName, ModalTitl
                     <div className="page-name p-3 ">
                       <h4>{title}</h4>
                     </div>
-                    <div className="card-head-btns  ms-auto ">
+                    <div className="card-head-btns  ms-auto   ">
                       <Button target={target} onClick={buttonAction} >
                         {ButtonName}
                       </Button>
+                      {/* <Button target={target} onClick={buttonAction} >
+                        {ButtonName}
+                      </Button> */}
                     </div>
                   </div>
                   <div className="table-actions d-flex mb-4 ">

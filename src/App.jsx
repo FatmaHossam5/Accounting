@@ -21,7 +21,11 @@ import Departments from './Components/Controls/Departments/Departments.jsx'
 import Categories from './Components/Controls/Categories/Categories.jsx'
 import Dashboard from './Components/Controls/Dashboard/Dashboard.jsx'
 import ReverseCustomer from './Components/Controls/ReverseCustomer/ReverseCustomer.jsx'
+
 import PageNotFound from './Components/Template/PageNotFound/PageNotFound.jsx'
+
+import AddReverseInvoice from './Components/Controls/AddReverseInvoice/AddReverseInvoice.jsx'
+
 
 function App() {
  
@@ -38,6 +42,8 @@ const routes = createBrowserRouter([
       {path:"suppliersInvoices",element:<SupplierInvoices/>},
       {path:'/Add',element:<AddCustomerInvoice/>},
       {path:'/AddSupplierInvoice',element:<AddSupplierInvoice/>},
+      {path:'/AddReverserInvoice',element:<AddReverseInvoice/>},
+
       {path:'/Products',element:<Products/>},
       {path:'/Services',element:<Services/>},
       {path:'/Taxs',element:<Taxs/>},

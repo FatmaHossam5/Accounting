@@ -27,7 +27,7 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
                         <ul className="mt-3">
                             <li className="mb-5 ">
                             </li>
-                            <li className={`side-link ${activeItem==='Dashboadrd'?'active-side-link':''}` }  onClick={()=>handleItemClick('Dashboadrd')}>
+                            <li className={`side-link ${activeItem === 'Dashboadrd' ? 'active-side-link' : ''}`} onClick={() => handleItemClick('Dashboadrd')}>
                                 <div className={`d-flex pt-2 pb-2  align-items-center `}>
                                     <div className="icon pe-3 ">
                                         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -43,29 +43,7 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
                                             onClick={() => handleItemClick('Dashboard')}
                                         >
 
-                                            <p className={`side-text ${activeItem ==='Dashboadrd'?'side-text-active':''}` }>Dashboard</p>
-                                        </Link>
-                                    </span>
-                                </div>
-                            </li>
-                            <li className={`side-link ${activeItem==='Products'?'active-side-link':''}` }  onClick={()=>handleItemClick('Products')}>
-                                <div className="d-flex pt-2 pb-2  align-items-center">
-                                    <div className="icon pe-3 ">
-                                        <svg width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9.75 0C9.3375 0 9 0.3375 9 0.75C9 1.1625 9.3375 1.5 9.75 1.5H11.25V3.77813C5.80313 4.1625 1.5 8.70469 1.5 14.25V15H3V14.25C3 9.28125 7.03125 5.25 12 5.25C16.9688 5.25 21 9.28125 21 14.25V15H22.5V14.25C22.5 8.70469 18.1969 4.1625 12.75 3.77813V1.5H14.25C14.6625 1.5 15 1.1625 15 0.75C15 0.3375 14.6625 0 14.25 0H12H9.75ZM0.75 16.5C0.3375 16.5 0 16.8375 0 17.25C0 17.6625 0.3375 18 0.75 18H23.25C23.6625 18 24 17.6625 24 17.25C24 16.8375 23.6625 16.5 23.25 16.5H0.75Z" fill="#707070" />
-                                        </svg>
-
-
-
-
-                                    </div>
-                                    <span className={`side-text ${collapsed ? 'd-none' : ''}`}>
-                                        <Link to="Products"
-                                            className="side-link px-gray-text"
-                                            onClick={() => handleItemClick('Products')}
-                                        >
-
-                                            <p className={`side-text ${activeItem ==='Products'?'side-text-active':''}` }>Services And Products</p>
+                                            <p className={`side-text ${activeItem === 'Dashboadrd' ? 'side-text-active' : ''}`}>Dashboard</p>
                                         </Link>
                                     </span>
                                 </div>
@@ -75,22 +53,72 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
                                     <div className="accordion-item ">
                                         <h2 className="accordion-header  ">
                                             <button
-                                                className={`accordion-button  side-link  text-capitalize  pe-2 ${activeItem==='customers'?'active-side-link':''}`}
+                                                className={`accordion-button  side-link  text-capitalize  pe-2 ${activeItem === 'Services And Products' ? 'active-side-link' : ''}`}
                                                 type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#collapseOne" aria-expanded="true"
                                                 aria-controls="collapseOne"
-                                                onClick={()=>handleItemClick('customers')}
-                                                >
+                                                onClick={() => handleItemClick('Services And Products')}
+                                            >
                                                 <div className="d-flex pt-2 pb-2 justify-content-center align-items-center ">
                                                     <div className={`icon pe-3  `}>
-                                                        <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M16.8877 7.89673C18.2827 7.70073 19.3567 6.50473 19.3597 5.05573C19.3597 3.62773 18.3187 2.44373 16.9537 2.21973" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path d="M18.7285 11.25C20.0795 11.452 21.0225 11.925 21.0225 12.9C21.0225 13.571 20.5785 14.007 19.8605 14.281" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M10.8867 11.6641C7.6727 11.6641 4.9277 12.1511 4.9277 14.0961C4.9277 16.0401 7.6557 16.5411 10.8867 16.5411C14.1007 16.5411 16.8447 16.0591 16.8447 14.1131C16.8447 12.1671 14.1177 11.6641 10.8867 11.6641Z" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M10.8867 8.888C12.9957 8.888 14.7057 7.179 14.7057 5.069C14.7057 2.96 12.9957 1.25 10.8867 1.25C8.7777 1.25 7.0677 2.96 7.0677 5.069C7.0597 7.171 8.7567 8.881 10.8587 8.888H10.8867Z" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path d="M4.8848 7.89673C3.4888 7.70073 2.4158 6.50473 2.4128 5.05573C2.4128 3.62773 3.4538 2.44373 4.8188 2.21973" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path d="M3.0439 11.25C1.6929 11.452 0.749901 11.925 0.749901 12.9C0.749901 13.571 1.1939 14.007 1.9119 14.281" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                        <svg width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M9.75 0C9.3375 0 9 0.3375 9 0.75C9 1.1625 9.3375 1.5 9.75 1.5H11.25V3.77813C5.80313 4.1625 1.5 8.70469 1.5 14.25V15H3V14.25C3 9.28125 7.03125 5.25 12 5.25C16.9688 5.25 21 9.28125 21 14.25V15H22.5V14.25C22.5 8.70469 18.1969 4.1625 12.75 3.77813V1.5H14.25C14.6625 1.5 15 1.1625 15 0.75C15 0.3375 14.6625 0 14.25 0H12H9.75ZM0.75 16.5C0.3375 16.5 0 16.8375 0 17.25C0 17.6625 0.3375 18 0.75 18H23.25C23.6625 18 24 17.6625 24 17.25C24 16.8375 23.6625 16.5 23.25 16.5H0.75Z" fill="#707070" />
                                                         </svg>
+
+                                                    </div>
+                                                    <span className={`side-text ${collapsed ? 'd-none' : ''} ${activeItem === 'Services And Products' ? "active-side-link" : ''}`} onClick={() => handleItemClick('Services And Products')}>
+                                                        Services And Products
+                                                    </span>
+                                                </div>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" className={`accordion-collapse collapse ${collapsed ? 'd-none' : ''}`}
+                                            data-bs-parent="#accordionExample">
+                                            <div className="accordion-body px-accordion-body">
+                                                <ul className="nav-treeview" >
+                                                    <li className={activeItem === 'Services' ? 'active-sub-link' : ''}>
+                                                        <Link to="/Services"
+                                                            className="side-link" onClick={() => handleItemClick('Services')}>
+                                                            <p className="side-text ">Services</p>
+                                                        </Link>
+                                                    </li>
+                                                    <li className={activeItem === 'Products' ? 'active-sub-link' : ''}>
+                                                        <Link to="/Products"
+                                                            className="side-link"
+                                                            onClick={() => handleItemClick('Products')}
+                                                        >
+                                                            <p className="side-text ">Products</p>
+                                                        </Link>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li className="side-drop-down ">
+                                <div className="accordion " id="accordionExample">
+                                    <div className="accordion-item ">
+                                        <h2 className="accordion-header  ">
+                                            <button
+                                                className={`accordion-button  side-link  text-capitalize  pe-2 ${activeItem === 'customers' ? 'active-side-link' : ''}`}
+                                                type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseOne" aria-expanded="true"
+                                                aria-controls="collapseOne"
+                                                onClick={() => handleItemClick('customers')}
+                                            >
+                                                <div className="d-flex pt-2 pb-2 justify-content-center align-items-center ">
+                                                    <div className={`icon pe-3  `}>
+                                                        <svg width={22} height={18} viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M16.8877 7.89673C18.2827 7.70073 19.3567 6.50473 19.3597 5.05573C19.3597 3.62773 18.3187 2.44373 16.9537 2.21973" stroke="#707070" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                            <path d="M18.7285 11.25C20.0795 11.452 21.0225 11.925 21.0225 12.9C21.0225 13.571 20.5785 14.007 19.8605 14.281" stroke="#707070" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M10.8867 11.6641C7.6727 11.6641 4.9277 12.1511 4.9277 14.0961C4.9277 16.0401 7.6557 16.5411 10.8867 16.5411C14.1007 16.5411 16.8447 16.0591 16.8447 14.1131C16.8447 12.1671 14.1177 11.6641 10.8867 11.6641Z" stroke="#707070" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M10.8867 8.888C12.9957 8.888 14.7057 7.179 14.7057 5.069C14.7057 2.96 12.9957 1.25 10.8867 1.25C8.7777 1.25 7.0677 2.96 7.0677 5.069C7.0597 7.171 8.7567 8.881 10.8587 8.888H10.8867Z" stroke="#707070" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                            <path d="M4.8848 7.89673C3.4888 7.70073 2.4158 6.50473 2.4128 5.05573C2.4128 3.62773 3.4538 2.44373 4.8188 2.21973" stroke="#707070" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                            <path d="M3.0439 11.25C1.6929 11.452 0.749901 11.925 0.749901 12.9C0.749901 13.571 1.1939 14.007 1.9119 14.281" stroke="#707070" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                        </svg>
+
 
 
                                                     </div>
@@ -137,7 +165,7 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
                                     <div className="accordion-item">
                                         <h2 className="accordion-header  ">
                                             <button
-                                                className={`accordion-button side-link  text-capitalize  pe-2 ${activeItem==='suppliers'?'active-side-link':''}`}
+                                                className={`accordion-button side-link  text-capitalize  pe-2 ${activeItem === 'suppliers' ? 'active-side-link' : ''}`}
                                                 type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#suppliers" aria-expanded="true"
                                                 aria-controls="suppliers">

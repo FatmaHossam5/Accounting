@@ -4,20 +4,21 @@ import Dropdown from '../../Shared/Dropdown/Dropdown';
 import Input from '../../Shared/Input/Input';
 import Modal from '../../Shared/Modal/Modal';
 import Select from '../../Shared/Select/Select';
+import Button from '../../Shared/Button/Button';
 
-export default function Products() {
+export default function Products({ButtonName,buttonAction,target}) {
   const handleClose = () => alert('close')
 
   const handleSave = () => alert('save')
   const [openDropdownId, setopenDropdownId] = useState(null)
   const columns = [
     {
-      name: " Name",
+      name: "Product Name",
       selector: (row) => { row.name },
       sortable: true,
       cell: (row) => (
-        <div className="d-flex align-items-center ">
-          <span className="me-2">
+        <div className="d-flex align-items-center justify-content-between" style={{ minWidth: '150px' }}>
+          <span className="text-truncate" style={{ maxWidth: '150px' }}>
             {row.name}
           </span>
           <Dropdown
@@ -43,358 +44,181 @@ export default function Products() {
         </div>
       ),
 
+
       style: {
         minWidth: '100px',
       }
 
     },
     {
-      name: "BRAND",
+      name: "Product Brand",
       selector: (row) => row.brand,
       sortable: true,
     },
     {
-      name: "TAX",
-      selector: (row) => row.tax,
+      name: "Product Department",
+      selector: (row) => row.department,
       sortable: true,
     },
     {
-      name: "Taxable",
-      selector: (row) => row.Taxable,
-      sortable: true,
-    },
-    {
-      name: "Description",
+      name: "Product Description",
       selector: (row) => row.description,
       sortable: true,
     },
     {
-      name: "STOCK",
-      selector: (row) => row.stock,
+      name: "Product Branch",
+      selector: (row) => row.branch,
       sortable: true,
     },
     {
-      name: "Daily Income",
-      selector: (row) => row.daily,
-      sortable: true,
-    },
-    {
-      name: "Weekly Income",
-      selector: (row) => row.weekly,
-      sortable: true,
-    },
-    {
-      name: "Monthly Income",
-      selector: (row) => row.monthly,
-      sortable: true,
-    },
-    {
-      name: "Yearly Income",
-      selector: (row) => row.yearly,
-      sortable: true,
-    },
-    {
-      name: "App Category",
+      name: "Product Category",
       selector: (row) => row.category,
       sortable: true,
     },
     {
-      name: "Contact Email",
-      selector: (row) => row.email,
+      name: "Product SubCategory",
+      selector: (row) => row.sub_category,
       sortable: true,
     },
     {
-      name: "Address",
-      selector: (row) => row.address,
+      name: "Product Type",
+      selector: (row) => row.type,
       sortable: true,
     },
     {
-      name: "Postal Code",
-      selector: (row) => row.postal,
+      name: "Unit Price",
+      selector: (row) => row.price,
       sortable: true,
     },
+  
   ];
 
   const data = [
     {
       id: 1,
-      name: 'pixi1',
-      brand: "PIXI",
-      tax: "25",
-      Taxable: "YES",
-      description: "Good",
-      stock: "yes",
-      daily: "1500",
-      weekly: '2500',
-      monthly: '5000',
-      yearly: '1000000',
-      category: '1',
-      email: "tomafhf@gmail.com",
-      address: 'Nasr',
-      postal: '154759',
+      name: 'Mobile App',
+      brand: "Pixi Mobile App",
+      department: "Development",
+      description: "A comprehensive online.",
+      branch:'Nasr City Branch',
+      category: 'Applications',
+      sub_category:'Mobile Application',
+      type:'Food Ordering Apps',
+      price:'2000SAR',
+
 
     },
     {
       id: 2,
-      name: 'pixi2',
-      brand: "PIXI",
-      tax: "25",
-      Taxable: "YES",
-      description: "Good",
-      stock: "yes",
-      daily: "1500",
-      weekly: '2500',
-      monthly: '5000',
-      yearly: '1000000',
-      category: '1',
-      email: "tomafhf@gmail.com",
-      address: 'Nasr',
-      postal: '154759',
+      name: 'Web Application',
+      brand: "WebWave Pro",
+      department: "Product Engineering",
+      description: "This product is mobile...",
+      branch:'Nasr City Branch',
+      category: 'Applications',
+      sub_category:'Mobile Application',
+      type:'Food Ordering Apps',
+      price:'2000SAR',
 
     },
 
     {
       id: 3,
-      name: 'pixi3',
-      brand: "PIXI",
-      tax: "25",
-      Taxable: "YES",
-      description: "Good",
-      stock: "yes",
-      daily: "1500",
-      weekly: '2500',
-      monthly: '5000',
-      yearly: '1000000',
-      category: '1',
-      email: "tomafhf@gmail.com",
-      address: 'Nasr',
-      postal: '154759',
+      name: 'E-commerce Platform',
+      brand: "ShopSphere",
+      department: "E-commerce Solutions",
+      description: "A comprehensive online.",
+      branch:'Nasr City Branch',
+      category: 'Applications',
+      sub_category:'Mobile Application',
+      type:'Food Ordering Apps',
+      price:'2000SAR',
 
     },
   ];
   return (
     <>
-      <Modal id='createProduct' title='Create Product' onSave={handleSave} onCancel={handleClose} className='w-80'>
-        <form action className="d-flex flex-wrap ">
-          <div className="side w-xxl-100 w-50 p-4 vertical-separetor">
-            <div className="section">
-              <div className="form-inputs d-flex w-100">
-                <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
-                  <Input label='NAME' placeholder='Name ' className="px-form-input w-100 m-auto" />
-                </div>
-                <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
-                  <Input label='BRAND' placeholder='brand' className="px-form-input w-100 m-auto" />
-                </div>
-              </div>
-              <div className="input-package mt-3  d-flex flex-column w-100">
-                <Select label='CATEGORIES'
-                  htmlFor='Categories'
-                  name='Categories'
-                  id="Categories"
-                  type="text"
-                  className="px-login-input w-100 "
-                  options={[
-                    { value: '', label: '...' },
-                    { value: 'category1', label: 'category1' },
-                    { value: 'category2', label: 'category2' },
-                    { value: 'category3', label: 'category3' },
-                    { value: 'category4', label: 'category4' },
-                    { value: 'category5', label: 'category5' },
-
-                  ]} />
-              </div>
-              <div className="input-package ms-auto mt-3 tax-inputs " id="disabled-inputs">
-                <input disabled id="taxable" name="taxs" type="radio" />
-                <label className="mb-2 " htmlFor="taxable">taxable</label>
-                <input disabled className="ms-3" id="none-taxable" name="taxs" type="radio" />
-                <label className="mb-2" htmlFor="none-taxable">none
-                  taxable</label>
-              </div>
-
-              <div className="form-inputs d-flex w-100">
-                <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
-                  <Input label='PRICE' placeholder='price ' className="px-form-input w-100 m-auto" />
-                </div>
-                <div className="input-package mt-4 pe-2 d-flex flex-column w-50">
-                  <Select label='CURRENCIES'
-                    htmlFor='currencies'
-                    name='currencies'
-                    id="currencies"
-                    type="text"
-                    className="px-login-input w-100 "
-                    options={[
-                      { value: '', label: '...' },
-                      { value: 'EGB', label: 'EGB' },
-                      { value: 'USD', label: 'USD' },
-
-
-                    ]} />
-                </div>
-
-              </div>
-              <div className="input-package mt-3  d-flex flex-column w-100">
-                <Select label='APP.DEPARTMENTS'
-                  htmlFor='departments'
-                  name='departments'
-                  id="departments"
-                  type="text"
-                  className="px-login-input w-100 "
-                  options={[
-                    { value: '', label: '...' },
-                    { value: 'department1', label: 'department1' },
-                    { value: 'department2', label: 'department2' },
-                    { value: 'department3', label: 'department3' },
-                    { value: 'department4', label: 'department4' },
-                    { value: 'department5', label: 'department5' },
-
-                  ]} />
-              </div>
-              {/* <div className="form-inputs d-flex w-100">
-
-        <div className="input-package mt-3  ">
-          <input id="supplier" type="checkbox" />
-          <label htmlFor="supplier">supplier</label>
-        </div>
-        <div className="input-package ms-auto mt-3 tax-inputs " id="disabled-inputs">
-          <input disabled id="taxable" name="taxs" type="radio" />
-          <label className="mb-2 " htmlFor="taxable">taxable</label>
-          <input disabled className="ms-3" id="none-taxable" name="taxs" type="radio" />
-          <label className="mb-2" htmlFor="none-taxable">none
-            taxable</label>
-        </div>
-
-      </div>
-      <div className="input-package mt-3  d-flex flex-column w-100">
-        <Select label='COUNTRIES'
-          htmlFor='countries'
-          id="countries"
-          type="text"
-          className="px-login-input w-100 "
-          options={[
-            { value: '', label: '...' },
-            { value: 'Egypt', label: 'Egypt' },
-            { value: 'Palestine', label: 'Palestine' },
-          ]}
-        />
-
-      </div>
-      <div className="input-package mt-3  d-flex flex-wrap justify-content-between w-100">
-        <label className="w-100" htmlFor>address</label>
-        <Select type="text"
-          className="px-login-input w-50 "
-          options={[
-            { value: '', label: '...' },
-            { value: 'Home', label: 'Home' },
-            { value: 'Work', label: 'Work' },
-            { value: 'Company', label: 'Company' },
-
-
-          ]}
-        />
-          
-        <Input type='text'placeholder='PostalCode' className="px-login-input w-50 "/>
-
-     
-      </div>
-      <div className="form-inputs d-flex w-100">
-        <div className="input-package mt-3 pe-2 d-flex flex-column w-100">
-          <label className="mb-2" htmlFor>address
-            details</label>
-          <textarea name="address-details" id="address-details" className="px-text-area w-100 m-auto" placeholder=" arabic address details" defaultValue={""} />
-        </div>
-      </div> */}
-            </div>
+      <Modal id='createProduct' title='Create Product' onSave={handleSave} onCancel={handleClose} className='w-50'>
+     <form action="">
+     <div className='row mb-3 '>
+          <div className='col-md-6'>
+            <Input label={'Product English Name'} placeholder={'Enter product name'} />
           </div>
-          <div className="reservation-side w-xxl-100 w-50  p-4  ">
-            {/* <div className="reservation-section p-4">
-      <div className="form-inputs d-flex w-100">
-        <div className="input-package mt-3 d-flex flex-wrap w-100">
-        <label className="w-100" htmlFor>Mobile Number</label>
-        <SelectWithFlag
-
-id="mobileNumber"
-value={selectedCountryCode}
-onChange={handleCountryCodeChange}
-className="px-login-input w-10"
-options={[
-{ value: '+02', label: '+02', flag: Egypt},
-{ value: '+03', label: '+03', flag: Qatar },
-{ value: '+04', label: '+04', flag:Palestine},
-]}
-/>
-
-     
-          <input type="text" placeholder="Enter mobile number" className="px-form-input w-75 ms-5" />
-        </div>
-      </div>
-      <div className="input-package mt-3  d-flex flex-column w-100">
-        <Input type="number" className="px-form-input" placeholder="Enter Tax number" htmlFor='tax' label='Tax number' />
-
-      </div>
-      <div className="form-inputs d-flex w-100">
-        <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
-          <Input type="text" placeholder="Enter commercial register" className="px-form-input w-100 m-auto" label='CommercialRegister' />
-
-        </div>
-        <div className="input-package mt-3 ps-2 d-flex flex-column w-50">
-          <Input type="text" placeholder="Enter IBAN" className="px-form-input w-100 m-auto" label='IBAN' />
-
-        </div>
-      </div>
-      <div className="form-inputs d-flex w-100">
-        <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
-          <Input type="text" placeholder="Enter Monthly Expense" className="px-form-input w-100 m-auto" label='Monthly Expense' />
-
-        </div>
-        <div className="input-package mt-3 ps-2 d-flex flex-column w-50">
-          <Input type="text" placeholder="Enter Monthly Income" className="px-form-input w-100 m-auto" label='Monthly Income' />
-
-        </div>
-      </div>
- 
-      <div className="input-package mt-3  d-flex flex-column w-100">
-
-        <Input type="number" className="px-form-input" placeholder="Enter Contact Email" label='Contact Email' />
-      </div>
-    </div> */}
-            <div className="form-inputs d-flex w-100">
-              <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
-                <Input label='TAX' placeholder='tax ' className="px-form-input w-100 m-auto" />
-              </div>
-              <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
-                <Input label='STOCK' placeholder='stock' className="px-form-input w-100 m-auto" />
-              </div>
-            </div>
-            <div className="form-inputs d-flex w-100">
-
-              <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
-                <Input label='Daily Income' placeholder='dailyIncome ' className="px-form-input w-100 m-auto" />
-              </div>
-              <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
-                <Input label='Weekly Income' placeholder='weeklyIncome' className="px-form-input w-100 m-auto" />
-              </div>
-            </div>
-            <div className="form-inputs d-flex w-100">
-              <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
-                <Input label='Monthly Income' placeholder='monthlyIncome ' className="px-form-input w-100 m-auto" />
-              </div>
-              <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
-                <Input type='number' label='Yearly Income' placeholder='yearlyIncome' className="px-form-input w-100 m-auto" />
-              </div>
-            </div>
-
-            <div className="input-package mt-3 pe-2 d-flex flex-column w-100">
-              <label className="mb-2" htmlFor>DESCRIPTION
-              </label>
-              <textarea name="address-details" id="address-details" className="px-text-area w-100 m-auto" placeholder=" arabic address details" defaultValue={""} />
-            </div>
+          <div className='col-md-6'>
+            <Input label={'Product Arabic Name'} placeholder={'Enter product name'} />
           </div>
-          <div className="modal-footer w-100">
-            <button type="button" className="px-btn btn px-white-btn" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" className="px-btn px-blue-btn">save</button>
+
+        </div>
+        <div className='mb-3'>
+          <Input placeholder={'Enter description'} label={'Product Description'} />
+        </div>
+        <div className='row mb-3'>
+          <div className='col-md-4'>
+            <Select
+              label={'Product Department'}
+
+              options={[
+                { value: '', label: 'Select Department' },
+                { value: 'Marketing', label: 'Marketing' },
+                { value: 'Sales and Business Development', label: 'Sales' },
+                { value: 'Public Relations', label: 'Public Relations' },
+                { value: 'Content Creation', label: 'Content Creation' },
+                { value: 'Advertising', label: 'Advertising' },
+
+              ]}
+            />
           </div>
-        </form>
+          <div className='col-md-4'>
+
+            <Select
+              label={'Product Branch'}
+
+              options={[
+                { value: '', label: 'All Branches' },
+                { value: 'Marketing', label: 'Marketing' },
+                { value: 'Sales and Business Development', label: 'Sales' },
+                { value: 'Public Relations', label: 'Public Relations' },
+                { value: 'Content Creation', label: 'Content Creation' },
+                { value: 'Advertising', label: 'Advertising' },
+
+              ]}
+            />
+          </div>
+          <div className='col-md-4'>
+
+            <Select
+              label={'Product Type'}
+
+              options={[
+                { value: '', label: 'Select Type' },
+                { value: 'Marketing', label: 'Marketing' },
+                { value: 'Sales and Business Development', label: 'Sales' },
+                { value: 'Public Relations', label: 'Public Relations' },
+                { value: 'Content Creation', label: 'Content Creation' },
+                { value: 'Advertising', label: 'Advertising' },
+
+              ]}
+            />
+          </div>
+        </div>
+        <div className='row mb-3 '>
+          <div className='col-md-4 '>
+            <Input label={'Unit Price'} placeholder={'Enter unit price'} />
+          </div>
+          <div className='col-md-4 '>
+            <Input label={'Shipping Method'} placeholder={'Enter shipping method'} />
+          </div>
+          <div className='col-md-4 '>
+            <Input label={'Shipping Cost'} placeholder={'Enter shipping cost'} />
+          </div>
+        </div>
+        <div className="modal-footer w-100 mt-5">
+          <button type="button" className="px-btn btn px-white-btn" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" className="px-btn px-blue-btn">save</button>
+        </div>
+     </form>
       </Modal>
+    
       <CustomPage data={data}
         columns={columns}
         title='Products'
