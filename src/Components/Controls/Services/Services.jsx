@@ -58,7 +58,7 @@ export default function Services() {
     {
       name: "Service Branch",
       selector: (row) => row.branch
-     ,
+      ,
       sortable: true,
     },
     {
@@ -101,11 +101,11 @@ export default function Services() {
       department: "Marketing",
       branch: "All branches",
       type: 'Performance Marketing',
-      price:'100',
-      daily:'$200-$500/day',
-      week:'$1,000-$2,500/week',
-      month:'$4,000-$10,000/month',
-      year:'$48,000-$12,0000/year'
+      price: '100',
+      daily: '$200-$500/day',
+      week: '$1,000-$2,500/week',
+      month: '$4,000-$10,000/month',
+      year: '$48,000-$12,0000/year'
 
     },
     {
@@ -115,11 +115,11 @@ export default function Services() {
       department: "Public Relations",
       branch: "All branches",
       type: 'Direct Marketing',
-      price:'100',
-      daily:'$200-$500/day',
-      week:'$1,000-$2,500/week',
-      month:'$4,000-$10,000/month',
-      year:'$48,000-$12,0000/year'
+      price: '100',
+      daily: '$200-$500/day',
+      week: '$1,000-$2,500/week',
+      month: '$4,000-$10,000/month',
+      year: '$48,000-$12,0000/year'
 
 
     },
@@ -131,11 +131,11 @@ export default function Services() {
       department: "Sales and Business Development",
       branch: "All branches",
       type: 'Referral Marketing',
-      price:'100',
-      daily:'$200-$500/day',
-      week:'$1,000-$2,500/week',
-      month:'$4,000-$10,000/month',
-      year:'$48,000-$12,0000/year'
+      price: '100',
+      daily: '$200-$500/day',
+      week: '$1,000-$2,500/week',
+      month: '$4,000-$10,000/month',
+      year: '$48,000-$12,0000/year'
 
 
     },
