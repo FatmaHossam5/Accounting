@@ -132,9 +132,9 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
                                             data-bs-parent="#accordionExample">
                                             <div className="accordion-body px-accordion-body">
                                                 <ul className="nav-treeview" >
-                                                    <li className={activeItem === 'customers' ? 'active-sub-link' : ''}>
+                                                    <li className={`${activeItem === 'customers' ? 'active-sub-link' : ''} `}>
                                                         <Link to="/"
-                                                            className="side-link" onClick={() => handleItemClick('customers')}>
+                                                            className="side-link fff" onClick={() => handleItemClick('customers')}>
                                                             <p className="side-text ">customers</p>
                                                         </Link>
                                                     </li>

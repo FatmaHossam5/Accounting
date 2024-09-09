@@ -1087,17 +1087,22 @@ label{
 .px-accordion-body {
     position: relative;
     margin-left: 10px;
+    padding:0 ;
+}
+.px-accordion-body .side-link{
+    display: block;
+    padding-left: 20px ;
 }
 
 .px-accordion-body::before {
     position: absolute;
     content: "";
     width: 5px;
-    height: 80%;
+    height: 100%;
     background-color: var(--px-light-blue);
-    left: 0px;
-    top: 10%;
-    bottom: 10%;
+    left: 0;
+    top: 0;
+    bottom: 0;
     border-radius: 10px;
 }
 
@@ -1111,6 +1116,11 @@ label{
     position: relative;
 }
 
+/* .fff{
+    display: block;
+    padding-left: 20px ;
+} */
+
 .active-sub-link::before {
     content: "";
     border-radius: 10px;
@@ -1118,7 +1128,7 @@ label{
     height: 100%;
     position: absolute;
     bottom: 0;
-    left: -8.5%;
+    /* left: -8.5%; */
     background-color: var(--px-main-color-blue);
 }
 
