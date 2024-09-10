@@ -25,6 +25,7 @@ import ReverseCustomer from './Components/Controls/ReverseCustomer/ReverseCustom
 import PageNotFound from './Components/Template/PageNotFound/PageNotFound.jsx'
 
 import AddReverseInvoice from './Components/Controls/AddReverseInvoice/AddReverseInvoice.jsx'
+import ReverseSupplier from './Components/Controls/ReverseSupplier/ReverseSupplier.jsx'
 
 
 function App() {
@@ -56,15 +57,13 @@ const routes = createBrowserRouter([
       {path:'/Categories',element:<Categories/>},
       {path:'/Dashboard',element:<Dashboard/>},
       {path:'/ReverseCustomerI',element:<ReverseCustomer/>},
+      {path:'/ReverseSupplierI',element:<ReverseSupplier/>},
+      {path:'/Suuplies',element:<PageNotFound/>},
+
+
     ]
   },
-  // {
-  //   path: '/',
-  //   element: <PageNotFound />, // New sibling layout for admin section
-  //   children: [
-  //     { path: '*', element: <PageNotFound /> },
-  //   ],
-  // },
+ 
 ])
   return (
     <>

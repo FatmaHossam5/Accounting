@@ -337,7 +337,7 @@ label{
     text-transform: capitalize;
 }
 
-.px-blue-btn {
+.px-blue-btn, .px-blue-text.icon svg path {
     background-color: var(--px-main-color-blue);
     color: var(--px-color-white);
     box-shadow: 0px 2px 10px #88B0E3;
@@ -1031,7 +1031,10 @@ label{
 .active-side-link .icon circle{
     stroke: var(--px-main-color-blue) !important;
 }
-
+.px-blue-text .icon svg path,
+.px-blue-text .icon circle{
+    stroke: var(--px-main-color-blue) !important;
+}
 .side-drop-down .accordion-button::after {
     transform: rotate(0deg);
     background: initial;
