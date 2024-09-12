@@ -15,20 +15,9 @@ export default function Select({label,options,value,onChange,...rest}) {
         onChange={onChange}
         {...rest}
         >
-            {options.map((option,index)=>(
+            {options?.map((option,index)=>(
    <option key={index} value={option.value}>
-    {/* {option.flag&&(
-      <img
-      src={option.flag}
-      alt={`${option.label} flag`}
-      style={{
-        width:"20px",
-        marginRight:"8px",
-        verticalAlign:"middle"
-      }}
-      />
-    )}
-     */}
+
     
     
     {option.label}</option>
@@ -42,3 +31,15 @@ export default function Select({label,options,value,onChange,...rest}) {
     </>
   )
 }
+    {/* {option.flag&&(
+      <img
+      src={option.flag}
+      alt={`${option.label} flag`}
+      style={{
+        width:"20px",
+        marginRight:"8px",
+        verticalAlign:"middle"
+      }}
+      />
+    )}
+     */}

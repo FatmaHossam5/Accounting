@@ -67,8 +67,8 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
                             <li className={`side-link ${activeItem === 'Dashboadrd' ? 'px-blue-text' : ''}  `} onClick={() => handleItemClick('Dashboadrd')}>
                                 <div className={`d-flex pt-2 pb-2  align-items-center `}>
                                     <div className="icon pe-3 ">
-                                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M8.15722 19.7714V16.7047C8.1572 15.9246 8.79312 15.2908 9.58101 15.2856H12.4671C13.2587 15.2856 13.9005 15.9209 13.9005 16.7047V16.7047V19.7809C13.9003 20.4432 14.4343 20.9845 15.103 21H17.0271C18.9451 21 20.5 19.4607 20.5 17.5618V17.5618V8.83784C20.4898 8.09083 20.1355 7.38935 19.538 6.93303L12.9577 1.6853C11.8049 0.771566 10.1662 0.771566 9.01342 1.6853L2.46203 6.94256C1.86226 7.39702 1.50739 8.09967 1.5 8.84736V17.5618C1.5 19.4607 3.05488 21 4.97291 21H6.89696C7.58235 21 8.13797 20.4499 8.13797 19.7714V19.7714" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        <svg width={22} height={22} viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M8.15722 19.7714V16.7047C8.1572 15.9246 8.79312 15.2908 9.58101 15.2856H12.4671C13.2587 15.2856 13.9005 15.9209 13.9005 16.7047V16.7047V19.7809C13.9003 20.4432 14.4343 20.9845 15.103 21H17.0271C18.9451 21 20.5 19.4607 20.5 17.5618V17.5618V8.83784C20.4898 8.09083 20.1355 7.38935 19.538 6.93303L12.9577 1.6853C11.8049 0.771566 10.1662 0.771566 9.01342 1.6853L2.46203 6.94256C1.86226 7.39702 1.50739 8.09967 1.5 8.84736V17.5618C1.5 19.4607 3.05488 21 4.97291 21H6.89696C7.58235 21 8.13797 20.4499 8.13797 19.7714V19.7714" stroke="#707070" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                         </svg>
 
 
@@ -92,7 +92,7 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
                                             <div className="accordion-item  ">
                                                 <h2 className="accordion-header   ">
                                                     <button
-                                                        className={`accordion-button  side-link  text-capitalize  pe-2 ${activeItem === item.name ? 'px-blue-text' : ''} ${isPathActive(item.paths)?'active-side-link':''}`}
+                                                        className={`accordion-button  side-link  text-capitalize  pe-2 ${activeItem === item.name ? 'px-blue-text' : ''} ${isPathActive(item.paths) ? 'active-side-link' : ''}`}
                                                         type="button" data-bs-toggle="collapse"
                                                         data-bs-target={`#${item.name}-collapse`} aria-expanded="true"
                                                         aria-controls={`${item.name}-collapse`}
@@ -380,6 +380,24 @@ export default function Sidebar({ collapsed, toggleSidebar }) {
                                             onClick={() => handleItemClick('Countries')}
                                         >
                                             <p className="side-text ">Countries</p>
+                                        </Link>
+                                    </span>
+                                </div>
+                            </li>
+                            <li className='side-link'>
+                                <div className="d-flex pt-2 pb-2  align-items-center">
+                                    <div className="icon pe-3 ">
+                                        <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M20.8066 7.62337L20.1842 6.54328C19.6576 5.62936 18.4907 5.31408 17.5755 5.83847V5.83847C17.1399 6.0951 16.6201 6.16791 16.1307 6.04084C15.6413 5.91378 15.2226 5.59727 14.9668 5.16113C14.8023 4.8839 14.7139 4.56815 14.7105 4.2458V4.2458C14.7254 3.72898 14.5304 3.22816 14.17 2.85743C13.8096 2.48669 13.3145 2.27762 12.7975 2.27783H11.5435C11.0369 2.27783 10.5513 2.47967 10.194 2.8387C9.83666 3.19773 9.63715 3.68435 9.63959 4.19088V4.19088C9.62457 5.23668 8.77246 6.07657 7.72654 6.07646C7.40419 6.07311 7.08843 5.9847 6.81121 5.82017V5.82017C5.89604 5.29577 4.72909 5.61105 4.20252 6.52497L3.53432 7.62337C3.00839 8.53615 3.31938 9.70236 4.22998 10.2321V10.2321C4.82188 10.5738 5.18651 11.2053 5.18651 11.8888C5.18651 12.5723 4.82188 13.2038 4.22998 13.5456V13.5456C3.32053 14.0717 3.0092 15.2351 3.53432 16.1451V16.1451L4.1659 17.2344C4.41262 17.6795 4.82658 18.0081 5.31617 18.1472C5.80576 18.2863 6.33062 18.2247 6.7746 17.9758V17.9758C7.21106 17.7211 7.73117 17.6513 8.21932 17.782C8.70747 17.9126 9.12321 18.2328 9.37414 18.6714C9.53867 18.9486 9.62709 19.2644 9.63043 19.5868V19.5868C9.63043 20.6433 10.4869 21.4998 11.5435 21.4998H12.7975C13.8505 21.4998 14.7055 20.6489 14.7105 19.5959V19.5959C14.7081 19.0878 14.9088 18.5998 15.2681 18.2405C15.6274 17.8812 16.1155 17.6804 16.6236 17.6829C16.9452 17.6915 17.2596 17.7795 17.5389 17.9392V17.9392C18.4517 18.4651 19.6179 18.1541 20.1476 17.2435V17.2435L20.8066 16.1451C21.0617 15.7073 21.1317 15.1858 21.0012 14.6961C20.8706 14.2065 20.5502 13.7891 20.111 13.5364V13.5364C19.6717 13.2837 19.3514 12.8663 19.2208 12.3767C19.0902 11.8871 19.1602 11.3656 19.4153 10.9277C19.5812 10.6381 19.8214 10.398 20.111 10.2321V10.2321C21.0161 9.70265 21.3264 8.54325 20.8066 7.63252V7.63252V7.62337Z" stroke="#707070" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                            <circle cx="12.1751" cy="11.8886" r="2.63616" stroke="#707070" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </div>
+                                    <span className={`side-text ${collapsed ? 'd-none' : ''} ${path === '/Governarates' ? 'active-side-link' : ''}`}>
+                                        <Link to="Governarates"
+                                            className="side-link px-gray-text"
+                                            onClick={() => handleItemClick('Governarates')}
+                                        >
+                                            <p className="side-text ">Governarates</p>
                                         </Link>
                                     </span>
                                 </div>

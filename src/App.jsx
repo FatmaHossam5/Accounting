@@ -26,6 +26,7 @@ import PageNotFound from './Components/Template/PageNotFound/PageNotFound.jsx'
 
 import AddReverseInvoice from './Components/Controls/AddReverseInvoice/AddReverseInvoice.jsx'
 import ReverseSupplier from './Components/Controls/ReverseSupplier/ReverseSupplier.jsx'
+import Governorates from './Components/Controls/Governorates/Governorates.jsx'
 
 
 function App() {
@@ -50,6 +51,8 @@ const routes = createBrowserRouter([
       {path:'/Taxs',element:<Taxs/>},
       {path:'/Currencies',element:<Currencies/>},
       {path:'/Countries',element:<Countries/>},
+      {path:'/Governarates',element:<Governorates/>},
+
       {path:'/Companies',element:<Companies/>},
       {path:'/Branches',element:<Branches/>},
       {path:'/Departments',element:<Departments/>},

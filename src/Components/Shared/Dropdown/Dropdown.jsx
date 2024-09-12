@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import DropdownPortal from '../../Shared/DropdownPortal/DropdownPortal'
 
-export default function Dropdown({dropdownContent,id,openDropdownId,setOpenDropdownId}) {
-    // const [showDropdown,setShowDropdown]=useState(false);
+export default function Dropdown({dropdownContent,id,openDropdownId,setOpenDropdownId,onDelete}) {
+
     const [dropdownStyles,setDropdownStyles]=useState({});
         const buttonRef=useRef();
         const toggleDropdown=()=>{
@@ -18,7 +18,7 @@ export default function Dropdown({dropdownContent,id,openDropdownId,setOpenDropd
              
               
                 const {top,left,height}=buttonRef.current.getBoundingClientRect();
-       console.log(top,left,height);
+ 
        
                 
                 setDropdownStyles({
@@ -49,7 +49,11 @@ export default function Dropdown({dropdownContent,id,openDropdownId,setOpenDropd
     {openDropdownId===id && (<DropdownPortal>
         <div className='dropdown-menu' style={dropdownStyles}>
 
-            {dropdownContent}
+        {React.Children.map(dropdownContent, child =>
+              child.props.children.type === 'a' && child.props.children.props.onClick
+                ? React.cloneElement(child, { onClick: () => onDelete(id) })
+                : child
+            )}
         </div>
         
         </DropdownPortal>)}

@@ -21,7 +21,7 @@ export default function CustomPagination({ rowsPerPage, rowCount, onChangePage, 
 
     const renderPageNumbers = () => {
         const pageNumbers = [];
-        console.log(pageNumbers);
+    
 
         const startPage = Math.max(1, currentPage - 1)
         const endPage = Math.min(totalPages - 1, currentPage + 1)
