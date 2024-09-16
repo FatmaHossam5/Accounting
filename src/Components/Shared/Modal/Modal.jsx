@@ -4,7 +4,7 @@ export default function Modal({id,title,children,onCancel,className,onSave,onSub
   return (
     <>
   
-     <div className="modal fade" id={id} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby={`${id}Label`} aria-hidden="true" >
+     <div className="modal fade" id={id} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby={`${id}Label`} aria-hidden="true"  >
             <div className="modal-dialog modal-dialog-centered px-modal">
               <div className={`px-card modal-content p-4 ${className} m-auto`}>
                 <div className="modal-header">

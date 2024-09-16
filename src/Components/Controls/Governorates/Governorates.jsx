@@ -1,24 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import CustomPage from '../../Shared/CustomPage/CustomPage';
-import Modal from '../../Shared/Modal/Modal';
-import { useForm,Controller } from 'react-hook-form';
-import Input from '../../Shared/Input/Input';
-import Dropdown from '../../Shared/Dropdown/Dropdown';
 import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { AuthContext } from '../../Helpers/Context/AuthContextProvider';
+import CustomPage from '../../Shared/CustomPage/CustomPage';
+import Dropdown from '../../Shared/Dropdown/Dropdown';
+import Input from '../../Shared/Input/Input';
+import Modal from '../../Shared/Modal/Modal';
 import Select from '../../Shared/Select/Select';
 
 export default function Governorates() {
     const [openDropdownId, setopenDropdownId] = useState(null);
     const[governorates,setGovernorates]=useState([]);
     const[country,setCountry]=useState([]);
-    const[selectedCountry,setSelectedCountry]=useState('')
-    const{register,handleSubmit,formState:{errors},reset,control } =useForm({
+    const{handleSubmit,formState:{errors},reset,control } =useForm({
         defaultValues:{
             name_ar:'',
             name_en:'',
             country_id:''
         }
     });
+    const {baseUrl}=useContext(AuthContext);
+    const [isloading, setIsLoading] = useState(false);
+   
     
     const columns = [
         {
@@ -86,17 +89,21 @@ export default function Governorates() {
 
 
     const getAllGovernarates=()=>{
-        axios.get(`http://192.168.1.7:8000/api/governorates`).then((response)=>{
+        setIsLoading(true)
+        axios.get(`${baseUrl}/governorates
+            `).then((response)=>{
            setGovernorates(response.data.data);
            console.log(response);
            
                     }).catch((error)=>{
                         console.log(error);
                         
+                    }).finally(()=>{
+                        setIsLoading(false)
                     })
     }
     const getAllCountries=()=>{
-        axios.get(`http://192.168.1.7:8000/api/countries`).then((response)=>{
+        axios.get(`${baseUrl}/countries`).then((response)=>{
             console.log(response.data.data);
             const countryOptions=response.data.data.map(country=>({
                 value:country.id,
@@ -109,25 +116,24 @@ export default function Governorates() {
     
         })
     }
-    const handleChange=(event)=>{
-setSelectedCountry(event.target.value)
-    }
+
     const handleDelete = async (id) => {
         console.log(`Deleting country with id: ${id}`);
         await DeleteGovernarates(id);
-        // Optionally log success or error messages
+        
       };
-      const DeleteGovernarates = async (id) => {
-        try {
-          const response = await axios.delete(`http://192.168.1.7:8000/api/governorates/${id}`);
-          console.log('Country deleted successfully:', response);
-        getAllGovernarates(); // Refresh the list after deletion
-        } catch (error) {
-          console.error('Error deleting country:', error);
-        }
-      };
+      
+     
+      const DeleteGovernarates =(id)=>{
+        axios.delete(`${baseUrl}/governorates/${id}`).then((response)=>{
+            console.log('Country deleted successfully:', response);
+
+        }).catch((error)=>{
+            console.error('Error deleting country:', error);
+        })
+      }
     const AddGovernarates =(data)=>{
-axios.post(`http://192.168.1.7:8000/api/governorates`,data).then((response)=>{
+axios.post(`${baseUrl}/governorates`,data).then((response)=>{
     console.log(response);
     getAllGovernarates();
     reset()
@@ -141,7 +147,7 @@ getAllGovernarates();
 getAllCountries()
     },[])
   return (
-    <>
+   
     
     <>
                 <CustomPage
@@ -152,10 +158,11 @@ getAllCountries()
                     buttonAction={'creategovernorates'}
                     columns={columns}
                     data={governorates}
+                  
                 />
                       
                 <Modal id='creategovernorates' title='countries'  className='w-40'>
-                    <form  onSubmit={handleSubmit(AddGovernarates)} >
+                    <form onSubmit={handleSubmit(AddGovernarates)}  >
                
                         <div className="  ">
                             <div className='col-12'>
@@ -181,13 +188,19 @@ getAllCountries()
                                     <Controller
                                     name='name_ar'
                                     control={control}
-                                    rules={{required:'Arabic Name is Required'}}
-                                    render={({field})=>(
+                                    rules={{required:'Arabic Name is Required',
+                                        pattern:{value:/^[ء-ي]+$/,message:'Only Arabic letters are allowed'},
+                                        validate:{
+                                            startsWithNoNumber:value=>!/^\d/.test(value)||'Cannot start with a number'
+                                        }
+                                    }}
+                                    render={({field,fieldState})=>(
                                         <Input type='text' label='Arabic Country Name'
                                          placeholder='Enter Arabic Country Name ' 
                                          className="px-form-input w-100 m-auto"
                                          value={field.value}
                                          onChange={field.onChange}
+                                         error={fieldState.error?fieldState.error.message:null}
                                         />
                                     )}
                                     
@@ -201,13 +214,18 @@ getAllCountries()
                                 <Controller
                                     name='name_en'
                                     control={control}
-                                    rules={{required:'English Name is Required'}}
-                                    render={({field})=>(
+                                    rules={{required:'English Name is Required',pattern:{value:/^[A-Za-z]+$/,message:'Only English Letters are allowed'},
+                                    validate:{
+                                        startsWithNoNumber:value=>!/^\d/.test(value)||'Cannot start With a Number'
+                                    }
+                                }}
+                                    render={({field,fieldState})=>(
                                         <Input type='text' label='English Country Name'
                                          placeholder='Enter English Country Name ' 
                                          className="px-form-input w-100 m-auto"
                                          value={field.value}
                                          onChange={field.onChange}
+                                         error={fieldState.error?fieldState.error.message:null}
                                         />
                                     )}
                                     
@@ -228,11 +246,6 @@ getAllCountries()
             </>
     
     
-    </>
+ 
   )
 }
-//
-// {...register('name_ar')} 
-// {...register('name_en')}
-// {errors.name_en && <p className="text-danger">{errors.name_en.message}</p>}
-// {errors.name_ar && <p className="text-danger">{errors.name_ar.message}</p>}

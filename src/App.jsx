@@ -27,6 +27,7 @@ import PageNotFound from './Components/Template/PageNotFound/PageNotFound.jsx'
 import AddReverseInvoice from './Components/Controls/AddReverseInvoice/AddReverseInvoice.jsx'
 import ReverseSupplier from './Components/Controls/ReverseSupplier/ReverseSupplier.jsx'
 import Governorates from './Components/Controls/Governorates/Governorates.jsx'
+import AuthContextProvider from './Components/Helpers/Context/AuthContextProvider.jsx'
 
 
 function App() {
@@ -69,10 +70,10 @@ const routes = createBrowserRouter([
  
 ])
   return (
-    <>
+    <AuthContextProvider>
 
    <RouterProvider router={routes}/>
-    </>
+    </AuthContextProvider>
   )
 }
 

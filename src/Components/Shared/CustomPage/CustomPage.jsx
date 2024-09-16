@@ -1,7 +1,8 @@
 import React from 'react'
 import Button from '../Button/Button'
 import Table from '../Table/Table'
-export default function CustomPage({ data, columns, title, ButtonName, ModalTitle, target, targetId, buttonAction }) {
+import Loader from '../../Template/Loader/Loader'
+export default function CustomPage({ data, columns, title, ButtonName, ModalTitle, target, targetId, buttonAction,isLoading }) {
   return (
     <>
         <div className="px-content mb-auto mt-3 ">
@@ -59,9 +60,12 @@ export default function CustomPage({ data, columns, title, ButtonName, ModalTitl
                       </button>
                     </div>
                   </div>
-                  <div className="table-responsive px-table-container">
-                    <Table columns={columns} data={data} selectableRows />
-                  </div>
+                 
+                           <div className="table-responsive px-table-container">
+                           <Table columns={columns} data={data} selectableRows />
+                         </div>
+               
+              
                 </div>
               </div>
             </div>
@@ -70,3 +74,10 @@ export default function CustomPage({ data, columns, title, ButtonName, ModalTitl
       </>
   )
 }
+// {isLoading?<div className='loader'></div>:(
+//   <div className="table-responsive px-table-container">
+//   <Table columns={columns} data={data} selectableRows />
+// </div>
+// )
+
+// }

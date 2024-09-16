@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import CustomPage from '../../Shared/CustomPage/CustomPage'
 import Modal from '../../Shared/Modal/Modal'
 import Input from '../../Shared/Input/Input'
@@ -6,10 +6,13 @@ import Dropdown from '../../Shared/Dropdown/Dropdown'
 import Select from '../../Shared/Select/Select'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
+import { AuthContext } from '../../Helpers/Context/AuthContextProvider'
 export default function Countries() {
     const [openDropdownId, setopenDropdownId] = useState(null)
     const[country,setCountry]=useState([]);
      const{register,handleSubmit,formState:{errors},reset } =useForm();
+     const [close,setClose]=useState(false)
+     const {baseUrl}=useContext(AuthContext)
     
     const columns = [
         {
@@ -67,10 +70,12 @@ export default function Countries() {
 
  
    
-
+const closeModal=()=>{
+setClose(true)
+}
 
 const getAllCountries=()=>{
-    axios.get(`http://192.168.1.7:8000/api/countries`).then((response)=>{
+    axios.get(`${baseUrl}/countries`).then((response)=>{
         console.log(response.data.data);
         setCountry(response.data.data)        
     }).catch((error)=>{
@@ -84,18 +89,12 @@ const getAllCountries=()=>{
 
    
 const AddCountry = (data) => {
-    console.log(data);
-
-    // Create a FormData object to handle form-data correctly
     const formData = new FormData();
-    console.log('name_ar', data.name_ar);
-    console.log('name_en', data.name_en);
-    
-    
-    formData.append('name_ar', data.name_ar);  // Arabic name
-    formData.append('name_en', data.name_en);  // English name
 
-    axios.post('http://192.168.1.7:8000/api/countries', formData, {
+    formData.append('name_ar', data.name_ar);  
+    formData.append('name_en', data.name_en);  
+
+    axios.post(`${baseUrl}/countries`, formData, {
         headers: {
             'Accept': 'application/json',  // Set the header as in Postman
             'Content-Type': 'multipart/form-data'  // Ensure correct content type for form-data
@@ -103,40 +102,32 @@ const AddCountry = (data) => {
     })
     .then((response) => {
         console.log(response);
-        getAllCountries();  // Fetch all countries after successful addition
+        closeModal()
+        getAllCountries(); 
+        reset()
     })
     .catch((error) => {
         console.error(error);
     });
 };
    
-//   const DeleteCountry=(id)=>{
-//     axios.delete(`http://192.168.1.7:8000/api/countries/${id}`).then((response)=>{
-//         console.log(response);
+  const DeleteCountry=(id)=>{
+    axios.delete(`${baseUrl}/countries/${id}`).then((response)=>{
+        console.log(response);
+        getAllCountries();
+    }).catch((error)=>{
+        console.log(error);
         
-//     }).catch((error)=>{
-//         console.log(error);
-        
-//     })
-//   }
-//   const handleDelete=async(id)=>{
-//     await DeleteCountry(id)
-//   }
-const handleDelete = async (id) => {
+    })
+  }
+
+const handleDelete =  (id) => {
     console.log(`Deleting country with id: ${id}`);
-    await DeleteCountry(id);
-    // Optionally log success or error messages
+     DeleteCountry(id);
+   
   };
   
-  const DeleteCountry = async (id) => {
-    try {
-      const response = await axios.delete(`http://192.168.1.7:8000/api/countries/${id}`);
-      console.log('Country deleted successfully:', response);
-      getAllCountries(); // Refresh the list after deletion
-    } catch (error) {
-      console.error('Error deleting country:', error);
-    }
-  };
+
 useEffect(()=>{
     getAllCountries();
 },[])
@@ -152,7 +143,7 @@ useEffect(()=>{
                     data={country}
                 />
                       
-                <Modal id='createcountries' title='countries'  className='w-40'>
+                <Modal id='createcountries' title='countries'  className='w-40' >
                     <form onSubmit={handleSubmit(AddCountry)} >
                
                         <div className="  ">
@@ -160,12 +151,24 @@ useEffect(()=>{
 
                                 <div className="input-package my-3 pe-2 d-flex flex-column col-6">
                                     <Input type='text' label='Arabic Country Name' placeholder='Enter Arabic Country Name ' className="px-form-input w-100 m-auto"
-                                      {...register('name_ar')} />
+                                      {...register('name_ar',{
+                                        required:'Arabic Name is Required',
+                                        pattern:{value:/^[ء-ي]+$/,message:'Only Arabic letters are allowed'},
+                                        validate:{
+                                            startsWithNoNumber:value=>!/^\d/.test(value)||'Cannot start with a number'
+                                        }
+                                      })} />
                                    {errors.name_ar && <p className="text-danger">{errors.name_ar.message}</p>}
                                 </div>
                                 <div className="input-package my-3 pe-2 d-flex flex-column col-6">
                                     <Input type='text' label='English Country Name' placeholder='Enter English Country Name ' className="px-form-input w-100 m-auto"
-                                      {...register('name_en')}/>
+                                      {...register('name_en',{
+                                        required:'English Name is Required',
+                                        pattern:{value:/^[A-Za-z]+$/,message:'Only English letters are allowed'},
+                                        validate:{
+                                            startsWithNoNumber:value=>!/^\d/.test(value)||'Cannot start with a number'
+                                        }
+                                      })}/>
                                           {errors.name_en && <p className="text-danger">{errors.name_en.message}</p>}
                                 </div>
                              
@@ -173,7 +176,7 @@ useEffect(()=>{
                         </div>
                         <div className="modal-footer mt-3 ms-5">
             <button type="button" className="px-btn btn px-white-btn" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" className="px-btn px-blue-btn">Save</button>
+            <button type="submit" className="px-btn px-blue-btn"  >Save</button>
           </div>
                     </form>
                 </Modal>
