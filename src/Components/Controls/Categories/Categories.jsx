@@ -1,7 +1,4 @@
 import React, { useState } from 'react'
-import Select from '../../Shared/Select/Select'
-import Input from '../../Shared/Input/Input'
-import Modal from '../../Shared/Modal/Modal'
 import CustomPage from '../../Shared/CustomPage/CustomPage'
 import Dropdown from '../../Shared/Dropdown/Dropdown'
 
@@ -99,7 +96,7 @@ export default function Categories() {
                 columns={columns}
                 data={data}
             />
-            <Modal id='createcategory' title='Categories' onSave={handleSave} onCancel={handleClose} className='w-40'>
+            {/* <Modal id='createcategory' title='Categories' onSave={handleSave} onCancel={handleClose} className='w-40'>
                 <form action>
                     <div className="  ">
                         <div className="">
@@ -141,7 +138,7 @@ export default function Categories() {
                         <button type="button" className="px-btn px-blue-btn">save</button>
                     </div>
                 </form>
-            </Modal>
+            </Modal> */}
     
     </>
   )

@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Button from '../Button/Button'
 import Table from '../Table/Table'
 import Loader from '../../Template/Loader/Loader'
 export default function CustomPage({ data, columns, title, ButtonName, ModalTitle, target, targetId, buttonAction,isLoading }) {
+
   return (
     <>
         <div className="px-content mb-auto mt-3 ">

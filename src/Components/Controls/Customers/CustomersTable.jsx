@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import CustomPage from "../../Shared/CustomPage/CustomPage";
 import Dropdown from "../../Shared/Dropdown/Dropdown";
-import Input from "../../Shared/Input/Input";
-import SelectWithFlag from "../../Shared/SelectWithFlags/SelectWithFlag";
-import Select from "../../Shared/Select/Select";
-import Modal from "../../Shared/Modal/Modal";
-import Egypt from '../../../assets/images/Flag_of_Egypt.svg.png'
-import Qatar from '../../../assets/images/Flag_of_Qatar_(3-2).svg.png'
-import Palestine from '../../../assets/images/Flag_of_Palestine.svg.png'
 export default function CustomersTable() {
   const [openDropdownId, setopenDropdownId] = useState(null)
   const handleClose = () => alert('close')
@@ -167,11 +160,11 @@ export default function CustomersTable() {
     <>
 
 
-      <Modal id='createCustomer' title='Create Customer' onSave={handleSave} onCancel={handleClose} className='w-80'>
+      {/* <Modal id='createCustomer' title='Create Customer' onSave={handleSave} onCancel={handleClose} className='w-80'>
 
 
         <form action className="d-flex flex-wrap ">
-          {/* LEFT */}
+      
           <div className="side w-xxl-100 w-50 p-4 vertical-separetor">
             <div className="section">
               <div className="form-inputs d-flex w-100  mt-1">
@@ -281,7 +274,7 @@ export default function CustomersTable() {
               </div>
             </div>
           </div>
-          {/* Right */}
+        
           <div className="reservation-side w-xxl-100 w-50 ">
             <div className="reservation-section p-4">
               <div className="input-package mt-3  d-flex flex-column w-100">
@@ -350,7 +343,7 @@ export default function CustomersTable() {
             <button type="button" className="px-btn px-blue-btn">save</button>
           </div>
         </form>
-      </Modal>
+      </Modal> */}
       <CustomPage
         data={data}
         columns={columns}

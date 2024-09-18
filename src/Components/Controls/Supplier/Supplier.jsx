@@ -1,16 +1,6 @@
-import React, { useState } from 'react'
-import CustomersTable from '../Customers/CustomersTable'
+import React, { useState } from 'react';
 import CustomPage from '../../Shared/CustomPage/CustomPage';
 import Dropdown from '../../Shared/Dropdown/Dropdown';
-import CustomIcon from '../../Shared/CustomIcon/CustomIcon';
-import { width } from '@fortawesome/free-solid-svg-icons/fa0';
-import Modal from '../../Shared/Modal/Modal';
-import Input from '../../Shared/Input/Input';
-import SelectWithFlag from '../../Shared/SelectWithFlags/SelectWithFlag';
-import Select from '../../Shared/Select/Select';
-import Egypt from '../../../assets/images/Flag_of_Egypt.svg.png'
-import Qatar from '../../../assets/images/Flag_of_Qatar_(3-2).svg.png'
-import Palestine from '../../../assets/images/Flag_of_Palestine.svg.png'
 export default function Supplier() {
   const [openDropdownId, setopenDropdownId] = useState(null)
   const handleClose = () => alert('close')
@@ -394,7 +384,7 @@ export default function Supplier() {
   ];
   return (
     <>
-      <Modal id='createSupplier' title='Create Supplier' onSave={handleSave} onCancel={handleClose} className='w-80'>
+      {/* <Modal id='createSupplier' title='Create Supplier' onSave={handleSave} onCancel={handleClose} className='w-80'>
         <form action className="d-flex flex-wrap ">
           <div className="side w-xxl-100 w-50 p-4 vertical-separetor">
             <div className="section">
@@ -568,7 +558,7 @@ export default function Supplier() {
             <button type="button" className="px-btn px-blue-btn">save</button>
           </div>
         </form>
-      </Modal>
+      </Modal> */}
       <CustomPage data={data}
         columns={columns}
         title='All Suppliers'

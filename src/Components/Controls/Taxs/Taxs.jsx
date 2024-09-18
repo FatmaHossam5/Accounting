@@ -1,9 +1,5 @@
 import React, { useState } from 'react'
 import CustomPage from '../../Shared/CustomPage/CustomPage'
-import Modal from '../../Shared/Modal/Modal'
-import Input from '../../Shared/Input/Input'
-import Select from '../../Shared/Select/Select'
-import Button from '../../Shared/Button/Button'
 import Dropdown from '../../Shared/Dropdown/Dropdown'
 
 export default function Taxs() {
@@ -104,7 +100,7 @@ export default function Taxs() {
       columns={columns}
       data={data}
       />
-    <Modal id='createTax'title='Tax' onSave={handleSave} onCancel={handleClose} className='w-40'>
+    {/* <Modal id='createTax'title='Tax' onSave={handleSave} onCancel={handleClose} className='w-40'>
     <form action>
   <div className="  ">
     <div className="">
@@ -144,7 +140,7 @@ export default function Taxs() {
     <button type="button" className="px-btn px-blue-btn">save</button>
   </div>
 </form>
-    </Modal>
+    </Modal> */}
 
     </>
   )

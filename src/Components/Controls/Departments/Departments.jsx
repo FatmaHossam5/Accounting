@@ -1,9 +1,6 @@
-import React, { useState } from 'react'
-import Dropdown from '../../Shared/Dropdown/Dropdown';
-import Input from '../../Shared/Input/Input';
-import Select from '../../Shared/Select/Select';
-import Modal from '../../Shared/Modal/Modal';
+import React, { useState } from 'react';
 import CustomPage from '../../Shared/CustomPage/CustomPage';
+import Dropdown from '../../Shared/Dropdown/Dropdown';
 
 export default function Departments() {
 
@@ -93,7 +90,7 @@ export default function Departments() {
                 columns={columns}
                 data={data}
             />
-            <Modal id='createdepartments' title='currencies' onSave={handleSave} onCancel={handleClose} className='w-40'>
+            {/* <Modal id='createdepartments' title='currencies' onSave={handleSave} onCancel={handleClose} className='w-40'>
                 <form action>
                     <div className="  ">
                         <div className="">
@@ -115,7 +112,7 @@ export default function Departments() {
                         <button type="button" className="px-btn px-blue-btn">save</button>
                     </div>
                 </form>
-            </Modal>
+            </Modal> */}
     
     </>
   )

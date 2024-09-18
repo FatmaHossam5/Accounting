@@ -1,9 +1,6 @@
-import React, { useState } from 'react'
-import Dropdown from '../../Shared/Dropdown/Dropdown';
+import React, { useState } from 'react';
 import CustomPage from '../../Shared/CustomPage/CustomPage';
-import Modal from '../../Shared/Modal/Modal';
-import Input from '../../Shared/Input/Input';
-import Select from '../../Shared/Select/Select';
+import Dropdown from '../../Shared/Dropdown/Dropdown';
 
 export default function Services() {
   const [openDropdownId, setopenDropdownId] = useState(null)
@@ -143,7 +140,7 @@ export default function Services() {
   return (
     <>
 
-      <Modal id='createService' className={'w-50'} title={'createNewService'}>
+      {/* <Modal id='createService' className={'w-50'} title={'createNewService'}>
         <div className='row mb-3 '>
           <div className='col-md-6'>
             <Input label={'Service English Name'} placeholder={'Enter service name'} />
@@ -218,7 +215,7 @@ export default function Services() {
           <button type="button" className="px-btn btn px-white-btn" data-bs-dismiss="modal">Cancel</button>
           <button type="button" className="px-btn px-blue-btn">save</button>
         </div>
-      </Modal>
+      </Modal> */}
       <CustomPage data={data}
         columns={columns}
         title='Services'

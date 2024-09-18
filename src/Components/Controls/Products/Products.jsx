@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import CustomPage from '../../Shared/CustomPage/CustomPage';
 import Dropdown from '../../Shared/Dropdown/Dropdown';
-import Input from '../../Shared/Input/Input';
-import Modal from '../../Shared/Modal/Modal';
-import Select from '../../Shared/Select/Select';
-import Button from '../../Shared/Button/Button';
 
 export default function Products({ButtonName,buttonAction,target}) {
   const handleClose = () => alert('close')
@@ -138,7 +134,7 @@ export default function Products({ButtonName,buttonAction,target}) {
   ];
   return (
     <>
-      <Modal id='createProduct' title='Create Product' onSave={handleSave} onCancel={handleClose} className='w-50'>
+      {/* <Modal id='createProduct' title='Create Product' onSave={handleSave} onCancel={handleClose} className='w-50'>
      <form action="">
      <div className='row mb-3 '>
           <div className='col-md-6'>
@@ -217,7 +213,7 @@ export default function Products({ButtonName,buttonAction,target}) {
           <button type="button" className="px-btn px-blue-btn">save</button>
         </div>
      </form>
-      </Modal>
+      </Modal> */}
     
       <CustomPage data={data}
         columns={columns}

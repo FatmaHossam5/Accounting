@@ -4,9 +4,10 @@ import { Controller, useForm } from 'react-hook-form';
 import { AuthContext } from '../../Helpers/Context/AuthContextProvider';
 import CustomPage from '../../Shared/CustomPage/CustomPage';
 import Dropdown from '../../Shared/Dropdown/Dropdown';
+import CustomModal from '../../Shared/CustomModal/CustomModal';
 import Input from '../../Shared/Input/Input';
-import Modal from '../../Shared/Modal/Modal';
 import Select from '../../Shared/Select/Select';
+import ModalFooter from '../../Shared/ModalFooter/ModalFooter';
 
 export default function Governorates() {
     const [openDropdownId, setopenDropdownId] = useState(null);
@@ -21,6 +22,8 @@ export default function Governorates() {
     });
     const {baseUrl}=useContext(AuthContext);
     const [isloading, setIsLoading] = useState(false);
+    const [isOpen,setIsOpen]=useState(false);
+    const[isSubmitting,setIsSubmitting]=useState(false)
    
     
     const columns = [
@@ -87,7 +90,11 @@ export default function Governorates() {
 
     ];
 
-
+ 
+    const closeModal=()=>setIsOpen(false)
+    const handleCancle=()=>{
+     closeModal()
+   }
     const getAllGovernarates=()=>{
         setIsLoading(true)
         axios.get(`${baseUrl}/governorates
@@ -133,13 +140,16 @@ export default function Governorates() {
         })
       }
     const AddGovernarates =(data)=>{
+        setIsSubmitting(true)
 axios.post(`${baseUrl}/governorates`,data).then((response)=>{
-    console.log(response);
+   closeModal();
     getAllGovernarates();
     reset()
 }).catch((error)=>{
     console.log(error);
     
+}).finally(()=>{
+    setIsSubmitting(false)
 })
     }
     useEffect(()=>{
@@ -155,13 +165,13 @@ getAllCountries()
                     ButtonName='Create Governorates'
                     ModalTitle='Create governorates'
                     target='#creategovernorates'
-                    buttonAction={'creategovernorates'}
+                    buttonAction={()=>setIsOpen(true)}
                     columns={columns}
                     data={governorates}
                   
                 />
                       
-                <Modal id='creategovernorates' title='countries'  className='w-40'>
+                <CustomModal id='creategovernorates' title='Governarate'isOpen={isOpen}  className='modal-lg' onCancel={handleCancle}>
                     <form onSubmit={handleSubmit(AddGovernarates)}  >
                
                         <div className="  ">
@@ -236,12 +246,12 @@ getAllCountries()
                              
                             </div>
                         </div>
-                        <div className="modal-footer mt-3 ms-5">
-            <button type="button" className="px-btn btn px-white-btn" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" className="px-btn px-blue-btn">Save</button>
-          </div>
+          <ModalFooter 
+          onCancle={handleCancle}
+          onSubmit={handleSubmit(AddGovernarates)}
+          isSubmitting={isSubmitting}/>
                     </form>
-                </Modal>
+                </CustomModal>
 
             </>
     

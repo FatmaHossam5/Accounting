@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import CustomPage from '../../Shared/CustomPage/CustomPage'
-import Modal from '../../Shared/Modal/Modal'
-import Input from '../../Shared/Input/Input'
 import Dropdown from '../../Shared/Dropdown/Dropdown'
-import Select from '../../Shared/Select/Select'
 
 export default function Branches() {
     const [openDropdownId, setopenDropdownId] = useState(null)
@@ -123,7 +120,7 @@ export default function Branches() {
                 columns={columns}
                 data={data}
             />
-            <Modal id='createcurrencies' title='currencies' onSave={handleSave} onCancel={handleClose} className='w-40'>
+            {/* <Modal id='createcurrencies' title='currencies' onSave={handleSave} onCancel={handleClose} className='w-40'>
                 <form action>
                     <div className="  ">
                         <div className="">
@@ -191,7 +188,7 @@ export default function Branches() {
                         <button type="button" className="px-btn px-blue-btn">save</button>
                     </div>
                 </form>
-            </Modal>
+            </Modal> */}
 
 
 

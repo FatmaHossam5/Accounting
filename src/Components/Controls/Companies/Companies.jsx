@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
-import Dropdown from '../../Shared/Dropdown/Dropdown'
 import CustomPage from '../../Shared/CustomPage/CustomPage'
-import Input from '../../Shared/Input/Input'
-import Modal from '../../Shared/Modal/Modal'
+import Dropdown from '../../Shared/Dropdown/Dropdown'
 
 export default function Companies() {
     const [openDropdownId, setopenDropdownId] = useState(null)
@@ -115,7 +113,9 @@ export default function Companies() {
                 columns={columns}
                 data={data}
             />
-            <Modal id='createcompanies' title='Companies' onSave={handleSave} onCancel={handleClose} className='w-40'>
+
+            
+           {/* <Modal id='createcompanies' title='Companies' onSave={handleSave} onCancel={handleClose} className='w-40'>
                 <form action>
                     <div className="  ">
                         <div className="">
@@ -130,11 +130,11 @@ export default function Companies() {
                             </div>
                             <div className="input-package my-3 pe-2 d-flex flex-column w-70 m-auto">
                                 <Input label='Start Of Finanicail Year' className="px-form-input w-100 m-auto" placeholder="YY/MM/DD" id="fromDate" type="date" />
-                                {/* <i className="fa-regular fa-calendar-days fa-xl px-calender-icon"></i> */}
+                               
                             </div>
                             <div className="input-package my-3 pe-2 d-flex flex-column w-70 m-auto">
                                 <Input label='End Of Financial Year' className="px-form-input w-100" placeholder="YY/MM/DD" id="toDate" type="date" />
-                                {/* <i className="fa-regular fa-calendar-days fa-xl px-calender-icon"></i> */}
+                               
                             </div>
                         </div>
                     </div>
@@ -144,7 +144,7 @@ export default function Companies() {
                         <button type="button" className="px-btn px-blue-btn">save</button>
                     </div>
                 </form>
-            </Modal>
+            </Modal> */}
 
         </>
 

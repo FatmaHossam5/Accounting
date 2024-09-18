@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
-import CustomPage from '../../Shared/CustomPage/CustomPage'
-import Modal from '../../Shared/Modal/Modal'
-import Input from '../../Shared/Input/Input'
 import Dropdown from '../../Helpers/Dropdown/Dropdown'
+import CustomPage from '../../Shared/CustomPage/CustomPage'
 
 export default function Industries() {
     const [openDropdownId, setopenDropdownId] = useState(null)
@@ -88,7 +86,7 @@ export default function Industries() {
                 columns={columns}
                 data={data}
             />
-            <Modal id='createdepartments' title='currencies' onSave={handleSave} onCancel={handleClose} className='w-40'>
+            {/* <Modal id='createdepartments' title='currencies' onSave={handleSave} onCancel={handleClose} className='w-40'>
                 <form action>
                     <div className="  ">
                         <div className="">
@@ -104,7 +102,7 @@ export default function Industries() {
                     </div>
                 </form>
             </Modal>
-    
+     */}
     </>
     
     
