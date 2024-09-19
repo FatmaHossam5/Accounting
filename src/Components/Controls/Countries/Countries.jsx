@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form'
 import { AuthContext } from '../../Helpers/Context/AuthContextProvider'
 import ModalFooter from '../../Shared/ModalFooter/ModalFooter'
 import CustomModal from '../../Shared/CustomModal/CustomModal'
+import ConfirmDelete from '../../Shared/ConfirmDelete/ConfirmDelete'
 export default function Countries() {
     const [openDropdownId, setopenDropdownId] = useState(null)
     const[country,setCountry]=useState([]);
@@ -137,6 +138,7 @@ const handleDeleteModal =  (id) => {
  const handleDeletedConfirmed=()=>{
     if(deletedCountryId){
         DeleteCountry(deletedCountryId)
+        setopenDropdownId(null)
     }
     setIsDeleteOpen(false)
  }
@@ -198,10 +200,11 @@ useEffect(()=>{
                    </CustomModal>
                     
            {isDeleteOpen&&(
-            <confirmDelete
+            <ConfirmDelete
             isOpen={isDeleteOpen}
             onCancel={handleDeleteCancelled}
             onConfirm={handleDeletedConfirmed}
+            deleteMsg={'Country'}
 
             />
            )}

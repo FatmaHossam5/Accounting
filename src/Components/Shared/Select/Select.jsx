@@ -10,7 +10,7 @@ export default function Select({label,options,value,onChange,...rest}) {
      { label&&  <label htmlFor={rest.id} className='mb-2'>{label}</label>}
         <select id="companyIndustry" 
         type="text" 
-        className="px-login-input w-100 "
+        className="px-login-input w-100 ts"
         value={value}
         onChange={onChange}
         {...rest}

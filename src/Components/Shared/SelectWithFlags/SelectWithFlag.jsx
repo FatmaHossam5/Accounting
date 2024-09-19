@@ -32,7 +32,7 @@ export default function SelectWithFlag({ label, options, value, onChange, ...res
         </div>
         {isOpen && (
           <div className="custom-select-dropdown">
-            {options.map((option, index) => (
+            {options?.map((option, index) => (
               <div
                 key={index}
                 className="custom-select-option"

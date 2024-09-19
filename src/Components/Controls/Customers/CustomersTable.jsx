@@ -1,21 +1,27 @@
 import React, { useState } from "react";
 import CustomPage from "../../Shared/CustomPage/CustomPage";
 import Dropdown from "../../Shared/Dropdown/Dropdown";
+import CustomModal from "../../Shared/CustomModal/CustomModal";
+import Input from "../../Shared/Input/Input";
+import Select from "../../Shared/Select/Select";
+import SelectWithFlag from '../../Shared/SelectWithFlags/SelectWithFlag';
+import Egypt from '../../../assets/images/Flag_of_Egypt.svg.png';
 export default function CustomersTable() {
   const [openDropdownId, setopenDropdownId] = useState(null)
-  const handleClose = () => alert('close')
+  // const handleClose = () => alert('close')
 
-  const handleSave = () => alert('save')
-  const [selectedOption, setSelectedOption] = useState('');
+  // const handleSave = () => alert('save')
+  // const [selectedOption, setSelectedOption] = useState('');
 
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value)
-  }
+  // const handleOptionChange = (event) => {
+  //   setSelectedOption(event.target.value)
+  // }
   const [selectedCountryCode, setSelectedCountryCode] = useState('');
 
   const handleCountryCodeChange = (event) => {
     setSelectedCountryCode(event.target.value);
   };
+  const [isOpen,setIsOpen]=useState(false);
   const columns = [
     {
       name: "Contact Name",
@@ -155,12 +161,16 @@ export default function CustomersTable() {
 
 
   ];
+  const closeModal=()=>setIsOpen(false)
+  const handleCancle=()=>{
+   closeModal()
+ }
 
   return (
     <>
 
 
-      {/* <Modal id='createCustomer' title='Create Customer' onSave={handleSave} onCancel={handleClose} className='w-80'>
+      <CustomModal id='createcustomers' title='Create New Customer' isOpen={isOpen}  className='modal-xl' onCancel={handleCancle}>
 
 
         <form action className="d-flex flex-wrap ">
@@ -203,8 +213,8 @@ export default function CustomersTable() {
                   className="px-flag-dropdown px-form-input d-flex col-2 "
                   options={[
                     { value: '+02', label: '+02', flag: Egypt },
-                    { value: '+03', label: '+03', flag: Qatar },
-                    { value: '+04', label: '+04', flag: Palestine },
+                    { value: '+03', label: '+03', flag: Egypt },
+                    { value: '+04', label: '+04', flag: Egypt },
                   ]}
                 />
 
@@ -290,8 +300,8 @@ export default function CustomersTable() {
                     className="px-flag-dropdown px-form-input d-flex col-2 "
                     options={[
                       { value: '+02', label: '+02', flag: Egypt },
-                      { value: '+03', label: '+03', flag: Qatar },
-                      { value: '+04', label: '+04', flag: Palestine },
+                      { value: '+03', label: '+03', flag: Egypt },
+                      { value: '+04', label: '+04', flag: Egypt },
                     ]}
                   />
                   <input type="text" placeholder="Enter contact mobile number" className="px-form-input col-10 pe-5 " />
@@ -343,7 +353,7 @@ export default function CustomersTable() {
             <button type="button" className="px-btn px-blue-btn">save</button>
           </div>
         </form>
-      </Modal> */}
+      </CustomModal>
       <CustomPage
         data={data}
         columns={columns}
@@ -351,6 +361,7 @@ export default function CustomersTable() {
         ButtonName="Create Customer"
         ModalTitle="Create Customer"
         target='#createCustomer'
+        buttonAction={()=>setIsOpen(true)}
       />
     </>
   );

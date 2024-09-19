@@ -28,7 +28,8 @@ import AddReverseInvoice from './Components/Controls/AddReverseInvoice/AddRevers
 import ReverseSupplier from './Components/Controls/ReverseSupplier/ReverseSupplier.jsx'
 import Governorates from './Components/Controls/Governorates/Governorates.jsx'
 import AuthContextProvider from './Components/Helpers/Context/AuthContextProvider.jsx'
-import ConfirmDelete from './Components/Shared/ConfirmDelete/ConfirmDelete.jsx'
+import Cities from './Components/Controls/Cities/Cities.jsx'
+
 
 
 function App() {
@@ -64,7 +65,8 @@ const routes = createBrowserRouter([
       {path:'/ReverseCustomerI',element:<ReverseCustomer/>},
       {path:'/ReverseSupplierI',element:<ReverseSupplier/>},
       {path:'/Suuplies',element:<PageNotFound/>},
-      {path:'/S',element:<ConfirmDelete/>},
+      {path:'/Cities',element:<Cities/>}
+
 
       
 

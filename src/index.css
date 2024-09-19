@@ -235,21 +235,6 @@ label{
     border-radius: 10px;
 }
 
-.show-list {
-    display: block;
-}
-
-.list-item img,
-.selected-img {
-    border-radius: 3px;
-    object-fit: cover;
-}
-
-.list-item img,
-.list-item .text,
-.dropdwn-wrapper {
-    pointer-events: none;
-}
 
 .select-search {
     position: relative;
@@ -1466,6 +1451,22 @@ header {
 .dropdown-toggle::after{
     display: none!important;
 }
+.ts{
+    
+    border: none;
+}
+select.ts{
+    border: none!important;
+    outline: none!important;
+}
+.rows-per-page-dropdown {
+    border-color: #1877F2!important;
+}
+ .select-pagination {
+    font-size: 14px !important;
+    color: #1877F2 !important;
+    font-weight: 400;
+}
 .ecxYml:not(:last-of-type) {
     border-bottom-style: none!important; 
      border-bottom-width: 1px; 
@@ -1479,81 +1480,15 @@ header {
     
     
     }
-#dropdownMenuButton:focus, #dropdownMenuButton:hover{
-    outline: none;
-    box-shadow: none;
-    border: none;
-}
-#dropdownMenuButton{
-    outline: none;
-    box-shadow: none;
-    border: none;
-}
-.dropdown-toggl
-    {
-        outline: none;
-        box-shadow: none;
-        border: none;
+    .dropdown-menu:hover{
+        --bs-dropdown-link-hover-bg: none!important;
     }
-button, .dropdown-toggl, .dropdown-menu{
-    margin: 0;
-    padding: 0;
-}
-.dropdown-menu{
-    position: absolute!important;
-    z-index: 1065;
-}
 .juhAha{
     width: auto !important;
     overflow: visible!important;
 }
 
-/* .table-container{
-    overflow-x: auto;
-    position: relative;
-}
-.table-container table{
-    width: 100%;
-    border-collapse: collapse;
-}
-.table-container th, .table-container td{
-    padding:  8px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
-.sticky-column{
-    position: sticky;
-  
-    z-index: 2;
-    background-color: white;
-}
 
-.sticky-id{
-    left: 0;
-    z-index: 3;
-}
-.sticky-actions{
-    left: 60px;
-    z-index: 3;
-} */
- /* .react-data-table{
-    table-layout: fixed;
-    width: 100%;
- }
- .react-data-table .rtd_TableHead .rtd_TableCol:first-child, .react-data-table .rtd_TableBody .rtd_TableCol:first-child{
-
-    position: sticky;
-    left: 0;
-    z-index: 2;
-    background-color: #fff;
- }
- .react-data-table .rtd_TableHead .rtd_TableCol:nth-child(2), .react-data-table .rtd_TableBody .rtd_TableCol:nth-child(2)
- {
-    position: sticky;
-    left: 100px;
-    z-index: 2;
-    background-color: #fff         ;
- } */
 
 
  .px-table-container .rdt_TableRow .rdt_TableCell:first-child,
@@ -1762,6 +1697,7 @@ text-align: center;
 }
 .delete-color{
     background-color:  #FF6B6B;
+    box-shadow:none!important
     
 }
 .delete-color:hover{
@@ -1774,29 +1710,7 @@ text-align: center;
     color: #000!important;
     border: none!important;
 }
-/* .juhAha, .feLBvi {
-    opacity: 1 !important;
-}
-
-.juhAha:hover , .feLBvi:hover{
-    opacity: 1!important;
-    color: #88B0E3!important;
-}
-.desc, .__rdt_custom_sort_icon__,
-.rdt_TableCol_Sortable{
-    opacity: 1!important;
-    color: #1877F2;
-    margin-left: 15px;
-} 
-.juhAha  ,.feLBvi{
-    opacity: 1!important;
-}
-span.asc, span.__rdt_custom_sort_icon__{
-    opacity: 1!important;
-}
-
-.gxmLyf,.ebDmbW 
-{opacity: 1!important;} */
+.dropdown-menu
 
 /* end 
 .table component */
