@@ -8,6 +8,7 @@ import ModalFooter from '../../Shared/ModalFooter/ModalFooter';
 import axios from 'axios';
 import AuthContextProvider, { AuthContext } from '../../Helpers/Context/AuthContextProvider';
 import Dropdown from '../../Shared/Dropdown/Dropdown';
+import ConfirmDelete from '../../Shared/ConfirmDelete/ConfirmDelete';
 
 export default function Cities() {
   const[isOpen,setIsOpen]=useState(false);
@@ -15,7 +16,7 @@ export default function Cities() {
     defaultValues:{
       name_ar:'',
       name_en:'',
-      governorate_id:''
+      governorate_id:null
   }
   });
   const handleCancle=()=>setIsOpen(false);
@@ -24,6 +25,8 @@ export default function Cities() {
   const[governorates,setGovernarates]=useState([])
   const [openDropdownId, setopenDropdownId] = useState(null);
   const[isSubmitting,setIsSubmitting]=useState(false);
+  const[isDeleteOpen,setIsDeleteOpen]=useState(false);
+  const[deletedCityId,setDeletedCityId]=useState(null)
   const data=cities;
   const columns=[
 
@@ -44,7 +47,7 @@ export default function Cities() {
                               <i className="bi bi-pencil-fill me-2 text-warning" />
                               Update
                           </a>
-                          <a className="dropdown-item mt-1" href="#">
+                          <a className="dropdown-item mt-1" href="#" onClick={()=>handleDeleteModal(row.id)}>
                               <i className="bi bi-trash-fill me-2 text-danger" />
                               Remove
                           </a>
@@ -54,6 +57,7 @@ export default function Cities() {
                   id={row.id}
                   openDropdownId={openDropdownId}
                   setOpenDropdownId={setopenDropdownId}
+             
                 
               />
 
@@ -89,6 +93,7 @@ export default function Cities() {
 
   ]
   
+
   const getAllCities=()=>{
     axios.get(`${baseUrl}/cities`).then((response)=>{
     
@@ -114,22 +119,42 @@ setGovernarates(selectedGovernarate)
     }
 )
   }
-  const AddCity=(data)=>{
+  const AddCity = (data) => {
     setIsSubmitting(true)
-    alert('hi')
-    console.log(data);
-    
-    axios.post(`${baseUrl}/cities`,data).then((response)=>{
-      console.log('Added Successfully');
+    axios.post(`${baseUrl}/cities`, data).then(() => {
       reset();
       handleCancle();
-    }).catch((error)=>{
+      getAllCities();
+    }).catch((error) => {
       console.log(error);
-      
-    }).finally(()=>{
+
+    }).finally(() => {
       setIsSubmitting(false)
-  })
+    })
   }
+
+const handleDeleteCancelled=()=>setIsDeleteOpen(false);
+
+ const handleDeleteModal=(id)=>{
+  setDeletedCityId(id)
+  setIsDeleteOpen(true)
+ }
+const DeleteCity =(id)=>{
+axios.delete(`${baseUrl}/cities/${id}`).then((response)=>{
+  console.log(response);
+  getAllCities();
+}).catch((error)=>{
+  console.log(error);
+  
+})
+}
+const handleDeletedConfirmed=()=>{
+ if(deletedCityId){
+  DeleteCity(deletedCityId);
+  setopenDropdownId(null)
+ }
+ setIsDeleteOpen(false)
+}
 useEffect(()=>{
   getAllCities();
   getAllGovernarates()
@@ -165,12 +190,13 @@ useEffect(()=>{
                            label={'select Governarate'}
                           options={governorates}
                            value={field.value}
-                           onChange={field.onChange}
+                           onChange={(val)=>field.onChange(val)}
                            id='GovernarateSelect'
+                           option={'Governarate'}
                            />
                        )}
                  />
-                 {errors.country_id&&<p className='text-danger'>{errors.country_id.message}</p>}
+                 {errors.governorate_id&&<p className='text-danger'>{errors.governorate_id.message}</p>}
                    </div>
                    <div className="col-12 d-flex">
 
@@ -236,6 +262,20 @@ isSubmitting={isSubmitting}
 
 
    </CustomModal>
-    </>
+    
+ 
+
+{isDeleteOpen && (
+  <ConfirmDelete
+  isOpen={isDeleteOpen}
+  onCancel={handleDeleteCancelled}
+  onConfirm={handleDeletedConfirmed}
+  deleteMsg='City'
+ 
+
+  />
+)}
+</>
+
   )
 }

@@ -4,18 +4,13 @@ import ModalFooter from '../ModalFooter/ModalFooter';
 
 export default function ConfirmDelete({ isOpen, onCancel, onConfirm, deleteMsg }) {
 
-    const handleCancle = () => onCancel()
 
-    const confirmationDelete = () => {
-        onConfirm()
-        handleCancle()
-    }
+   
 
     return (
         <>
             <CustomModal
                 isOpen={isOpen}
-                onCancel={handleCancle}
                 showHeader={false}>
                 <div className='d-flex justify-content-center'>
                     <svg width={74} height={74} viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -31,10 +26,10 @@ export default function ConfirmDelete({ isOpen, onCancel, onConfirm, deleteMsg }
                 <div className='d-flex justify-content-center'>
                     <ModalFooter
                         submitText="Yes,Delete"
-                        className2={'delete-color'}
-                        className={'delete-cancel'}
-                        onCancle={handleCancle}
-                        onSubmit={confirmationDelete}
+                        className2='delete-color'
+                        className='delete-cancel'
+                        onCancle={onCancel}
+                        onSubmit={onConfirm}
                     />
                 </div>
             </CustomModal>

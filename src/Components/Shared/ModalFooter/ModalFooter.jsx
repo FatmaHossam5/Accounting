@@ -8,7 +8,7 @@ export default function ModalFooter({onCancle,onSubmit,cancleText="Cancel",submi
     
     <div className=" px-modal modal-footer mt-3 ms-5">
             <Button type="button" className={`px-btn btn px-white-btn ${className}`}  onClick={onCancle}>{cancleText}</Button>
-            <Button type="button" className={`px-btn px-blue-btn ${className2}` }  disabled={isSubmitting} onClick={onSubmit} >{isSubmitting?<Loader/>:submitText}</Button>
+            <Button type="submit" className={`px-btn px-blue-btn ${className2}` }  disabled={isSubmitting} onClick={onSubmit} >{isSubmitting?<Loader/>:submitText}</Button>
           </div>
     
     </>

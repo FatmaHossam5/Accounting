@@ -8,6 +8,7 @@ import CustomModal from '../../Shared/CustomModal/CustomModal';
 import Input from '../../Shared/Input/Input';
 import Select from '../../Shared/Select/Select';
 import ModalFooter from '../../Shared/ModalFooter/ModalFooter';
+import ConfirmDelete from '../../Shared/ConfirmDelete/ConfirmDelete';
 
 export default function Governorates() {
     const [openDropdownId, setopenDropdownId] = useState(null);
@@ -23,7 +24,9 @@ export default function Governorates() {
     const {baseUrl}=useContext(AuthContext);
     const [isloading, setIsLoading] = useState(false);
     const [isOpen,setIsOpen]=useState(false);
-    const[isSubmitting,setIsSubmitting]=useState(false)
+    const[isSubmitting,setIsSubmitting]=useState(false);
+    const[isDeleteOpen,setIsDeleteOpen]=useState(false);
+    const[deletedGovernarateId,setDeletedGovernarateId]=useState(null);
    
     
     const columns = [
@@ -44,7 +47,7 @@ export default function Governorates() {
                                     <i className="bi bi-pencil-fill me-2 text-warning" />
                                     Update
                                 </a>
-                                <a className="dropdown-item mt-1" href="#"onClick={()=>handleDelete(row.id)}>
+                                <a className="dropdown-item mt-1" href="#"onClick={()=>handleDeleteModal(row.id)}>
                                     <i className="bi bi-trash-fill me-2 text-danger" />
                                     Remove
                                 </a>
@@ -54,7 +57,7 @@ export default function Governorates() {
                         id={row.id}
                         openDropdownId={openDropdownId}
                         setOpenDropdownId={setopenDropdownId}
-                        onDelete={handleDelete}
+                  
                     />
 
                 </div>
@@ -124,16 +127,17 @@ export default function Governorates() {
         })
     }
 
-    const handleDelete = async (id) => {
-        console.log(`Deleting country with id: ${id}`);
-        await DeleteGovernarates(id);
+    const handleDeleteModal =  (id) => {
+       setDeletedGovernarateId(id)
+      setIsDeleteOpen(true)
         
       };
       
-     
+ 
       const DeleteGovernarates =(id)=>{
         axios.delete(`${baseUrl}/governorates/${id}`).then((response)=>{
             console.log('Country deleted successfully:', response);
+            getAllGovernarates();
 
         }).catch((error)=>{
             console.error('Error deleting country:', error);
@@ -151,6 +155,15 @@ axios.post(`${baseUrl}/governorates`,data).then((response)=>{
 }).finally(()=>{
     setIsSubmitting(false)
 })
+    }
+    const handleDeleteCancelled=()=>setIsDeleteOpen(false);
+    const handleDeletedConfirmed=()=>{
+        alert('yess')
+       if(deletedGovernarateId){
+        DeleteGovernarates(deletedGovernarateId);
+        setopenDropdownId(null)
+       }
+       setIsDeleteOpen(false)
     }
     useEffect(()=>{
 getAllGovernarates();
@@ -187,6 +200,7 @@ getAllCountries()
                                     value={field.value}
                                     onChange={field.onChange}
                                     id='CountrySelect'
+                                    option='country'
                                     />
                                 )}
                           />
@@ -252,6 +266,12 @@ getAllCountries()
           isSubmitting={isSubmitting}/>
                     </form>
                 </CustomModal>
+                {isDeleteOpen&&(<ConfirmDelete
+                isOpen={isDeleteOpen}
+                onCancel={handleDeleteCancelled}
+                onConfirm={handleDeletedConfirmed}
+                deleteMsg={'Governarate'}
+                />)}
 
             </>
     

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function Select({label,options,value,onChange,...rest}) {
+export default function Select({label,options,value,onChange,option,...rest}) {
  
   return (
     <>
@@ -8,13 +8,14 @@ export default function Select({label,options,value,onChange,...rest}) {
     
   
      { label&&  <label htmlFor={rest.id} className='mb-2'>{label}</label>}
-        <select id="companyIndustry" 
+        <select id={rest.id}
         type="text" 
         className="px-login-input w-100 ts"
         value={value}
-        onChange={onChange}
+        onChange={(e)=>onChange(e.target.value)}
         {...rest}
         >
+          <option value=''>{`select  ${option}`}</option>
             {options?.map((option,index)=>(
    <option key={index} value={option.value}>
 

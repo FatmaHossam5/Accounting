@@ -1,15 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react'
-import CustomPage from '../../Shared/CustomPage/CustomPage'
-import Modal from '../../Shared/CustomModal/CustomModal'
-import Input from '../../Shared/Input/Input'
-import Dropdown from '../../Shared/Dropdown/Dropdown'
-import Select from '../../Shared/Select/Select'
 import axios from 'axios'
+import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { AuthContext } from '../../Helpers/Context/AuthContextProvider'
-import ModalFooter from '../../Shared/ModalFooter/ModalFooter'
-import CustomModal from '../../Shared/CustomModal/CustomModal'
 import ConfirmDelete from '../../Shared/ConfirmDelete/ConfirmDelete'
+import CustomModal from '../../Shared/CustomModal/CustomModal'
+import CustomPage from '../../Shared/CustomPage/CustomPage'
+import Dropdown from '../../Shared/Dropdown/Dropdown'
+import Input from '../../Shared/Input/Input'
+import ModalFooter from '../../Shared/ModalFooter/ModalFooter'
 export default function Countries() {
     const [openDropdownId, setopenDropdownId] = useState(null)
     const[country,setCountry]=useState([]);
@@ -75,9 +73,8 @@ export default function Countries() {
 
  
    const closeModal=()=>setIsOpen(false)
-   const handleCancle=()=>{
-    closeModal()
-  }
+   const handleCancle=()=>closeModal()
+  
 
 const getAllCountries=()=>{
     axios.get(`${baseUrl}/countries`).then((response)=>{
@@ -142,9 +139,8 @@ const handleDeleteModal =  (id) => {
     }
     setIsDeleteOpen(false)
  }
-const handleDeleteCancelled=()=>{
-    setIsDeleteOpen(false)
-}
+const handleDeleteCancelled=()=>setIsDeleteOpen(false)
+
 useEffect(()=>{
     getAllCountries();
 },[])
