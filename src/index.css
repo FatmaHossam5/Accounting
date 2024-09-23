@@ -1710,7 +1710,9 @@ text-align: center;
     color: #000!important;
     border: none!important;
 }
-.dropdown-menu
+/* .custom-width-xl .modal-dialog{
+    max-width: 3140px!important;
+} */
 
 /* end 
 .table component */

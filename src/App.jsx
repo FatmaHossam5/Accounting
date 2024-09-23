@@ -29,6 +29,7 @@ import ReverseSupplier from './Components/Controls/ReverseSupplier/ReverseSuppli
 import Governorates from './Components/Controls/Governorates/Governorates.jsx'
 import AuthContextProvider from './Components/Helpers/Context/AuthContextProvider.jsx'
 import Cities from './Components/Controls/Cities/Cities.jsx'
+import Industries from './Components/Controls/Industries/Industries.jsx'
 
 
 
@@ -59,13 +60,15 @@ const routes = createBrowserRouter([
       {path:'/Companies',element:<Companies/>},
       {path:'/Branches',element:<Branches/>},
       {path:'/Departments',element:<Departments/>},
-      {path:'/Industries',element:<Departments/>},
+      {path:'/Industries',element:<Industries/>},
       {path:'/Categories',element:<Categories/>},
       {path:'/Dashboard',element:<Dashboard/>},
       {path:'/ReverseCustomerI',element:<ReverseCustomer/>},
       {path:'/ReverseSupplierI',element:<ReverseSupplier/>},
       {path:'/Suuplies',element:<PageNotFound/>},
-      {path:'/Cities',element:<Cities/>}
+      {path:'/Cities',element:<Cities/>},
+  
+
 
 
       

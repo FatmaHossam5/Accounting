@@ -1,13 +1,35 @@
-import React, { useState } from 'react'
-import Dropdown from '../../Helpers/Dropdown/Dropdown'
-import CustomPage from '../../Shared/CustomPage/CustomPage'
+import React, { useContext, useState } from 'react';
+
+import CustomPage from '../../Shared/CustomPage/CustomPage';
+import CustomModal from '../../Shared/CustomModal/CustomModal';
+import ModalFooter from '../../Shared/ModalFooter/ModalFooter';
+import Input from '../../Shared/Input/Input';
+import Dropdown from '../../Shared/Dropdown/Dropdown';
+import useDataFetch from '../../Helpers/CustomFunction/useDataFetch';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import { AuthContext } from '../../Helpers/Context/AuthContextProvider';
+import ConfirmDelete from '../../Shared/ConfirmDelete/ConfirmDelete';
 
 export default function Industries() {
-    const [openDropdownId, setopenDropdownId] = useState(null)
+    const [openDropdownId, setopenDropdownId] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const { data: industries, refetch } = useDataFetch('industries');
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+        name_ar: '',
+        name_en: ''
+
+    });
+    const { baseUrl } = useContext(AuthContext);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [deletedIndustryId, setDeletedIndustryId] = useState(null);
+
+
     const columns = [
         {
             name: " Id",
-            selector: (row) => { row.id },
+            selector: (row) => row.id,
             sortable: true,
             cell: (row) => (
                 <div className="d-flex align-items-center ">
@@ -22,7 +44,7 @@ export default function Industries() {
                                     <i className="bi bi-pencil-fill me-2 text-warning" />
                                     Update
                                 </a>
-                                <a className="dropdown-item mt-1" href="#">
+                                <a className="dropdown-item mt-1" href="#" onClick={() => handleDeleteModal(row.id)}>
                                     <i className="bi bi-trash-fill me-2 text-danger" />
                                     Remove
                                 </a>
@@ -43,69 +65,130 @@ export default function Industries() {
 
         },
         {
-            name: "Name",
-            selector: (row) => row.name,
+            name: "Arabic Indusrty Name",
+            selector: (row) => row?.industryAr?.name
+            ,
             sortable: true,
         },
-     
+        {
+            name: "English Indusrty Name",
+            selector: (row) => row?.industryEn?.name
+            ,
+            sortable: true,
+        },
 
 
 
     ];
+    const handleDeleteCancelled = () => setIsDeleteOpen(false);
 
-    const data = [
-        {
-            id: 1,
-            name: 'Indusrty 1',
-       
-        },
+    {/*Add Industry */ }
+    const AddIndustry = (data) => {
+        setIsSubmitting(true)
+        axios.post(`${baseUrl}/industries`, data).then(() => {
+            reset();
+            setIsOpen(false);
+            refetch()
+        }).catch((error) => {
+            console.log(error);
+        }).finally(() => {
+            setIsSubmitting(false)
+        })
+    }
 
-        {
-            id: 2,
-            name: 'Indusrty 2',
-         
-        },
-        {
-            id: 3,
-            name: 'Indusrty 3',
-          
-        },
+    {/*Open Delete Modal */ }
+    const handleDeleteModal = (id) => {
+        setDeletedIndustryId(id)
+        setIsDeleteOpen(true)
+    }
 
-    ];
-
-    const handleClose = () => alert('close')
-    const handleSave = () => alert('save')
-  return (
-    <>
-    
-    <CustomPage
-                title='Departments'
-                ButtonName='Create Departments'
-                ModalTitle='Create Departments'
-                target='#createdepartments'
+    {/*Calling Delete APi */ }
+    const DeleteIndustry = (id) => {
+        axios.delete(`${baseUrl}/industries/${id}`).then((response) => {
+            console.log(response);
+            refetch()
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+    {/* Deleted Function  */ }
+    const handleDeletedConfirmed = () => {
+        if (deletedIndustryId) {
+            DeleteIndustry(deletedIndustryId)
+            setopenDropdownId(null)
+        }
+        setIsDeleteOpen(false)
+    }
+    return (
+        <>
+            <CustomPage
+                title='Industry'
+                ButtonName='Create Industries'
+                ModalTitle='Create Industries'
+                target='#createindustries'
+                buttonAction={() => setIsOpen(true)}
                 columns={columns}
-                data={data}
+                data={industries}
             />
-            {/* <Modal id='createdepartments' title='currencies' onSave={handleSave} onCancel={handleClose} className='w-40'>
-                <form action>
-                    <div className="  ">
-                        <div className="">
-                            <div className="input-package my-3 pe-2 d-flex flex-column w-70 m-auto">
-                                <Input label=' Name' placeholder=' Name ' className="px-form-input w-100 m-auto" />
-                            </div>
+            <CustomModal
+                id='createindustries'
+                title='Industry'
+                className='modal-lg'
+                isOpen={isOpen}
+                onCancel={() => setIsOpen(false)}
+            >
+
+
+
+                <form onSubmit={handleSubmit(AddIndustry)} >
+
+                    <div className="col-12 d-flex">
+
+                        <div className="input-package my-3 pe-2 d-flex flex-column col-6">
+                            <Input type='text' label='Arabic Industry Name' placeholder='Enter Arabic Industry Name ' className="px-form-input w-100 m-auto"
+                                {...register('name_ar', {
+                                    required: 'Arabic Name is Required',
+                                    pattern: { value: /^[ء-ي]+$/, message: 'Only Arabic letters are allowed' },
+                                    validate: {
+                                        startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start with a number'
+                                    }
+                                })} />
+                            {errors.name_ar && <p className="text-danger">{errors.name_ar.message}</p>}
                         </div>
+                        <div className="input-package my-3 pe-2 d-flex flex-column col-6">
+                            <Input type='text' label='English Industry Name' placeholder='Enter English Industry Name ' className="px-form-input w-100 m-auto"
+                                {...register('name_en', {
+                                    required: 'English Name is Required',
+                                    pattern: { value: /^[A-Za-z]+$/, message: 'Only English letters are allowed' },
+                                    validate: {
+                                        startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start with a number'
+                                    }
+                                })} />
+                            {errors.name_en && <p className="text-danger">{errors.name_en.message}</p>}
+                        </div>
+
                     </div>
 
-                    <div className="modal-footer w-100">
-                        <button type="button" className="px-btn btn px-white-btn" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" className="px-btn px-blue-btn">save</button>
-                    </div>
+                    <ModalFooter
+                        onCancle={() => setIsOpen(false)}
+                        onSubmit={handleSubmit(AddIndustry)}
+                        isSubmitting={isSubmitting}
+                    />
                 </form>
-            </Modal>
-     */}
-    </>
-    
-    
-   
-  )
+
+            </CustomModal>
+            {isDeleteOpen && (
+                <ConfirmDelete
+                    isOpen={isDeleteOpen}
+                    onCancel={handleDeleteCancelled}
+                    onConfirm={handleDeletedConfirmed}
+                    deleteMsg={'Industry'}
+
+                />
+            )}
+        </>
+
+
+
+    )
 }

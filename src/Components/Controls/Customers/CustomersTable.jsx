@@ -170,7 +170,7 @@ export default function CustomersTable() {
     <>
 
 
-      <CustomModal id='createcustomers' title='Create New Customer' isOpen={isOpen}  className='modal-xl' onCancel={handleCancle}>
+      <CustomModal id='createcustomers' title='Create New Customer' isOpen={isOpen}  ModalWidth="custom-width-xl" onCancel={handleCancle}>
 
 
         <form action className="d-flex flex-wrap ">
@@ -202,7 +202,7 @@ export default function CustomersTable() {
 
                   ]} />
               </div>
-              <div className="input-package  d-flex flex-wrap w-100 ">
+              <div className="input-package  d-flex flex-wrap col-12 ">
                 <label className=" mb-1 w-100" htmlFor>Contact Mobile Number</label>
 
                 <SelectWithFlag

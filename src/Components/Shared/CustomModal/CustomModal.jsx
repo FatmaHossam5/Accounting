@@ -1,6 +1,6 @@
 import React from 'react'
 import { Modal } from 'react-bootstrap'
-export default function CustomModal({ id, title, children, onCancel, className, isOpen, onSubmit, showHeader = true }) {
+export default function CustomModal({ id, title, children, onCancel, isOpen, onSubmit, showHeader = true,ModalWidth='' }) {
 
   return (
     <>
@@ -11,7 +11,7 @@ export default function CustomModal({ id, title, children, onCancel, className, 
         keyboard={false}
         aria-labelledby={`${id}Label`}
         centered
-        dialogClassName={className}
+        dialogClassName={ModalWidth}
         id={id} >
         {showHeader &&
 
