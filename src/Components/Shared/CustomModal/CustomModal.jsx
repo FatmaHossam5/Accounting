@@ -12,7 +12,8 @@ export default function CustomModal({ id, title, children, onCancel, isOpen, onS
         aria-labelledby={`${id}Label`}
         centered
         dialogClassName={ModalWidth}
-        id={id} >
+        id={id}
+        scrollable >
         {showHeader &&
 
           <Modal.Header closeButton>

@@ -1,27 +1,124 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+
+
+import Egypt from '../../../assets/images/Flag_of_Egypt.svg.png';
+import CustomModal from "../../Shared/CustomModal/CustomModal";
 import CustomPage from "../../Shared/CustomPage/CustomPage";
 import Dropdown from "../../Shared/Dropdown/Dropdown";
-import CustomModal from "../../Shared/CustomModal/CustomModal";
 import Input from "../../Shared/Input/Input";
 import Select from "../../Shared/Select/Select";
-import SelectWithFlag from '../../Shared/SelectWithFlags/SelectWithFlag';
-import Egypt from '../../../assets/images/Flag_of_Egypt.svg.png';
+import { Accordion, Button, Card } from "react-bootstrap";
+import SelectWithFlag from '../../Shared/SelectWithFlags/SelectWithFlag'
+import ModalFooter from "../../Shared/ModalFooter/ModalFooter";
+import { useForm, Controller } from "react-hook-form";
+import useDataFetch from "../../Helpers/CustomFunction/useDataFetch";
+import Cities from "../Cities/Cities";
+import axios from "axios";
+import { AuthContext } from "../../Helpers/Context/AuthContextProvider";
+
+
 export default function CustomersTable() {
-  const [openDropdownId, setopenDropdownId] = useState(null)
-  // const handleClose = () => alert('close')
-
-  // const handleSave = () => alert('save')
-  // const [selectedOption, setSelectedOption] = useState('');
-
-  // const handleOptionChange = (event) => {
-  //   setSelectedOption(event.target.value)
-  // }
+  const [openDropdownId, setopenDropdownId] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [addresses, setAddresses] = useState([{ city: '', details: '' }]);
   const [selectedCountryCode, setSelectedCountryCode] = useState('');
-
   const handleCountryCodeChange = (event) => {
     setSelectedCountryCode(event.target.value);
   };
-  const [isOpen,setIsOpen]=useState(false);
+  const { handleSubmit, control, formState: { errors }, watch, setValue } = useForm({
+    defaultValues: {
+      addresses: [{ country: '', governarate: '', Cities: [] }]
+    }
+  });
+  const {baseUrl}=useContext(AuthContext)
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { data: countries } = useDataFetch('countries');
+
+
+
+const[governarates,setGovernarates]=useState([]);
+const[cities,setCities]=useState([]);
+
+  const Country = countries.map((Coun) => ({
+    label: Coun?.countryEn?.name,
+    value: Coun?.id
+  }))
+
+
+ 
+  const getAllGovernarates=()=>{
+  axios.get(`${baseUrl}/governorates`).then((response)=>{
+    console.log(response);
+  
+    setGovernarates(response.data.data)
+
+  }).catch((error)=>{
+    console.log(error);
+    
+  })
+
+
+}  
+const getAllCities=()=>{
+  axios.get(`${baseUrl}/cities`).then((response)=>{
+    console.log(response);
+    const City=cities.map((c)=>({
+      label:c?.cityEn?.name,
+      value:c?.id,
+      governorate_id:c?.governorate?.id
+    }))
+    setCities(City)
+
+  }).catch((error)=>{
+    console.log(error);
+    
+  })
+
+
+} 
+console.log(governarates?.country?.id);
+
+const SelectedCountry= watch(`addresses[0].country`);
+  const SelectedGovernate=watch(`addresses[0].governarate`);
+
+  useEffect(()=>{
+    
+     if(SelectedCountry){
+     
+      
+      const filteredGovernarates=governarates.filter(g=>g?.country?.id===SelectedCountry)
+   
+   console.log(governarates.map(g=>g?.country?.id));
+   console.log(SelectedCountry);
+   
+      setGovernarates(filteredGovernarates)
+     }
+      
+      
+
+    
+  },[SelectedCountry])
+  useEffect(()=>{
+ if(SelectedGovernate){
+  console.log(SelectedGovernate);
+     
+      
+      
+  const filteredCities=cities.filter(c=>c?.  governorate_id===SelectedGovernate)
+  console.log(filteredCities);
+  
+  
+setCities(filteredCities)
+ }
+     
+    
+  },[SelectedCountry])
+
+  useEffect(()=>{
+    getAllGovernarates();
+    getAllCities();
+  },[])
+  
   const columns = [
     {
       name: "Contact Name",
@@ -161,196 +258,223 @@ export default function CustomersTable() {
 
 
   ];
-  const closeModal=()=>setIsOpen(false)
-  const handleCancle=()=>{
-   closeModal()
- }
-
+  const closeModal = () => setIsOpen(false)
+  const handleCancle = () => {
+    closeModal()
+  }
+  const handleAddressChange = (index, field, value) => {
+    const newAddresses = [...addresses];
+    newAddresses[index][field] = value;
+    setAddresses(newAddresses);
+  };
+  const removeAddress = (index) => {
+    const newAddresses = addresses.filter((_, i) => i !== index);
+    setAddresses(newAddresses);
+  };
+  const addAddress = () => {
+    setAddresses([...addresses, { city: '', details: '' }]);
+  };
+  const AddCustomer = () => {
+    alert('jjjjj')
+  }
+  
+  
   return (
     <>
 
 
-      <CustomModal id='createcustomers' title='Create New Customer' isOpen={isOpen}  ModalWidth="custom-width-xl" onCancel={handleCancle}>
+      <CustomModal id='createcustomers' title='Create New Customer' isOpen={isOpen} ModalWidth="custom-width-xl" onCancel={handleCancle} >
 
 
         <form action className="d-flex flex-wrap ">
-      
           <div className="side w-xxl-100 w-50 p-4 vertical-separetor">
             <div className="section">
               <div className="form-inputs d-flex w-100  mt-1">
+                {/*Company Name En. */}
                 <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
-                  <Input label='Company English Name' placeholder='Enter company name ' className="px-form-input w-100 m-auto" />
+                  <Controller
+                    name="company_name_en"
+                    control={control}
+                    rules={{
+                      required: 'English Name is required',
+                      pattern: { value: /^[A-Za-z]+$/, message: 'Only English Letters are allowed' },
+                      validate: {
+                        startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start With a Number'
+                      }
+                    }}
+                    render={({ field, fieldState }) => (
+                      <Input
+                        type='text'
+                        label='Company English Name'
+                        placeholder='Enter company name '
+                        className="px-form-input w-100 m-auto"
+                        value={field.value}
+                        onChange={field.onChange}
+                        error={fieldState.error ? fieldState.error.message : null}
+                      />
+                    )}
+
+                  />
+
                 </div>
+                {/*Company Name Ar. */}
                 <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
-                  <Input label='Company Arabic Name' placeholder='Enter company name' className="px-form-input w-100 m-auto" />
+                  <Controller
+                    name="company_name_ar"
+                    control={control}
+                    rules={{
+                      required: "Arabic Name is required",
+                      pattern: { value: /^[ء-ي]+$/, message: 'Only Arabic letters are allowed' },
+                      validate: {
+                        startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start with a number'
+                      }
+                    }}
+                    render={({ field, fieldState }) => (
+
+                      <Input
+                        type='text'
+                        label='Company Arabic Name'
+                        placeholder='Enter company name'
+                        className="px-form-input w-100 m-auto"
+                        value={field.value}
+                        onChange={field.onChange}
+                        error={fieldState.error ? fieldState.error.message : null}
+                      />
+
+                    )}
+                  />
                 </div>
               </div>
-              <div className="input-package mt-3  d-flex flex-column w-100 mb-4">
-                <Select label='Company Industry'
-                  htmlFor='companyIndustry'
-                  name='company industry'
-                  id="companyIndustry"
-                  type="text"
-                  className="px-login-input w-100 "
-                  options={[
-                    { value: '', label: 'Company Industry' },
-                    { value: 'Indusrty1', label: 'Indusrty1' },
-                    { value: 'Indusrty2', label: 'Indusrty2' },
-                    { value: 'Indusrty3', label: 'Indusrty3' },
-                    { value: 'Indusrty4', label: 'Indusrty4' },
-                    { value: 'Indusrty5', label: 'Indusrty5' },
-
-                  ]} />
+              {/*Addresses */}
+              <div className="mt-3">
+                <Accordion >
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header>ADDRESS</Accordion.Header>
+                    <Card>
+                      <Accordion.Body>
+                        <Card.Body>
+                          {addresses.map((address, index) => (
+                            <div key={index} className="mb-3">
+                              <>
+                                <div className="input-package mt-5   d-flex flex-wrap justify-content-between w-100 ">
+                                  <label className="w-100 mb-2" htmlFor='adress'>Address</label>
+                                  <Controller
+                                  name="addresses[0].country"
+                                  control={control}
+                                  render={({field})=>
+                                    <Select {...field}
+                                  type="text"
+                                  className="px-login-input w-30 "
+                                  options={Country}
+                                  option='Country'
+                                />
+                                  }
+                                  
+                                  
+                                  />
+                                 <Controller
+                                  name="addresses[0].governarate"
+                                  control={control}
+                                  render={({field})=>
+                                    <Select {...field}
+                                  type="text"
+                                  className="px-login-input w-30 "
+                                  options={governarates.map(g=>({
+                                    label:g?.governorateEn?.name,
+                                    value:g?.id
+                                  }))}
+                                  option='governarate'
+                                />
+                                  }
+                                  
+                                  
+                                  />
+                               
+                               <Controller
+                                  name="addresses[0].cities"
+                                  control={control}
+                                  render={({field})=>
+                                    <Select {...field} isMulti
+                                  type="text"
+                                  className="px-login-input w-30 "
+                                  options={cities.map(c=>({
+                                    label:c?.cityEn?.name,
+                                    value:c?.id
+                                  }))}
+                                  option='governarate'
+                                />
+                                  }
+                                  
+                                  
+                                  />
+                                </div>
+                              </>
+                              {addresses.length > 1 && (
+                                <Button variant="danger" onClick={() => removeAddress(index)}>
+                                  Remove
+                                </Button>
+                              )}
+                            </div>
+                          ))}
+                          <Button variant="primary" onClick={addAddress}>Add Another Address</Button>
+                        </Card.Body>
+                      </Accordion.Body>
+                    </Card>
+                  </Accordion.Item>
+                </Accordion>
               </div>
-              <div className="input-package  d-flex flex-wrap col-12 ">
-                <label className=" mb-1 w-100" htmlFor>Contact Mobile Number</label>
-
-                <SelectWithFlag
-
-                  id="mobileNumber"
-                  value={selectedCountryCode}
-                  onChange={handleCountryCodeChange}
-                  className="px-flag-dropdown px-form-input d-flex col-2 "
-                  options={[
-                    { value: '+02', label: '+02', flag: Egypt },
-                    { value: '+03', label: '+03', flag: Egypt },
-                    { value: '+04', label: '+04', flag: Egypt },
-                  ]}
-                />
-
-
-
-                <input type="text" placeholder="Enter contact mobile number" className="px-form-input col-10 pe-5 " />
-              </div>
-              <div className="form-inputs d-flex w-100 mt-4">
-
-                <div className="input-package mt-3 mb-3 ">
-                  <input id="customer" type="checkbox" />
-                  <label htmlFor="customer" className='check'>Customer</label>
-                </div>
-                <div className="input-package ms-auto mt-3 tax-inputs " id="disabled-inputs">
-                  <input className='ms-3 me-2 ' id="taxable" name="taxs" type="radio" />
-                  <label htmlFor="taxable">taxable</label>
-                  <input className="ms-3 me-2 " id="none-taxable" name="taxs" type="radio" />
-                  <label className="" htmlFor="none-taxable">none
-                    taxable</label>
-                </div>
-
-              </div>
-
-              <div className="input-package mt-5   d-flex flex-wrap justify-content-between w-100 ">
-                <label className="w-100 mb-2" htmlFor='adress'>Address</label>
-                <Select
-
-                  type="text"
-                  className="px-login-input w-30 "
-                  options={[
-                    { value: '', label: 'Country' },
-                    { value: 'Home', label: 'Home' },
-                    { value: 'Work', label: 'Work' },
-                    { value: 'Company', label: 'Company' },
-
-                  ]}
-                />
-                <Select type="text"
-                  className="px-login-input w-30 "
-                  options={[
-                    { value: '', label: 'Governorate' },
-                    { value: 'cairo', label: 'cairo' },
-                    { value: 'alex', label: 'alex' },
-                  ]}
-                />
-                <Select type="text"
-                  className="px-login-input w-30 "
-                  options={[
-                    { value: '', label: 'City' },
-                    { value: 'Naser city', label: 'Naser city' },
-                    { value: 'Zamalek', label: 'Zamalek' },
-                  ]}
-                />
-              </div>
-              <div className="form-inputs d-flex w-100">
-                <div className="input-package mt-3 pe-2 d-flex flex-column w-100">
-                  <label className="mb-2" htmlFor>address
-                    details</label>
-                  <textarea name="address-details" id="address-details" className="px-text-area w-100 m-auto" placeholder=" Enter address details" defaultValue={""} />
-                </div>
-              </div>
-              <div className="form-inputs d-flex w-100">
-                <div className="input-package mt-3 pe-2 d-flex flex-column w-100">
-                  <label className="mb-2" htmlFor>Company Website</label>
-                  <textarea name="address-details" id="address-details" className="px-text-area w-100 m-auto" placeholder="Enter company website" defaultValue={""} />
-                </div>
+              <div className=" mt-3 ps-2   ">
+                <Input type="text" placeholder="Enter IBAN" className="px-form-input w-100 m-auto" label='IBAN' />
               </div>
             </div>
           </div>
-        
           <div className="reservation-side w-xxl-100 w-50 ">
             <div className="reservation-section p-4">
-              <div className="input-package mt-3  d-flex flex-column w-100">
-                <Input type="number" className="px-form-input" placeholder="Enter contact name" label="Contact Name" />
-              </div>
-              <div className="form-inputs d-flex w-100 ">
-                <div className="input-package mt-3 d-flex flex-wrap w-100 ">
-                  <label className=" mb-2 w-100" htmlFor>Contact Mobile Number</label>
-                  <SelectWithFlag
-                    id="mobileNumber"
-                    value={selectedCountryCode}
-                    onChange={handleCountryCodeChange}
-                    className="px-flag-dropdown px-form-input d-flex col-2 "
-                    options={[
-                      { value: '+02', label: '+02', flag: Egypt },
-                      { value: '+03', label: '+03', flag: Egypt },
-                      { value: '+04', label: '+04', flag: Egypt },
-                    ]}
-                  />
-                  <input type="text" placeholder="Enter contact mobile number" className="px-form-input col-10 pe-5 " />
-                </div>
-              </div>
-              <div className="input-package mt-3  d-flex flex-column w-100">
-                <Input type="number" className="px-form-input" placeholder="Enter contact email" label="Contact Email" />
-              </div>
-              <div className="input-package mt-3  d-flex flex-column w-100 mb-4">
-                <Select label='Supplier Branch'
-                  htmlFor='supplierBranch'
-                  id="supplierBranch"
-                  type="text"
-                  className="px-login-input w-100 "
-                  options={[
-                    { value: '', label: 'All Branches' },
-                    { value: 'Egypt', label: 'Egypt' },
-                    { value: 'Palestine', label: 'Palestine' },
-                  ]}
-                />
-              </div>
-              <div className="form-inputs d-flex w-100">
+              <div className="form-inputs d-flex w-100  mt-1">
                 <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
-                  <Input type="text" placeholder="Enter commercial register" className="px-form-input w-100 m-auto" label='CommercialRegister' />
-
+                  <Input label='Contact English Name' placeholder='Enter Contact name ' className="px-form-input w-100 m-auto" />
                 </div>
-                <div className="input-package mt-3 ps-2 d-flex flex-column w-50">
-                  <Input type="text" placeholder="Enter IBAN" className="px-form-input w-100 m-auto" label='IBAN' />
-
-                </div>
-              </div>
-              <div className="form-inputs d-flex w-100">
                 <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
-                  <Input type="text" placeholder="Enter commercial register" className="px-form-input w-100 m-auto" label='CommercialRegister' />
-
-                </div>
-                <div className="input-package mt-3 ps-2 d-flex flex-column w-50">
-                  <Input type="text" placeholder="Enter IBAN" className="px-form-input w-100 m-auto" label='IBAN' />
-
+                  <Input label='Contact Arabic Name' placeholder='Enter Contact name' className="px-form-input w-100 m-auto" />
                 </div>
               </div>
-              <div className="input-package mt-3  d-flex flex-column w-100">
-                <Input type="number" className="px-form-input" placeholder="Enter Tax number" htmlFor='tax' label='Tax number' />
+              <div className="mt-3">
+                <Accordion>
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header>Contact Number</Accordion.Header>
+                    <Card>
+                      <Accordion.Body>
+                        <Card.Body>
+                          <div className="form-inputs d-flex w-100 ">
+                            <div className="input-package mt-3 d-flex flex-wrap w-100 ">
+                              <label className=" mb-2 w-100" htmlFor>Contact Mobile Number</label>
+                              <SelectWithFlag
+                                id="mobileNumber"
+                                value={selectedCountryCode}
+                                onChange={handleCountryCodeChange}
+                                className="px-flag-dropdown px-form-input d-flex col-2 "
+                                options={[
+                                  { value: '+02', label: '+02', flag: Egypt },
+                                  { value: '+03', label: '+03', flag: Egypt },
+                                  { value: '+04', label: '+04', flag: Egypt },
+                                ]}
+                              />
+                              <input type="text" placeholder="Enter contact mobile number" className="px-form-input col-10 pe-5 " />
+                            </div>
+                          </div>
+                        </Card.Body>
+                      </Accordion.Body>
+                    </Card>
+                  </Accordion.Item>
+                </Accordion>
               </div>
             </div>
           </div>
           <div className="modal-footer w-100">
-            <button type="button" className="px-btn btn px-white-btn" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" className="px-btn px-blue-btn">save</button>
+            <ModalFooter onCancle={() => setIsOpen(false)}
+              onSubmit={handleSubmit(AddCustomer)}
+              isSubmitting={isSubmitting}
+            />
           </div>
         </form>
       </CustomModal>
@@ -361,8 +485,108 @@ export default function CustomersTable() {
         ButtonName="Create Customer"
         ModalTitle="Create Customer"
         target='#createCustomer'
-        buttonAction={()=>setIsOpen(true)}
+        buttonAction={() => setIsOpen(true)}
       />
     </>
   );
 }
+
+// function CustomerModal({ show, handleClose }) {
+//   // State to manage multiple addresses
+//   const [addresses, setAddresses] = useState([{ city: '', details: '' }]);
+
+//   // Function to handle adding a new address
+//   const addAddress = () => {
+//     setAddresses([...addresses, { city: '', details: '' }]);
+//   };
+
+//   // Function to handle removing an address
+//   const removeAddress = (index) => {
+//     const newAddresses = [...addresses];
+//     newAddresses.splice(index, 1);
+//     setAddresses(newAddresses);
+//   };
+
+//   // Function to handle address change
+//   const handleAddressChange = (index, field, value) => {
+//     const newAddresses = [...addresses];
+//     newAddresses[index][field] = value;
+//     setAddresses(newAddresses);
+//   };
+
+//   // Form validation (simple example)
+//   const validateForm = () => {
+//     return addresses.every(address => address.city.trim() !== '' && address.details.trim() !== '');
+//   };
+
+//   // Save function with validation check
+//   const handleSave = () => {
+//     if (!validateForm()) {
+//       alert('Please fill in all required fields.');
+//       return;
+//     }
+//     // Here would be your API call or further processing
+//     alert('Form is valid, proceed with saving...');
+//   };
+
+//   return (
+//     <Modal show={show} onHide={handleClose} size="lg" scrollable>
+//       <Modal.Header closeButton>
+//         <Modal.Title>Create New Customer</Modal.Title>
+//       </Modal.Header>
+//       <Modal.Body>
+//         <Accordion defaultActiveKey="0">
+//           <Card>
+//             <Accordion.Toggle as={Card.Header} eventKey="0">
+//               Contact Details
+//             </Accordion.Toggle>
+//             <Accordion.Collapse eventKey="0">
+//               <Card.Body>
+//                 {addresses.map((address, index) => (
+//                   <div key={index} className="mb-3">
+//                     <Form.Group>
+//                       <Form.Label>City</Form.Label>
+//                       <Form.Control
+//                         required
+//                         type="text"
+//                         placeholder="Enter city"
+//                         value={address.city}
+//                         onChange={(e) => handleAddressChange(index, 'city', e.target.value)}
+//                       />
+//                     </Form.Group>
+//                     <Form.Group>
+//                       <Form.Label>Details</Form.Label>
+//                       <Form.Control
+//                         required
+//                         type="text"
+//                         placeholder="Enter address details"
+//                         value={address.details}
+//                         onChange={(e) => handleAddressChange(index, 'details', e.target.value)}
+//                       />
+//                     </Form.Group>
+//                     {addresses.length > 1 && (
+//                       <Button variant="danger" onClick={() => removeAddress(index)}>
+//                         Remove
+//                       </Button>
+//                     )}
+//                   </div>
+//                 ))}
+//                 <Button variant="primary" onClick={addAddress}>Add Another Address</Button>
+//               </Card.Body>
+//             </Accordion.Collapse>
+//           </Card>
+//         </Accordion>
+//       </Modal.Body>
+//       <Modal.Footer>
+//         <Button variant="secondary" onClick={handleClose}>
+//           Close
+//         </Button>
+//         <Button variant="primary" onClick={handleSave}>
+//           Save Changes
+//         </Button>
+//       </Modal.Footer>
+//     </Modal>
+//   );
+// }
+
+// export default CustomerModal;

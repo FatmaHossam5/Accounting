@@ -10,7 +10,7 @@ export default function useDataFetch(endpoint) {
     const fetchData = () => {
         setLoading(true)
         axios.get(`${baseUrl}/${endpoint}`).then((response) => {
-            console.log(response);
+        
             setData(response?.data?.data)
 
 
@@ -32,7 +32,7 @@ export default function useDataFetch(endpoint) {
 
 
     )
-    return { data, loading ,refetch:fetchData}
+    return { data, loading ,refetch:fetchData }
     
 }
 

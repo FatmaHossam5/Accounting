@@ -1710,10 +1710,12 @@ text-align: center;
     color: #000!important;
     border: none!important;
 }
-/* .custom-width-xl .modal-dialog{
-    max-width: 3140px!important;
-} */
-
+.custom-width-xl.modal-dialog{
+    max-width: 1440px!important;
+}
+.card{
+    border: none!important;
+}
 /* end 
 .table component */
 
