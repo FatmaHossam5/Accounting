@@ -14,18 +14,19 @@ import Input from "../../Shared/Input/Input";
 import ModalFooter from "../../Shared/ModalFooter/ModalFooter";
 import Select from "../../Shared/Select/Select";
 import SelectWithFlag from '../../Shared/SelectWithFlags/SelectWithFlag';
+import ConfirmDelete from "../../Shared/ConfirmDelete/ConfirmDelete";
 
 
 export default function CustomersTable() {
   const [openDropdownId, setopenDropdownId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCountryCode, setSelectedCountryCode] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const [isSubmitting, setIsSubmitting] = useState(false);
   const { data: countries } = useDataFetch('countries');
   const [addresses, setAddresses] = useState([{ countryId: 0, governorateId: 0, cities: [] }]);
   const [governarates, setGovernarates] = useState([]);
   const [cities, setCities] = useState([]);
-  const {  control, formState: { errors }, watch, setValue,handleSubmit } = useForm({
+  const {  control, formState: { errors,isValid,isSubmitting },handleSubmit } = useForm({
     defaultValues:{
       contact_name_ar:'',
       contact_name_en:'',
@@ -34,12 +35,101 @@ export default function CustomersTable() {
       iban:'',
       cities:[],
       phone_numbers:[]
-    }
+    },
+    mode:'onChange'
   });
+ 
   const { baseUrl } = useContext(AuthContext);
-  const [phone_numbers, setPhones] = useState([''])
+  const [phone_numbers, setPhones] = useState(['']);
+  const [customers, setCustomers] = useState([]);
+const[showAdresses,setShowAddresses]=useState(false);
+const[showPhones,setShowPhones]=useState(false);
+const[showDeleteModal,setShowDeleteModal]=useState(false);
+const[selectedAdressId,setSelectedAddressId]=useState('');
+const[selectesPhoneId,setSelectedPhoneId]=useState('');
+const[deletedId,setDeletedId]=useState();
+
+const columns = [
+  {
+    name: "Arabic Contact Name",
+    selector: (row) => row.id,
+    sortable: true,
+    cell: (row) => (
+      <div className="d-flex align-items-center justify-content-between" style={{ minWidth: '150px' }} >
+        <span className="text-truncate" style={{ maxWidth: '150px' }}>
+          {row.customerAr?.contact_name}
+        </span>
+        <Dropdown
+
+          dropdownContent={
+            <div>
+              <a className="dropdown-item" href="#">
+                <i className="bi bi-pencil-fill me-2 text-warning" />
+                Update
+              </a>
+              <a className="dropdown-item mt-1" onClick={()=>handleDeleteModal(row.id)}>
+                <i className="bi bi-trash-fill me-2 text-danger" />
+                Remove
+              </a>
+
+            </div>
+          }
+          id={row.id}
+          openDropdownId={openDropdownId}
+          setOpenDropdownId={setopenDropdownId}
+        />
+
+      </div>
+    ),
+
+    style: {
+      minWidth: '100px',
+    }
+
+  },
+  {
+    name: 'English Contact Name',
+    selector: (row) => row.customerEn?.contact_name,
+    sortable: true,
+  },
+  {
+    name: "Arabic Company Name",
+    selector: (row) => row?.customerAr?.company_name,
+    sortable: true,
+ 
 
 
+  },
+  {
+    name: 'English Company Name',
+    selector: (row) => row.customerEn?.company_name,
+    sortable: true,
+  },
+  {
+    name: 'Address',
+    selector: (row) => (
+      <div onClick={()=>handleAdressData(row.id)}>
+        See All Addresses
+      </div>
+    ),
+    sortable: true,
+  },
+  {
+    name: 'IBAN',
+    selector: (row) => row.iban,
+    sortable: true,
+  },
+  {
+    name: 'Phones',
+    selector: (row) =>(
+      <div onClick={()=>handlePhoneData(row.id)}>
+See All phone_numbers
+      </div>
+    ),
+    sortable: true,
+  }
+
+];
 
   const handleCountryCodeChange = (event) => {
     setSelectedCountryCode(event.target.value);
@@ -74,159 +164,35 @@ export default function CustomersTable() {
 
   }
 
+const getAllCustomers=()=>{
+  axios.get(`${baseUrl}/customers`).then((response)=>{
+    console.log(response?.data?.data);
+    setCustomers(response?.data?.data)
+  }).catch((error)=>{
+    console.log(error);
+    
+  })
 
+}
 
-
-
-  useEffect(() => {
-    getAllGovernarates();
-    getAllCities();
-  }, [])
-
-  const columns = [
-    {
-      name: "Contact Name",
-      selector: (row) => row.ContactName,
-      sortable: true,
-      cell: (row) => (
-        <div className="d-flex align-items-center justify-content-between" style={{ minWidth: '150px' }} >
-          <span className="text-truncate" style={{ maxWidth: '150px' }}>
-            {row.ContactName}
-          </span>
-          <Dropdown
-
-            dropdownContent={
-              <div>
-                <a className="dropdown-item" href="#">
-                  <i className="bi bi-pencil-fill me-2 text-warning" />
-                  Update
-                </a>
-                <a className="dropdown-item mt-1" href="#">
-                  <i className="bi bi-trash-fill me-2 text-danger" />
-                  Remove
-                </a>
-
-              </div>
-            }
-            id={row.id}
-            openDropdownId={openDropdownId}
-            setOpenDropdownId={setopenDropdownId}
-          />
-
-        </div>
-      ),
-
-      style: {
-        minWidth: '100px',
-      }
-
-    },
-    {
-      name: 'Contact Mobile',
-      selector: (row) => row.mobile,
-      sortable: true,
-    },
-    {
-      name: 'Address',
-      selector: (row) => row.address,
-      sortable: true,
-    },
-    {
-      name: 'Supplier',
-      selector: (row) => row.supplier,
-      sortable: true,
-    },
-    {
-      name: 'Supplier Type',
-      selector: (row) => row.supplierType,
-      sortable: true,
-    },
-    {
-      name: 'Monthly Income',
-      selector: (row) => row.month,
-      sortable: true,
-    },
-    {
-      name: 'Company Name',
-      selector: (row) => row.company,
-      sortable: true,
-    }
-
-  ];
-
-  const data = [
-
-    {
-      id: 1,
-      ContactName: 'Ashraf Galal',
-      mobile: '01061915496',
-      address: 'Cairo,Egypt',
-      supplier: 'Supplier',
-      supplierType: 'Taxable',
-      month: '6000$',
-      company: 'PIXI'
-    },
-
-    {
-      id: 2,
-      ContactName: 'Ahmad Fathi',
-      mobile: '01061916496',
-      address: 'Cairo,Egypt',
-      supplier: 'Supplier',
-      supplierType: 'Nontaxable',
-      month: '6000$',
-      company: 'PIXI'
-    },
-    {
-      id: 3,
-      ContactName: 'Mohamed Fathi',
-      mobile: '01061915696',
-      address: 'Cairo,Egypt',
-      supplier: 'Supplier',
-      supplierType: 'Nontaxable',
-      month: '6000$',
-      company: 'PIXI'
-    },
-    {
-      id: 4,
-      ContactName: 'Alaa Awad',
-      mobile: '01061918446',
-      address: 'Cairo,Egypt',
-      supplier: 'Supplier',
-      supplierType: 'Nontaxable',
-      month: '6000$',
-      company: 'PIXI'
-    },
-    {
-      id: 5,
-      ContactName: 'Fayrouz Elsayed',
-      mobile: '01061918496',
-      address: 'Cairo,Egypt',
-      supplier: 'Supplier',
-      supplierType: 'Nontaxable',
-      month: '6000$',
-      company: 'PIXI'
-    },
-    {
-      id: 6,
-      ContactName: 'Fatma Hossam',
-      mobile: '01061918496',
-      address: 'Cairo,Egypt',
-      supplier: 'Supplier',
-      supplierType: 'Nontaxable',
-      month: '6000$',
-      company: 'PIXI'
-    },
-
-
-
-
-  ];
+const handleAdressData=(id)=>{
+  setSelectedAddressId(id);
+  setShowAddresses(true);
+}
+const handlePhoneData=(id)=>{
+  setSelectedPhoneId(id);
+  setShowPhones(true);
+}
+const handleDeleteModal=(id)=>{
+setDeletedId(id)
+  setShowDeleteModal(true);
+}
+ 
+ 
   const closeModal = () => setIsOpen(false)
   const handleCancle = () => {
     closeModal()
   }
-
 
   const removeAddress = (index) => {
     const newAddresses = addresses.filter((_, i) => i !== index);
@@ -237,41 +203,42 @@ export default function CustomersTable() {
     setPhones(newPhones)
   }
   const addAddress = () => {
-    setAddresses([...addresses, { city: '', country: '',governorate:'' }]);
+    setAddresses([...addresses, { cities: '' }]);
   };
   const addPhone = () => {
-    setPhones([...phone_numbers, { phone: '' }])
+    setPhones([...phone_numbers, ''])
   }
   const AddCustomer = (data) => {
+    const{addresses,...rest}=data;
+    const citiesArray=addresses.map(address=>address.cities).flat();
+    console.log(citiesArray);
     
     const customerData = {
-      ...data,
+      ...rest,
    
-      addresses: data.addresses.map(address => ({
-        ...address,
-        cities: address?.cities?.map(city => city.value) // استخراج قيم المدن كـ array
-      })),
+      cities:citiesArray,
      
      
       phone_numbers: data.phone_numbers        
     };
+
+  
+    
   console.log(customerData);
   
-    // axios.post(`${baseUrl}/customers`, customerData)
-    //   .then(response => {
-    //     console.log(response);
+    axios.post(`${baseUrl}/customers`, customerData)
+      .then(response => {
+        console.log(response);
         
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
+      })
+      .catch(error => {
+        console.log(error);
+      });
  
   }
   const handleCountryChange = (index, value) => {
     const newAddresses = [...addresses];
     newAddresses[index].countryId = Number(value);
-
-
     newAddresses[index].governorateId = '';
     newAddresses[index].cities = [];
     setAddresses(newAddresses);
@@ -287,16 +254,49 @@ export default function CustomersTable() {
 
   const handleCityChange = (index, value) => {
     const newAddresses = [...addresses];
-    newAddresses[index].cities = value;
+   
+      newAddresses[index].cities = value;
+    
+  
     setAddresses(newAddresses);
+console.log( newAddresses[index].cities);
+
+
+
   }
+const handlePhoneChange=(index,value)=>{
+  const newPhones=[...phone_numbers];
+  newPhones[index]=value;
+  setPhones(newPhones)
+}
 
+const DeleteCustomer=(id)=>{
+  axios.delete(`${baseUrl}/customers/${id}`).then((response)=>{
+    console.log(response);
+    getAllCustomers()
+  }).catch((error)=>{
+    console.log(error);
+    
+  })
+}
+const handleDeletedConfirmed=()=>{
+  if(deletedId){
+    DeleteCustomer(deletedId);
+    setopenDropdownId(null);
+  }
+  setShowDeleteModal(false)
+}
 
+useEffect(() => {
+  getAllGovernarates();
+  getAllCities();
+  getAllCustomers();
+}, [])
   return (
     <>
 
 <CustomPage
-        data={data}
+        data={customers}
         columns={columns}
         title="All Customers"
         ButtonName="Create Customer"
@@ -308,7 +308,7 @@ export default function CustomersTable() {
 
 
         <form  onSubmit={handleSubmit(AddCustomer)} className="d-flex flex-wrap " >
-          <div className="side w-xxl-100 w-50 p-4 vertical-separetor">
+          <div className="side w-xxl-100 w-50 px-4 vertical-separetor">
             <div className="section">
               <div className="form-inputs d-flex w-100  mt-1">
                 {/*Company Name En. */}
@@ -318,7 +318,7 @@ export default function CustomersTable() {
                     control={control}
                     rules={{
                       required: 'English Name is required',
-                      pattern: { value: /^[A-Za-z]+$/, message: 'Only English Letters are allowed' },
+                      pattern: { value: /^[A-Za-z\s]+$/, message: 'Only English Letters are allowed' },
                       validate: {
                         startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start With a Number'
                       }
@@ -326,6 +326,7 @@ export default function CustomersTable() {
                     render={({ field, fieldState }) => (
                       <Input
                         type='text'
+                        id='company_name_en'
                         label='Company English Name'
                         placeholder='Enter company name '
                         className="px-form-input w-100 m-auto"
@@ -346,7 +347,7 @@ export default function CustomersTable() {
                     control={control}
                     rules={{
                       required: "Arabic Name is required",
-                      pattern: { value: /^[ء-ي]+$/, message: 'Only Arabic letters are allowed' },
+                      pattern: { value: /^[ء-ي\s]+$/, message: 'Only Arabic letters are allowed' },
                       validate: {
                         startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start with a number'
                       }
@@ -355,6 +356,7 @@ export default function CustomersTable() {
 
                       <Input
                         type='text'
+                        id='company_name_ar'
                         label='Company Arabic Name'
                         placeholder='Enter company name'
                         className="px-form-input w-100 m-auto"
@@ -432,8 +434,10 @@ export default function CustomersTable() {
                                         label: c?.cityEn?.name,
                                         value: c?.id,
                                       }))
+                                
                                       return (
-                                        <Select {...field} isMulti
+                                        <Select {...field} 
+                                        isMulti
                                           type="text"
                                           className="px-login-input w-30 "
                                           options={CitiesOption}
@@ -500,7 +504,7 @@ export default function CustomersTable() {
                     control={control}
                     rules={{
                       required: 'English Name is required',
-                      pattern: { value: /^[A-Za-z]+$/, message: 'Only English Letters are allowed' },
+                      pattern: { value: /^[A-Za-z\s]+$/, message: 'Only English Letters are allowed' },
                       validate: {
                         startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start With a Number'
                       }
@@ -527,7 +531,7 @@ export default function CustomersTable() {
                     control={control}
                     rules={{
                       required: "Arabic Name is required",
-                      pattern: { value: /^[ء-ي]+$/, message: 'Only Arabic letters are allowed' },
+                      pattern: { value: /^[ء-ي\s]+$/, message: 'Only Arabic letters are allowed' },
                       validate: {
                         startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start with a number'
                       }
@@ -574,7 +578,7 @@ export default function CustomersTable() {
                                     ]}
                                   />
                                   <Controller
-                                    name='phone_numbers'
+                                    name={`phone_numbers[${index}]`}
                                     control={control}
                                     render={({ field }) => (
                                       <input
@@ -582,8 +586,10 @@ export default function CustomersTable() {
                                         type="text"
                                         placeholder="Enter contact mobile number"
                                         className="px-form-input col-9 pe-5"
-                                        onChange={(e) => {
-                                          field.onChange(e.target.value); 
+                                        onChange={(event)=>{
+                                          handlePhoneChange(index,event.target.value);
+                                          field.onChange(event.target.value);
+                                    
                                         }}
                                       />
                                     )}
@@ -614,11 +620,75 @@ export default function CustomersTable() {
              onCancle={() => setIsOpen(false)}
               
               isSubmitting={isSubmitting}
+              isCancelDisabled={!isValid}
+              isSaveDisabled={!isValid}
             />
           </div>
         </form>
       </CustomModal>
+   <CustomModal isOpen={showAdresses}onCancel={()=>setShowAddresses(false)} title='Addresses'>
+<div className="col-12 d-flex flex-wrap  p-2">
+{customers.filter((customer)=>customer.id===selectedAdressId).map((customer)=>(
+ <>
+
+ 
+   {customer?.city?.map((c,index)=>(
+     <>
+    <div key={index} className=" col-4 flex-grow-1 flex-shrink-1 p-1 rounded-2 d-flex flex-column align-items-start justify-content-center bg-secondary-subtle me-1">
+    <h3>{c?.governorate?.country?.countryEn?.name}</h3>
+    <div className="d-flex w-100">
+    <h5>{c?.governorate?.governorateEn.name}</h5>,
+    <h5>{c?.cityEn?.name}</h5>
+    </div>
+    </div>
+
+</>   
+
+   ))}
+
+
+ </>
+))
    
+}
+
+</div>
+
+
+  
+   </CustomModal>
+   <CustomModal isOpen={showPhones}onCancel={()=>setShowPhones(false)} title='Phones' >
+    <div className="col-12 d-flex flex-wrap p-2">
+      {customers.filter((customer)=>customer.id===selectesPhoneId).map((customer)=>(
+        <>
+        {customer?.phone_numbers?.map((phone,index)=>(
+          
+        <>
+          <div key={index} className=" col-4 flex-grow-1 flex-shrink-1 p-1 rounded-2 d-flex flex-column align-items-start justify-content-center bg-secondary-subtle me-1">
+    <h3>{phone.phone}</h3>
+   
+    </div>
+        </>
+          
+        ))        }
+        </>
+      ))
+      }
+
+    </div>
+   </CustomModal>
+  {showDeleteModal&&(
+    <>
+    <ConfirmDelete
+    isOpen={showDeleteModal}
+    onCancel={()=>setShowDeleteModal(false)}
+  
+   onConfirm={handleDeletedConfirmed}
+   deleteMsg='Customer'
+    />
+    
+    </>
+  )}
     </>
   );
 }

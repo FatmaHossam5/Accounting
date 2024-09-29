@@ -1,9 +1,17 @@
 import React, { useState } from 'react'
 import CustomPage from '../../Shared/CustomPage/CustomPage'
 import Dropdown from '../../Shared/Dropdown/Dropdown'
+import CustomModal from '../../Shared/CustomModal/CustomModal';
+import Input from '../../Shared/Input/Input';
+import Select from '../../Shared/Select/Select';
+import ModalFooter from '../../Shared/ModalFooter/ModalFooter';
+import { Controller, useForm } from 'react-hook-form';
 
 export default function Categories() {
-    const [openDropdownId, setopenDropdownId] = useState(null)
+    const [openDropdownId, setopenDropdownId] = useState(null);
+    const[isOpen,setIsOpen]=useState(false);
+    const{handleSubmit,formState: { errors,isValid,isSubmitting },control,reset,register}=useForm({ mode:'onChange'});
+    const[isSubCategory,setIsSubCategory]=useState(false)
     const columns = [
         {
             name: " Id",
@@ -81,31 +89,105 @@ export default function Categories() {
 
     ];
 
+const handleReset=()=>{
+    reset();
+    setIsSubCategory(false)
+}
 
+    const handleClose = () => setIsOpen(false)
+const AddCategory=()=>{
 
-    const handleClose = () => alert('close')
-
-    const handleSave = () => alert('save')
+}
+   
   return (
     <>
               <CustomPage
-                title='Categories'
+                title='Category'
                 ButtonName='Create Category'
                 ModalTitle='Create Category'
                 target='#createcategory'
                 columns={columns}
                 data={data}
+                buttonAction={() => setIsOpen(true)}
+
             />
-            {/* <Modal id='createcategory' title='Categories' onSave={handleSave} onCancel={handleClose} className='w-40'>
+            <CustomModal id='createcategory' title='Create New Category' onCancel={handleClose} className='w-40' isOpen={isOpen}>
                 <form action>
-                    <div className="  ">
-                        <div className="">
+                   
+                <div className="form-inputs d-flex w-100  mt-1">
+                {/*Company Name En. */}
+                <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
+                  <Controller
+                    name="company_name_en"
+                    control={control}
+                    rules={{
+                      required: 'English Name is required',
+                      pattern: { value: /^[A-Za-z\s]+$/, message: 'Only English Letters are allowed' },
+                      validate: {
+                        startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start With a Number'
+                      }
+                    }}
+                    render={({ field, fieldState }) => (
+                      <Input
+                        type='text'
+                        id='company_name_en'
+                        label='Company English Name'
+                        placeholder='Enter company name '
+                        className="px-form-input w-100 m-auto"
+                        value={field.value}
+                        onChange={field.onChange}
+                        error={fieldState.error ? fieldState.error.message : null}
+                      />
+                    )}
 
-                            <div className="input-package my-3 pe-2 d-flex flex-column w-70 m-auto">
-                                <Input label=' Name' placeholder=' Name ' className="px-form-input w-100 m-auto" />
-                            </div>
+                  />
+{errors.company_name_en && <span className="text-danger">{errors.company_name_en.message}</span>}
 
-                            <div className="input-package my-3  d-flex flex-column w-70 m-auto">
+                </div>
+                {/*Company Name Ar. */}
+                <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
+                  <Controller
+                    name="company_name_ar"
+                    control={control}
+                    rules={{
+                      required: "Arabic Name is required",
+                      pattern: { value: /^[ء-ي\s]+$/, message: 'Only Arabic letters are allowed' },
+                      validate: {
+                        startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start with a number'
+                      }
+                    }}
+                    render={({ field, fieldState }) => (
+
+                      <Input
+                        type='text'
+                        id='company_name_ar'
+                        label='Company Arabic Name'
+                        placeholder='Enter company name'
+                        className="px-form-input w-100 m-auto"
+                        value={field.value}
+                        onChange={field.onChange}
+                        error={fieldState.error ? fieldState.error.message : null}
+                      />
+
+                    )}
+                  />
+                  {errors.company_name_ar && <span className="text-danger">{errors.company_name_ar.message}</span>}
+                </div>
+              </div>
+              <div>
+          <label>
+            <input
+              type="checkbox"
+              {...register("isSubCategory")}
+              checked={isSubCategory}
+              onChange={(e) => setIsSubCategory(e.target.checked)}
+            />
+            Is Sub Category
+          </label>
+        </div>
+        {isSubCategory&&(
+            <>
+              <div className="input-package my-3  d-flex flex-column w-70 m-auto">
                                 <Select label='Categories'
                                     htmlFor='Categories'
                                     name='Categories'
@@ -123,22 +205,27 @@ export default function Categories() {
 
                                     ]} />
                             </div>
+            </>
+        )}
+                          
                      
                           
                      
+                            <ModalFooter
+            onSubmit={handleSubmit(AddCategory)}
+             onCancle={handleReset}
+             cancleText='Clear'
+              isSubmitting={isSubmitting}
+              isCancelDisabled={!isValid}
+              isSaveDisabled={!isValid}
+            />
 
 
 
 
-                        </div>
-                    </div>
-
-                    <div className="modal-footer w-100">
-                        <button type="button" className="px-btn btn px-white-btn" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" className="px-btn px-blue-btn">save</button>
-                    </div>
+                   
                 </form>
-            </Modal> */}
+            </CustomModal>
     
     </>
   )

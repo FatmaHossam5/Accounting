@@ -16,7 +16,7 @@ export default function CustomModal({ id, title, children, onCancel, isOpen, onS
         scrollable >
         {showHeader &&
 
-          <Modal.Header closeButton>
+          <Modal.Header closeButton className=' '>
             <Modal.Title id={`${id}Label`} className='w-100 blue-text'>
               {title}
             </Modal.Title>

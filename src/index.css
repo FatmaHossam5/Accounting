@@ -505,7 +505,16 @@ label{
     bottom: 0;
     right: -1px;
 }
+.modal-header{
+    border-bottom:none!important ;
+}
+.modal-footer{
+    border-top: none!important;
+}
+.modal{
+    --bs-modal-header-padding: 1rem 2.1rem !important;
 
+}
 @media screen and (max-width:1400px) {
     .vertical-separetor::after {
         display: none;
@@ -1596,7 +1605,7 @@ input[type="checkbox"] {
 .check{
     color: #1877F2!important;
 }
-input[type="checkbox"]:checked::before {
+/* input[type="checkbox"]:checked::before {
     content: '';
     position: absolute;
     top: 227px;
@@ -1607,7 +1616,7 @@ input[type="checkbox"]:checked::before {
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
   
-}
+} */
 div[data-tag="allowRowEvents"]{
     color: #4B4F56;
     line-height: 17.07px!important;
@@ -1715,6 +1724,9 @@ text-align: center;
 }
 .card{
     border: none!important;
+}
+.address h5,.address h3{
+    color: #4B4F56;
 }
 /* end 
 .table component */

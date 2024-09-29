@@ -152,7 +152,7 @@ export default function Countries() {
                                 <Input type='text' label='Arabic Country Name' placeholder='Enter Arabic Country Name ' className="px-form-input w-100 m-auto"
                                     {...register('name_ar', {
                                         required: 'Arabic Name is Required',
-                                        pattern: { value: /^[ء-ي]+$/, message: 'Only Arabic letters are allowed' },
+                                        pattern: { value: /^[ء-ي\s]+$/, message: 'Only Arabic letters are allowed' },
                                         validate: {
                                             startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start with a number'
                                         }
