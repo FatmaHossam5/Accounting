@@ -63,7 +63,7 @@ export default function CustomPage({ data, columns, title, ButtonName, target, b
                   </div>
                  
                            <div className="table-responsive px-table-container">
-                           <Table columns={columns} data={data} selectableRows />
+                           <Table columns={columns} data={data} selectableRows  />
                          </div>
                
               
@@ -75,10 +75,3 @@ export default function CustomPage({ data, columns, title, ButtonName, target, b
       </>
   )
 }
-// {isLoading?<div className='loader'></div>:(
-//   <div className="table-responsive px-table-container">
-//   <Table columns={columns} data={data} selectableRows />
-// </div>
-// )
-
-// }

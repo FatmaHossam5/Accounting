@@ -4,7 +4,7 @@ import CustomIcon from '../CustomIcon/CustomIcon';
 import CustomPagination from '../CustomPagination/CustomPagination';
 import SearchBar from '../SearchBar/SearchBar';
 
-export default function Table({ data, columns, title, ...props }) {
+export default function Table({ data, columns, expandableRowsComponent,title, ...props }) {
   const [filterText, setFilterText] = useState('');
 
   const filteredItems = data.filter(item => {
@@ -29,6 +29,7 @@ const customStyles={
 }
   return (
     <>
+    <SearchBar filterText={filterText} setFilterText={setFilterText}/>
       <DataTable title={title}
        columns={columns}
         data={data}
@@ -45,6 +46,7 @@ subHeader
 
 
 selectableRows
+
 
       />
 

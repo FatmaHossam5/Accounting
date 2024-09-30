@@ -165,6 +165,7 @@ export default function Governorates() {
                 buttonAction={() => setIsOpen(true)}
                 columns={columns}
                 data={governorates}
+                
             />
             <CustomModal id='creategovernorates'
                 title='Governarate'
