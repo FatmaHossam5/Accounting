@@ -512,7 +512,7 @@ label{
     border-top: none!important;
 }
 .modal{
-    --bs-modal-header-padding: 1rem 2.1rem !important;
+    --bs-modal-header-padding: 1rem 4.7rem !important;
 
 }
 @media screen and (max-width:1400px) {
