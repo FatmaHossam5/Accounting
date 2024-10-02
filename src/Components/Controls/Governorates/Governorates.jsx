@@ -18,7 +18,9 @@ export default function Governorates() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [deletedGovernarateId, setDeletedGovernarateId] = useState(null);
-    const { handleSubmit, formState: { errors }, reset, control } = useForm({
+    const { handleSubmit, formState: { errors,isValid }, reset, control } = useForm({
+        mode:'onChange',
+        reValidateMode:'onChange',
         defaultValues: {
             name_ar: '',
             name_en: '',
@@ -191,7 +193,7 @@ export default function Governorates() {
                         />
                         {errors.country_id && <p className='text-danger'>{errors.country_id.message}</p>}
                     </div>
-                    <div className="col-12 d-flex">
+                    <div className="row gx-3">
 
                         <div className="input-package my-3 pe-2 d-flex flex-column col-6">
                             <Controller
@@ -199,7 +201,7 @@ export default function Governorates() {
                                 control={control}
                                 rules={{
                                     required: 'Arabic Name is Required',
-                                    pattern: { value: /^[ء-ي]+$/, message: 'Only Arabic letters are allowed' },
+                                    pattern: { value: /^[ء-ي\s]+$/, message: 'Only Arabic letters are allowed' },
                                     validate: {
                                         startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start with a number'
                                     }
@@ -225,7 +227,8 @@ export default function Governorates() {
                                 name='name_en'
                                 control={control}
                                 rules={{
-                                    required: 'English Name is Required', pattern: { value: /^[A-Za-z]+$/, message: 'Only English Letters are allowed' },
+                                    required: 'English Name is Required', 
+                                    pattern: { value: /^[A-Za-z\s]+$/, message: 'Only English Letters are allowed' },
                                     validate: {
                                         startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start With a Number'
                                     }
@@ -248,7 +251,12 @@ export default function Governorates() {
                     <ModalFooter
                         onCancle={handleCancle}
                         onSubmit={handleSubmit(AddGovernarates)}
-                        isSubmitting={isSubmitting} />
+                        isSubmitting={isSubmitting}
+                        isCancelDisabled={isSubmitting||!isValid}
+                        isSaveDisabled={isSubmitting||!isValid}
+                        className={!isValid?'btn-invalid':''}
+                        className2={!isValid?'btn-invalid2':''}
+                         />
                 </form>
             </CustomModal>
             {isDeleteOpen && (<ConfirmDelete

@@ -16,16 +16,19 @@ export default function Industries() {
     const [isOpen, setIsOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { data: industries, refetch } = useDataFetch('industries');
-    const { register, handleSubmit, formState: { errors }, reset } = useForm({
-        name_ar: '',
-        name_en: ''
+    const { register, handleSubmit, formState: { errors,isValid }, reset } = useForm({
+        defaultValues: {
+            name_ar: '',
+            name_en: ''
+        },
+        mode:'onChange',
+        reValidateMode:'onChange'
+
 
     });
     const { baseUrl } = useContext(AuthContext);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [deletedIndustryId, setDeletedIndustryId] = useState(null);
-
-
     const columns = [
         {
             name: " Id",
@@ -105,7 +108,6 @@ export default function Industries() {
     {/*Calling Delete APi */ }
     const DeleteIndustry = (id) => {
         axios.delete(`${baseUrl}/industries/${id}`).then((response) => {
-            console.log(response);
             refetch()
         }).catch((error) => {
             console.log(error);
@@ -137,18 +139,13 @@ export default function Industries() {
                 isOpen={isOpen}
                 onCancel={() => setIsOpen(false)}
             >
-
-
-
                 <form onSubmit={handleSubmit(AddIndustry)} >
-
-                    <div className="col-12 d-flex">
-
+                    <div className="row gx-3">
                         <div className="input-package my-3 pe-2 d-flex flex-column col-6">
                             <Input type='text' label='Arabic Industry Name' placeholder='Enter Arabic Industry Name ' className="px-form-input w-100 m-auto"
                                 {...register('name_ar', {
                                     required: 'Arabic Name is Required',
-                                    pattern: { value: /^[ء-ي]+$/, message: 'Only Arabic letters are allowed' },
+                                    pattern: { value: /^[ء-ي\s]+$/, message: 'Only Arabic letters are allowed' },
                                     validate: {
                                         startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start with a number'
                                     }
@@ -159,36 +156,34 @@ export default function Industries() {
                             <Input type='text' label='English Industry Name' placeholder='Enter English Industry Name ' className="px-form-input w-100 m-auto"
                                 {...register('name_en', {
                                     required: 'English Name is Required',
-                                    pattern: { value: /^[A-Za-z]+$/, message: 'Only English letters are allowed' },
+                                    pattern: { value: /^[A-Za-z\s]+$/, message: 'Only English letters are allowed' },
                                     validate: {
                                         startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start with a number'
                                     }
                                 })} />
                             {errors.name_en && <p className="text-danger">{errors.name_en.message}</p>}
                         </div>
-
                     </div>
-
                     <ModalFooter
                         onCancle={() => setIsOpen(false)}
                         onSubmit={handleSubmit(AddIndustry)}
                         isSubmitting={isSubmitting}
+                        isCancelDisabled={isSubmitting||!isValid}
+                        isSaveDisabled={isSubmitting||!isValid}
+                        className={!isValid?'btn-invalid':''}
+                        className2={!isValid?'btn-invalid2':''}
                     />
                 </form>
-
             </CustomModal>
             {isDeleteOpen && (
                 <ConfirmDelete
                     isOpen={isDeleteOpen}
                     onCancel={handleDeleteCancelled}
                     onConfirm={handleDeletedConfirmed}
-                    deleteMsg={'Industry'}
+                    deleteMsg='Industry'
 
                 />
             )}
         </>
-
-
-
     )
 }

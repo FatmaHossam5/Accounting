@@ -17,7 +17,14 @@ export default function Departments() {
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [deletedDepartmentId, setdeletedDepartmentId] = useState(null);
     const { data: departments, refetch } = useDataFetch('departments');
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { register, handleSubmit, formState: { errors,isValid }, reset } = useForm({
+        defaultValues:{
+            name_ar:'',
+            name_en:''
+        },
+        mode:'onChange',
+        reValidateMode:'onChange'
+    });
     const { baseUrl } = useContext(AuthContext);
 
     const columns = [
@@ -146,8 +153,8 @@ export default function Departments() {
             <CustomModal id='createdepartments' title='Create New Department' isOpen={isOpen} className='modal-lg' onCancel={handleCancle} >
                 <form onSubmit={handleSubmit(AddDepartment)} >
 
-                    <div className="  ">
-                        <div className="col-12 d-flex">
+                 
+                        <div className="row gx-3">
 
                             <div className="input-package my-3 pe-2 d-flex flex-column col-6">
                                 <Input type='text' label='Arabic Department Name' placeholder='Enter Arabic Department Name ' className="px-form-input w-100 m-auto"
@@ -173,10 +180,14 @@ export default function Departments() {
                             </div>
 
                         </div>
-                    </div>
+                   
                     <ModalFooter onCancle={handleCancle}
                         onSubmit={handleSubmit(AddDepartment)}
                         isSubmitting={isSubmitting}
+                        isCancelDisabled={isSubmitting||!isValid}
+                        isSaveDisabled={isSubmitting||!isValid}
+                        className={!isValid?'btn-invalid':''}
+                        className2={!isValid?'btn-invalid2':''}
 
                     />
                 </form>

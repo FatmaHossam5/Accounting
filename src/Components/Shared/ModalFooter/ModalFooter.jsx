@@ -7,9 +7,14 @@ export default function ModalFooter({onCancle,onSubmit,cancleText="Cancel",submi
   return (
     <>
     
-    <div className=" px-modal modal-footer mt-3 ms-5">
-            <Button type="button" className={`px-btn btn px-white-btn ${className}`}  onClick={onCancle} disabled={isCancelDisabled}>{cancleText}</Button>
-            <Button type="button" className={`px-btn px-blue-btn ${className2}` }  disabled={isSaveDisabled||isSubmitting} onClick={onSubmit} >{isSubmitting?<Loader/>:submitText}</Button>
+    <div className="d-flex justify-content-end mt-3">
+
+    
+      <Button type="button" className={`px-btn btn px-white-btn ${className} me-3 `}  onClick={onCancle} disabled={isCancelDisabled}>{cancleText}</Button>
+
+    
+      <Button type="button" className={`px-btn px-blue-btn ${className2}` }  disabled={isSaveDisabled||isSubmitting} onClick={onSubmit} >{isSubmitting?<Loader/>:submitText}</Button>
+
           </div>
     
     </>

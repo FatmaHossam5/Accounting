@@ -1,6 +1,7 @@
+import classNames from 'classnames'
 import React from 'react'
 import { Modal } from 'react-bootstrap'
-export default function CustomModal({ id, title, children, onCancel, isOpen, onSubmit, showHeader = true,ModalWidth='' }) {
+export default function CustomModal({ id, title, children, onCancel, isOpen, onSubmit, showHeader = true,ModalWidth='',headerPadding }) {
 
   return (
     <>
@@ -16,7 +17,10 @@ export default function CustomModal({ id, title, children, onCancel, isOpen, onS
         scrollable >
         {showHeader &&
 
-          <Modal.Header closeButton className=' '>
+          <Modal.Header closeButton className={classNames(' --bs-modal-header-padding',{
+            'custom-padding':headerPadding==='custom',
+            'default-padding':headerPadding==='default'
+          })}>
             <Modal.Title id={`${id}Label`} className='w-100 blue-text'>
               {title}
             </Modal.Title>

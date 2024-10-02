@@ -16,7 +16,10 @@ export default function Countries() {
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [deletedCountryId, setDeletedCountryId] = useState(null);
     const { data: countries, refetch } = useDataFetch('countries');
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { register, handleSubmit, formState: { errors,isValid }, reset } = useForm({
+        mode:'onChange',
+        reValidateMode: 'onChange'
+    });
     const { baseUrl } = useContext(AuthContext);
 
     const columns = [
@@ -142,11 +145,10 @@ export default function Countries() {
                 columns={columns}
                 data={countries}
             />
-            <CustomModal id='createcountries' title='Create New Country' isOpen={isOpen} className='modal-lg' onCancel={handleCancle} >
+            <CustomModal id='createcountries' title='Create New Country' isOpen={isOpen} className='modal-lg' onCancel={handleCancle} headerPadding='custom' >
                 <form onSubmit={handleSubmit(AddCountry)} >
 
-                    <div className="  ">
-                        <div className="col-12 d-flex">
+                        <div className=" row gx-3">
 
                             <div className="input-package my-3 pe-2 d-flex flex-column col-6">
                                 <Input type='text' label='Arabic Country Name' placeholder='Enter Arabic Country Name ' className="px-form-input w-100 m-auto"
@@ -163,7 +165,7 @@ export default function Countries() {
                                 <Input type='text' label='English Country Name' placeholder='Enter English Country Name ' className="px-form-input w-100 m-auto"
                                     {...register('name_en', {
                                         required: 'English Name is Required',
-                                        pattern: { value: /^[A-Za-z]+$/, message: 'Only English letters are allowed' },
+                                        pattern: { value: /^[A-Za-z\s]+$/, message: 'Only English letters are allowed' },
                                         validate: {
                                             startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start with a number'
                                         }
@@ -172,10 +174,13 @@ export default function Countries() {
                             </div>
 
                         </div>
-                    </div>
                     <ModalFooter onCancle={handleCancle}
                         onSubmit={handleSubmit(AddCountry)}
                         isSubmitting={isSubmitting}
+                        isCancelDisabled={isSubmitting||!isValid}
+                        isSaveDisabled={isSubmitting||!isValid}
+                        className={!isValid?'btn-invalid':''}
+                        className2={!isValid?'btn-invalid2':''}
 
                     />
                 </form>

@@ -511,9 +511,28 @@ label{
 .modal-footer{
     border-top: none!important;
 }
-.modal{
+/* .modal{
     --bs-modal-header-padding: 1rem 4.7rem !important;
 
+} */
+.custom-padding{
+    padding: 1rem 1rem !important;
+}
+.default-padding{
+    padding:  1rem 2.5rem !important;
+}
+.btn-invalid2{
+    background-color: #D7D7D7!important;
+    color: white!important;
+    box-shadow: none!important;
+    border: none!important;
+    cursor: not-allowed;
+}
+.btn-invalid{
+    color: #BABABA!important;
+    background-color: white!important;
+    border: 1px solid #BABABA !important;
+    cursor: not-allowed;
 }
 @media screen and (max-width:1400px) {
     .vertical-separetor::after {

@@ -16,9 +16,9 @@ export default function Products({ButtonName,buttonAction,target}) {
   const[isOpen,setIsOpen]=useState(false);
   const{data:categories}=useDataFetch('categories')
   const{data:departments}=useDataFetch('departments')
-  const{data:products}=useDataFetch('products')
+  const{data:products,refetch}=useDataFetch('products')
 
-const {handleSubmit,formState:{errors},control}=useForm({
+const {handleSubmit,formState:{errors,isValid},control,reset}=useForm({
       mode:'onChange',
       defaultValues:{
         name_ar:'',
@@ -33,7 +33,8 @@ const {handleSubmit,formState:{errors},control}=useForm({
         type:'TYPE1',
         category_id:'',
         department_id:''
-      }
+      },
+      reValidateMode:'onChange'
 
   
 });
@@ -135,11 +136,12 @@ const{baseUrl}=useContext(AuthContext);
 
 
   const AddProduct=(data)=>{
-   alert('kkkkkkkkkk')
-    console.log(data);
+;
     setIsSubmitting(true)
     axios.post(`${baseUrl}/products`,data).then((response)=>{
       console.log(response);
+      setIsOpen(false);
+      refetch();
       
     }).catch((error)=>{
       console.log(error);
@@ -148,10 +150,10 @@ const{baseUrl}=useContext(AuthContext);
   }
   return (
     <>
-      <CustomModal id='createProduct' title='Create Product' isOpen={isOpen} onCancel={()=>setIsOpen(false)} ModalWidth='modal-xl'>
+      <CustomModal id='createProduct' title='Create Product' isOpen={isOpen} onCancel={()=>setIsOpen(false)} ModalWidth='modal-xl' headerPadding='custom'>
      <form onSubmit={handleSubmit(AddProduct)}>
-     <div className='d-flex mb-3  justify-content-evenly flex-grow-1 flex-shrink-1'>
-          <div className='col-md-5'>
+     <div className='row gx-3 mb-3'>
+          <div className='col-md-6'>
             <Controller
             name='name_en'
             control={control}
@@ -175,7 +177,7 @@ const{baseUrl}=useContext(AuthContext);
             />
               {errors.name_en && <span className="text-danger">{errors.name_en.message}</span>}
           </div>
-          <div className='col-md-5'>
+          <div className='col-md-6'>
             <Controller
             name='name_ar'
             control={control}
@@ -199,8 +201,8 @@ const{baseUrl}=useContext(AuthContext);
           </div>
 
         </div>
-     <div className='d-flex mb-3  justify-content-evenly flex-grow-1 flex-shrink-1'>
-          <div className='col-md-5'>
+     <div className='row gx-3 mb-3'>
+          <div className='col-md-6'>
             <Controller
             name='brand_en'
             control={control}
@@ -224,7 +226,7 @@ const{baseUrl}=useContext(AuthContext);
             />
               {errors.brand_en && <span className="text-danger">{errors.brand_en.message}</span>}
           </div>
-          <div className='col-md-5'>
+          <div className='col-md-6'>
             <Controller
             name='brand_ar'
             control={control}
@@ -248,8 +250,8 @@ const{baseUrl}=useContext(AuthContext);
           </div>
 
         </div>
-        <div className='d-flex mb-3  justify-content-evenly flex-grow-1 flex-shrink-1  '>
-        <div className='col-md-5'>
+        <div className='row gx-3 mb-3'>
+        <div className='col-md-6'>
           <Controller
             name='description_en'
             control={control}
@@ -271,7 +273,7 @@ const{baseUrl}=useContext(AuthContext);
             />
                {errors.description_en && <span className="text-danger">{errors.description_en.message}</span>}
           </div>
-          <div className='col-md-5'>
+          <div className='col-md-6'>
           <Controller
             name='description_ar'
             control={control}
@@ -296,8 +298,8 @@ const{baseUrl}=useContext(AuthContext);
        
 
         </div>
-        <div className='d-flex mb-3  justify-content-evenly flex-grow-1 flex-shrink-1  '>
-          <div className='col-md-3'>
+        <div className='row gx-3 mb-3'>
+          <div className='col-md-4'>
 <Controller
 name='tax'
 control={control}
@@ -321,7 +323,7 @@ render={({field,fieldState})=>(
 />
 {errors.tax && <span className="text-danger">{errors.tax.message}</span>}
           </div>
-          <div className='col-md-3'>
+          <div className='col-md-4'>
           <Controller
 name='taxable'
 control={control}
@@ -340,7 +342,7 @@ render={({field,fieldState})=>(
 />
 {errors.taxable && <span className="text-danger">{errors.taxable.message}</span>}    
           </div>
-          <div className='col-md-3'>
+          <div className='col-md-4'>
           <Controller
 name='stock'
 control={control}
@@ -366,8 +368,8 @@ render={({field,fieldState})=>(
           
           </div>
         </div>
-        <div className='d-flex mb-3  justify-content-evenly flex-grow-1 flex-shrink-1 mb-3 '>
-          <div className='col-md-3 '>
+        <div className='row gx-3 mb-2 '>
+          <div className='col-md-4 '>
             <Controller
             name='category_id'
             control={control}
@@ -382,7 +384,7 @@ render={({field,fieldState})=>(
             />
           
           </div>
-          <div className='col-md-3 '>
+          <div className='col-md-4 '>
           <Controller
             name='department_id'
             control={control}
@@ -398,7 +400,7 @@ render={({field,fieldState})=>(
           
            
           </div>
-          <div className='col-md-3 '>
+          <div className='col-md-4 '>
           <Controller
             name='type'
             control={control}
@@ -425,6 +427,10 @@ render={({field,fieldState})=>(
        onSubmit={handleSubmit(AddProduct)}
        onCancle={()=>setIsOpen(false)}
 isSubmitting={isSubmitting}
+isCancelDisabled={isSubmitting||!isValid}
+isSaveDisabled={isSubmitting||!isValid}
+className={!isValid?'btn-invalid':''}
+className2={!isValid?'btn-invalid2':''}
    
        />
      </form>

@@ -18,7 +18,9 @@ export default function Cities() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [deletedCityId, setDeletedCityId] = useState(null);
-  const { control, handleSubmit, formState: { errors }, reset } = useForm({
+  const { control, handleSubmit, formState: { errors,isValid }, reset } = useForm({
+    mode:'onChange',
+    reValidateMode:'onChange',
     defaultValues: {
       name_ar: '',
       name_en: '',
@@ -193,7 +195,7 @@ export default function Cities() {
               />
               {errors.governorate_id && <p className='text-danger'>{errors.governorate_id.message}</p>}
             </div>
-            <div className="col-12 d-flex">
+            <div className="row gx-3">
 
               <div className="input-package my-3 pe-2 d-flex flex-column col-6">
                 <Controller
@@ -201,7 +203,7 @@ export default function Cities() {
                   control={control}
                   rules={{
                     required: 'Arabic Name is Required',
-                    pattern: { value: /^[ء-ي]+$/, message: 'Only Arabic letters are allowed' },
+                    pattern: { value: /^[ء-ي\s]+$/, message: 'Only Arabic letters are allowed' },
                     validate: {
                       startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start with a number'
                     }
@@ -227,7 +229,7 @@ export default function Cities() {
                   name='name_en'
                   control={control}
                   rules={{
-                    required: 'English Name is Required', pattern: { value: /^[A-Za-z]+$/, message: 'Only English Letters are allowed' },
+                    required: 'English Name is Required', pattern: { value: /^[A-Za-z\s]+$/, message: 'Only English Letters are allowed' },
                     validate: {
                       startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start With a Number'
                     }
@@ -253,6 +255,10 @@ export default function Cities() {
             onCancle={handleCancle}
             onSubmit={handleSubmit(AddCity)}
             isSubmitting={isSubmitting}
+            isCancelDisabled={isSubmitting||!isValid}
+            isSaveDisabled={isSubmitting||!isValid}
+            className={!isValid?'btn-invalid':''}
+            className2={!isValid?'btn-invalid2':''}
 
           />
         </form>

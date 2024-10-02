@@ -12,11 +12,11 @@ import { AuthContext } from '../../Helpers/Context/AuthContextProvider';
 export default function Categories() {
   const [openDropdownId, setopenDropdownId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const { handleSubmit, formState: { errors, isValid, isSubmitting }, control, reset, register } = useForm({ mode: 'onChange' });
+  const { handleSubmit, formState: { errors, isValid }, control, reset, register } = useForm({ mode: 'onChange',reValidateMode:'onChange' });
   const [isSubCategory, setIsSubCategory] = useState(false);
   const { baseUrl } = useContext(AuthContext);
   const [category, setCategory] = useState([]);
-
+const[isSubmitting,setIsSubmitting]=useState(false);
   const columns = [
     {
       name: " Id",
@@ -71,6 +71,7 @@ export default function Categories() {
  }
     
   ];
+
 // this  function to transform flat category to tree structure
   const buildCategoryTree=(data)=>{
     const categoryMap={};
@@ -133,18 +134,21 @@ flatCategories=flatCategories.concat(flatten(subcategory,level+1))
   const handleClose = () => setIsOpen(false);
 
   const AddCategory = (data) => {
-    const categoryData=isSubCategory?data:{...data,parent_id:null}
+    setIsSubmitting(true)
+    // const categoryData=isSubCategory?data:{...data,parent_id:null}
     axios.post(`${baseUrl}/categories`, data).then((response) => {
-      console.log(response);
-
+      reset();
+      handleClose();
+      getAllCategories();
     }).catch((error) => {
       console.log(error);
 
+    }).finally(()=>{
+      setIsSubmitting(false)
     })
   }
   const getAllCategories = () => {
     axios.get(`${baseUrl}/categories`).then((response) => {
-      console.log(response?.data?.data);
       const categories=response?.data?.data ||[];
       setCategory(flattenTree(buildCategoryTree(categories)))
      
@@ -180,7 +184,7 @@ flatCategories=flatCategories.concat(flatten(subcategory,level+1))
       />
       <CustomModal id='createcategory' title='Create New Category' onCancel={handleClose} className='w-40' isOpen={isOpen}>
         <form onSubmit={handleSubmit(AddCategory)}>
-          <div className="form-inputs d-flex w-100  mt-1">
+          <div className="row gx-3">
             {/*Company Name En. */}
             <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
               <Controller
@@ -238,9 +242,11 @@ flatCategories=flatCategories.concat(flatten(subcategory,level+1))
               {errors.name_ar && <span className="text-danger">{errors.name_ar.message}</span>}
             </div>
           </div>
-          <div>
-            <label>
+          <div className='mt-3 row gx-3'>
+          <div className="d-flex align-items-center justify-content-between">
+          <label>
               <input
+              className='ms-2'
                 type="checkbox"
                 {...register("isSubCategory")}
                 checked={isSubCategory}
@@ -248,10 +254,10 @@ flatCategories=flatCategories.concat(flatten(subcategory,level+1))
               />
               Is Sub Category
             </label>
-          </div>
-          {isSubCategory && (
+   
+            {isSubCategory && (
             <>
-              <div className="input-package my-3  d-flex flex-column w-70 m-auto">
+              <div className="ms-2 w-50">
                 <Controller
                   name='parent_id'
                   control={control}
@@ -276,13 +282,21 @@ flatCategories=flatCategories.concat(flatten(subcategory,level+1))
               </div>
             </>
           )}
+
+
+          </div>
+    
+          </div>
+      
           <ModalFooter
             onSubmit={handleSubmit(AddCategory)}
             onCancle={handleReset}
             cancleText='Clear'
             isSubmitting={isSubmitting}
-            isCancelDisabled={!isValid}
-            isSaveDisabled={!isValid}
+            isCancelDisabled={isSubmitting||!isValid}
+            isSaveDisabled={isSubmitting||!isValid}
+            className={!isValid?'btn-invalid':''}
+            className2={!isValid?'btn-invalid2':''}
           />
         </form>
       </CustomModal>
