@@ -521,6 +521,17 @@ label{
 .default-padding{
     padding:  1rem 2.5rem !important;
 }
+.filter-model{
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+    z-index: 1000;
+}
 .btn-invalid2{
     background-color: #D7D7D7!important;
     color: white!important;

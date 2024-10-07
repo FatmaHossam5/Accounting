@@ -4,13 +4,21 @@ import CustomIcon from '../CustomIcon/CustomIcon';
 import CustomPagination from '../CustomPagination/CustomPagination';
 import SearchBar from '../SearchBar/SearchBar';
 
-export default function Table({ data, columns, expandableRowsComponent,title, ...props }) {
+export default function Table({ data, columns,title,filterOptions, ...props }) {
   const [filterText, setFilterText] = useState('');
+  const[filters,setFilters]=useState({});
+  const handleApplyFilter=(selectedFilters)=>{
+    setFilters(selectedFilters)
+  }
 
-  const filteredItems = data.filter(item => {
-      return (
-          item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
-      );
+  const filteredItems = data?.filter(item => {
+    const matchesSearch=item.name&& item.name.toLowerCase().includes(filterText.toLowerCase());
+    const matchesFiltetr=Object.keys(filters).every(group=>{
+      const selectedOptions = filters[group];
+      if(!selectedOptions|| selectedOptions.length===0) return true
+return selectedOptions.some(option=>item[group].includes(option.value) )
+    });
+    return matchesSearch&&matchesFiltetr;
   });
 
 const customStyles={
@@ -29,7 +37,8 @@ const customStyles={
 }
   return (
     <>
-    <SearchBar filterText={filterText} setFilterText={setFilterText}/>
+    <SearchBar value={filterText} onChange={(e)=>setFilterText(e.target.value)} filterGroups={filterOptions} onApply={handleApplyFilter}/>
+  
       <DataTable title={title}
        columns={columns}
         data={data}

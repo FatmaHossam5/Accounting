@@ -134,7 +134,35 @@ const{baseUrl}=useContext(AuthContext);
   
   ];
 
-
+  const serviceFilters = [
+    {
+      label: 'Service Department',
+      name: 'serviceDepartment',
+      options: [
+        { value: 'HR', label: 'HR' },
+        { value: 'IT', label: 'IT' },
+        { value: 'Finance', label: 'Finance' },
+      ],
+    },
+    {
+      label: 'Service Branch',
+      name: 'serviceBranch',
+      options: [
+        { value: 'Branch 1', label: 'Branch 1' },
+        { value: 'Branch 2', label: 'Branch 2' },
+        { value: 'Branch 3', label: 'Branch 3' },
+      ],
+    },
+    {
+      label: 'Service Type',
+      name: 'serviceType',
+      options: [
+        { value: 'Type A', label: 'Type A' },
+        { value: 'Type B', label: 'Type B' },
+        { value: 'Type C', label: 'Type C' },
+      ],
+    },
+  ];
   const AddProduct=(data)=>{
 ;
     setIsSubmitting(true)
@@ -150,7 +178,7 @@ const{baseUrl}=useContext(AuthContext);
   }
   return (
     <>
-      <CustomModal id='createProduct' title='Create Product' isOpen={isOpen} onCancel={()=>setIsOpen(false)} ModalWidth='modal-xl' headerPadding='custom'>
+      <CustomModal id='createProduct' title='Create Product' isOpen={isOpen} onCancel={()=>setIsOpen(false)} ModalWidth='modal-xl' headerPadding='custom' >
      <form onSubmit={handleSubmit(AddProduct)}>
      <div className='row gx-3 mb-3'>
           <div className='col-md-6'>
