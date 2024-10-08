@@ -2,8 +2,38 @@ import React, { useState } from 'react'
 import Button from '../Button/Button'
 import Table from '../Table/Table'
 import Loader from '../../Template/Loader/Loader'
-export default function CustomPage({ data, columns, title, ButtonName, target, buttonAction }) {
+import SearchBar from '../SearchBar/SearchBar';
+import ManageColumns from '../ManageColumns/ManageColumns';
+export default function CustomPage({ data, columns, title, ButtonName, target, buttonAction,filterOptions }) {
+  const [filterText, setFilterText] = useState('');
+  const[filters,setFilters]=useState({});
+  const handleApplyFilter=(selectedFilters)=>{
+    setFilters(selectedFilters)
+  }
 
+  const filteredItems = data?.filter(item => {
+    const matchesSearch=item.name&& item.name.toLowerCase().includes(filterText.toLowerCase());
+    const matchesFiltetr=Object.keys(filters).every(group=>{
+      const selectedOptions = filters[group];
+      if(!selectedOptions|| selectedOptions.length===0) return true
+return selectedOptions.some(option=>item[group].includes(option.value) )
+    });
+    return matchesSearch&&matchesFiltetr;
+  });
+  // const [visibleColumns,setVisibleColumns]=useState(columns);
+  // const handleCloumnChange=(updatedColumns)=>{
+  //   setVisibleColumns(updatedColumns)
+  // }
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedColumns, setSelectedColumns] = useState(columns.map(col => col.accessor));
+  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+  const handleColumnChange = (column) => {
+    setSelectedColumns(prevSelected =>
+      prevSelected.includes(column)
+        ? prevSelected.filter(col => col !== column)
+        : [...prevSelected, column]
+    );
+  };
   return (
     <>
         <div className="px-content mb-auto mt-3 ">
@@ -23,18 +53,13 @@ export default function CustomPage({ data, columns, title, ButtonName, target, b
                     </div>
                   </div>
                   <div className="table-actions  mb-4 ">
-                    {/* <div className="table-search w-50 ">
-                      <input type="search" className="px-form-input w-100 ps-5" placeholder="search" />
-                      <svg className="search-icon" width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="9.8055" cy="9.8055" r="7.49047" stroke="#939393" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M15.0153 15.4043L17.9519 18.3333" stroke="#939393" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                      <svg className="filter-icon" width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fillRule="evenodd" clipRule="evenodd" d="M4.56517 3C3.70108 3 3 3.71286 3 4.5904V5.52644C3 6.17647 3.24719 6.80158 3.68936 7.27177L8.5351 12.4243L8.53723 12.4211C9.47271 13.3788 9.99905 14.6734 9.99905 16.0233V20.5952C9.99905 20.9007 10.3187 21.0957 10.584 20.9516L13.3436 19.4479C13.7602 19.2204 14.0201 18.7784 14.0201 18.2984V16.0114C14.0201 14.6691 14.539 13.3799 15.466 12.4243L20.3117 7.27177C20.7528 6.80158 21 6.17647 21 5.52644V4.5904C21 3.71286 20.3 3 19.4359 3H4.56517Z" stroke="#939393" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </div> */}
+                 
+                       <SearchBar value={filterText} onChange={(e)=>setFilterText(e.target.value)} filterGroups={filterOptions} onApply={handleApplyFilter}/>
+                        <div className='table-btns d-flex justify-content-end'>
+
+                        </div>
                     <div className="table-btns d-flex justify-content-end ">
-                      <button className="px-btn px-gray-btn text-capitalize d-flex">
+                      <button className="px-btn px-gray-btn text-capitalize d-flex" onClick={toggleDropdown}>
                         <div className="btn-icon w-10 me-2">
                           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clipPath="url(#clip0_1247_9410)">
@@ -60,10 +85,17 @@ export default function CustomPage({ data, columns, title, ButtonName, target, b
                         </div> export
                       </button>
                     </div>
+                    {isDropdownOpen && (
+        <ManageColumns
+          columns={columns}
+          selectedColumns={selectedColumns}
+          onChange={handleColumnChange}
+        />
+      )}
                   </div>
                  
                            <div className="table-responsive px-table-container">
-                           <Table columns={columns} data={data} selectableRows  />
+                           <Table columns={columns} data={data}  selectableRows  />
                          </div>
                
               
