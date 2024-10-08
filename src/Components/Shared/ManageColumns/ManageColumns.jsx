@@ -1,40 +1,45 @@
 import React, { useState } from 'react'
+import { DropdownButton, Form } from 'react-bootstrap';
 
-export default function ManageColumns({columns, visibleColumns, setVisibleColumns}) {
-    const[selectedColumns,setSelectedColumns]=useState(columns);
+export default function ManageColumns({columns, onColumnToggle}) {
+  const [visibleColumns, setVisibleColumns] = useState(columns);
     const[checked,setChecked]=useState(visibleColumns)
-    const handleToggleColumn=(column)=>{
-        const updatedChecked=checked.includes(column)?checked.filter((col)=>col!==column):[...checked,column];
-        setChecked(updatedChecked);
-        setVisibleColumns(updatedChecked)
-    }
-    const handleSelectAll=(e)=>{
-    if(e.target.checked){
-      setChecked(columns);
-      setVisibleColumns(columns)
-    }else{
-      setChecked([])
-      setVisibleColumns([])
-    }
-    }
+    const handleToggle = (columnId) => {
+      const updatedColumns = visibleColumns.map((col) =>
+        col.id === columnId ? { ...col, visible: !col.visible } : col
+      );
+      setVisibleColumns(updatedColumns);
+      onColumnToggle(updatedColumns);
+    };
+    const handleSelectAll = () => {
+      const allSelected = visibleColumns.every((col) => col.visible);
+      const updatedColumns = visibleColumns.map((col) => ({
+        ...col,
+        visible: !allSelected,
+      }));
+      setVisibleColumns(updatedColumns);
+      onColumnToggle(updatedColumns);
+    };
   return (
 
-
-<div className="manage-columns-dropdown">
-  <div>
-    <input 
-    type="checkbox" 
-    checked={checked.length===columns.length}
-    onChange={handleSelectAll}
-     />
-     <label > Select All </label>
-  </div>
-{columns.map((column)=>(
-  <div key={column}>
-<input type="checkbox" checked={checked.includes(columns)} onChange={()=>handleToggleColumn(column)} />
-<label> {column}</label>
-  </div>
-))}
-</div>
+    <DropdownButton id="dropdown-basic-button" title="Manage Columns">
+    <Form.Check
+      type="checkbox"
+      label="Select All"
+      checked={visibleColumns.every((col) => col.visible)}
+      onChange={handleSelectAll}
+      className="px-3"
+    />
+    {visibleColumns.map((col) => (
+      <Form.Check
+        key={col.id}
+        type="checkbox"
+        label={col.label}
+        checked={col.visible}
+        onChange={() => handleToggle(col.id)}
+        className="px-3"
+      />
+    ))}
+  </DropdownButton>
   )
 }

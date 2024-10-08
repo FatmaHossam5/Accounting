@@ -20,19 +20,13 @@ return selectedOptions.some(option=>item[group].includes(option.value) )
     });
     return matchesSearch&&matchesFiltetr;
   });
-  // const [visibleColumns,setVisibleColumns]=useState(columns);
-  // const handleCloumnChange=(updatedColumns)=>{
-  //   setVisibleColumns(updatedColumns)
-  // }
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedColumns, setSelectedColumns] = useState(columns.map(col => col.accessor));
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
-  const handleColumnChange = (column) => {
-    setSelectedColumns(prevSelected =>
-      prevSelected.includes(column)
-        ? prevSelected.filter(col => col !== column)
-        : [...prevSelected, column]
-    );
+  const [tableColumns, setTableColumns] = useState(columns);
+  const handleColumnToggle = (updatedColumns) => {
+    setTableColumns(updatedColumns);
   };
   return (
     <>
@@ -56,8 +50,7 @@ return selectedOptions.some(option=>item[group].includes(option.value) )
                  
                        <SearchBar value={filterText} onChange={(e)=>setFilterText(e.target.value)} filterGroups={filterOptions} onApply={handleApplyFilter}/>
                         <div className='table-btns d-flex justify-content-end'>
-
-                        </div>
+                        <ManageColumns columns={tableColumns} onColumnToggle={handleColumnToggle} />                        </div>
                     <div className="table-btns d-flex justify-content-end ">
                       <button className="px-btn px-gray-btn text-capitalize d-flex" onClick={toggleDropdown}>
                         <div className="btn-icon w-10 me-2">
@@ -85,17 +78,11 @@ return selectedOptions.some(option=>item[group].includes(option.value) )
                         </div> export
                       </button>
                     </div>
-                    {isDropdownOpen && (
-        <ManageColumns
-          columns={columns}
-          selectedColumns={selectedColumns}
-          onChange={handleColumnChange}
-        />
-      )}
+      
                   </div>
                  
                            <div className="table-responsive px-table-container">
-                           <Table columns={columns} data={data}  selectableRows  />
+                           <Table columns={tableColumns.filter((col) => col.visible)} data={data}  selectableRows  />
                          </div>
                
               
