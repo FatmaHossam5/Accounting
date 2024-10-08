@@ -9,6 +9,7 @@ import { Controller, useForm } from 'react-hook-form';
 import ModalFooter from '../../Shared/ModalFooter/ModalFooter';
 import axios from 'axios';
 import { AuthContext } from '../../Helpers/Context/AuthContextProvider';
+import ManageColumns from '../../Shared/ManageColumns/ManageColumns';
 
 export default function Products({ButtonName,buttonAction,target}) {
 
@@ -133,7 +134,16 @@ const{baseUrl}=useContext(AuthContext);
     },
   
   ];
-
+const [visibleColumns,setVisibleColumns]=useState([
+  "English Product Name",
+  "Product Description",
+  "Product Branch",
+  "Product Category",
+  "Product SubCategory",
+  "Product Type",
+  "Unit Price"
+])
+const filteredColumns=columns.filter(col=>visibleColumns.includes(col.name))
   const serviceFilters = [
     {
       label: 'Service Department',
@@ -179,6 +189,7 @@ const{baseUrl}=useContext(AuthContext);
   return (
     <>
       <CustomModal id='createProduct' title='Create Product' isOpen={isOpen} onCancel={()=>setIsOpen(false)} ModalWidth='modal-xl' headerPadding='custom' >
+
      <form onSubmit={handleSubmit(AddProduct)}>
      <div className='row gx-3 mb-3'>
           <div className='col-md-6'>
@@ -463,9 +474,13 @@ className2={!isValid?'btn-invalid2':''}
        />
      </form>
       </CustomModal>
-    
+    <ManageColumns
+    columns={columns.map(col=>col.name)}
+    visibleColumns={visibleColumns}
+    setVisibleColumns={setVisibleColumns}
+    />
       <CustomPage data={[...products]}
-        columns={columns}
+        columns={filteredColumns}
         title='Products'
         ButtonName='Create Product'
         target='#createProduct'

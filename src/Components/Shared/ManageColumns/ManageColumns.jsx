@@ -1,64 +1,39 @@
 import React, { useState } from 'react'
 
-export default function ManageColumns({columns, onChange}) {
+export default function ManageColumns({columns, visibleColumns, setVisibleColumns}) {
     const[selectedColumns,setSelectedColumns]=useState(columns);
+    const[checked,setChecked]=useState(visibleColumns)
     const handleToggleColumn=(column)=>{
-        const updatedColumns=selectedColumns.map(col=>col.name===column.name?{...col,visible:!col.visible}:col);
-        setSelectedColumns(updatedColumns);
-        onColumnsChange(updatedColumns.filter(col=>col.visible))
+        const updatedChecked=checked.includes(column)?checked.filter((col)=>col!==column):[...checked,column];
+        setChecked(updatedChecked);
+        setVisibleColumns(updatedChecked)
     }
-    const handleSelectAll=()=>{
-        const areAllSelected=selectedColumns.every(col=>col.visible);
-        const updatedColumns=selectedColumns.map(col=>({
-            ...col,
-            visible:!areAllSelected
-        }));
-        setSelectedColumns(updatedColumns);
-        onColumnsChange(updatedColumns.filter(col=>col.visible))
+    const handleSelectAll=(e)=>{
+    if(e.target.checked){
+      setChecked(columns);
+      setVisibleColumns(columns)
+    }else{
+      setChecked([])
+      setVisibleColumns([])
+    }
     }
   return (
-//     <div>
-
-//         <div>
-//             <input
-//             type='checkbox'
-//             checked={selectedColumns.every(col=>col.visible)}
-//             onChange={handleSelectAll}
-//             />
-//         </div>
-// {selectedColumns.map((col)=>(
-//     <div key={col.name}>
-//         <input
-//         type='checkbox'
-//         checked={col.visible}
-//         onChange={()=>handleToggleColumn(col)}
-        
-//         />
-//         <label >{col.label}</label>
-//     </div>
-// ))}
 
 
-//     </div>
-
-<div className="dropdown-menu">
-<label>
-  <input
-    type="checkbox"
-    onChange={(e) => onChange('all', e.target.checked)}
-    checked={selectedColumns.length === columns.length}
-  />
-  Select All
-</label>
-{columns.map((col) => (
-  <label key={col.accessor}>
-    <input
-      type="checkbox"
-      checked={selectedColumns.includes(col.accessor)}
-      onChange={() => onChange(col.accessor)}
-    />
-    {col.name}
-  </label>
+<div className="manage-columns-dropdown">
+  <div>
+    <input 
+    type="checkbox" 
+    checked={checked.length===columns.length}
+    onChange={handleSelectAll}
+     />
+     <label > Select All </label>
+  </div>
+{columns.map((column)=>(
+  <div key={column}>
+<input type="checkbox" checked={checked.includes(columns)} onChange={()=>handleToggleColumn(column)} />
+<label> {column}</label>
+  </div>
 ))}
 </div>
   )
