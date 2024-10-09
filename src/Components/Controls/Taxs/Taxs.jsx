@@ -143,7 +143,9 @@ const {handleSubmit,formState:{errors,isValid},control,reset}=useForm({
 const AddTax=(data)=>{
   const formattedData={
     ...data,
-    tax_period:data.tax_period.map(option=>option.value).join('')
+    tax_period:data.tax_period.map(option=>option.value).join(''),
+    filing_frequency:data.filing_frequency.map(option=>option.value).join(''),
+    reporting_method:data.reporting_method?.value||''
   }
   console.log(formattedData);
   

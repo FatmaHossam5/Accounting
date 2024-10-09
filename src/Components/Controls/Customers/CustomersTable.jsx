@@ -50,92 +50,113 @@ export default function CustomersTable() {
   const [selectesPhoneId, setSelectedPhoneId] = useState('');
   const [deletedId, setDeletedId] = useState();
 
-  // const columns = [
-  //   {
-  //     name: "Arabic Contact Name",
-  //     selector: (row) => row.id,
-  //     sortable: true,
-  //     cell: (row) => (
-  //       <div className="d-flex align-items-center justify-content-between" style={{ minWidth: '150px' }} >
-  //         <span className="text-truncate" style={{ maxWidth: '150px' }}>
-  //           {row.customerAr?.contact_name}
-  //         </span>
-  //         <Dropdown
+  const columns = [
+    {
+      name: "Arabic Contact Name",
+      selector: (row) => row.id,
+      sortable: true,
+      visible: true,
+      id:'Arabic Contact Name',
+      label:'Arabic Contact Name',
+      cell: (row) => (
+        <div className="d-flex align-items-center justify-content-between" style={{ minWidth: '150px' }} >
+          <span className="text-truncate" style={{ maxWidth: '150px' }}>
+            {row.customerAr?.contact_name}
+          </span>
+          <Dropdown
 
-  //           dropdownContent={
-  //             <div>
-  //               <a className="dropdown-item" href="#">
-  //                 <i className="bi bi-pencil-fill me-2 text-warning" />
-  //                 Update
-  //               </a>
-  //               <a className="dropdown-item mt-1" onClick={() => handleDeleteModal(row.id)}>
-  //                 <i className="bi bi-trash-fill me-2 text-danger" />
-  //                 Remove
-  //               </a>
+            dropdownContent={
+              <div>
+                <a className="dropdown-item" href="#">
+                  <i className="bi bi-pencil-fill me-2 text-warning" />
+                  Update
+                </a>
+                <a className="dropdown-item mt-1" onClick={() => handleDeleteModal(row.id)}>
+                  <i className="bi bi-trash-fill me-2 text-danger" />
+                  Remove
+                </a>
 
-  //             </div>
-  //           }
-  //           id={row.id}
-  //           openDropdownId={openDropdownId}
-  //           setOpenDropdownId={setopenDropdownId}
-  //         />
+              </div>
+            }
+            id={row.id}
+            openDropdownId={openDropdownId}
+            setOpenDropdownId={setopenDropdownId}
+          />
 
-  //       </div>
-  //     ),
+        </div>
+      ),
 
-  //     style: {
-  //       minWidth: '100px',
-  //     }
+      style: {
+        minWidth: '100px',
+      }
 
-  //   },
-  //   {
-  //     name: 'English Contact Name',
-  //     selector: (row) => row.customerEn?.contact_name,
-  //     sortable: true,
-  //   },
-  //   {
-  //     name: "Arabic Company Name",
-  //     selector: (row) => row?.customerAr?.company_name,
-  //     sortable: true,
+    },
+    {
+      name: 'English Contact Name',
+      selector: (row) => row.customerEn?.contact_name,
+      sortable: true,
+      visible:true,
+      id:'English Contact Name',
+      label:'English Contact Name'
+    },
+    {
+      name: "Arabic Company Name",
+      selector: (row) => row?.customerAr?.company_name,
+      sortable: true,
+      visible:true,
+      id:'Arabic Company Name',
+      label:'Arabic Company Name'
 
 
 
-  //   },
-  //   {
-  //     name: 'English Company Name',
-  //     selector: (row) => row.customerEn?.company_name,
-  //     sortable: true,
-  //   },
-  //   {
-  //     name: 'Address',
-  //     selector: (row) => (
-  //       <div onClick={() => handleAdressData(row.id)}>
-  //         See All Addresses
-  //       </div>
-  //     ),
-  //     sortable: true,
-  //   },
-  //   {
-  //     name: 'IBAN',
-  //     selector: (row) => row.iban,
-  //     sortable: true,
-  //   },
-  //   {
-  //     name: 'Phones',
-  //     selector: (row) => (
-  //       <div onClick={() => handlePhoneData(row.id)}>
-  //         See All phone_numbers
-  //       </div>
-  //     ),
-  //     sortable: true,
-  //   }
+    },
+    {
+      name: 'English Company Name',
+      selector: (row) => row.customerEn?.company_name,
+      sortable: true,
+      visible:true,
+      id: 'English Company Name',
+      label: 'English Company Name'
+    },
+    {
+      name: 'Address',
+      selector: (row) => (
+        <div onClick={() => handleAdressData(row.id)}>
+          See All Addresses
+        </div>
+      ),
+      sortable: true,
+      visible:true,
+      id:'Address',
+      label:'Address'
+    },
+    {
+      name: 'IBAN',
+      selector: (row) => row.iban,
+      sortable: true,
+      visible:true,
+      id:'IBAN',
+      label:'IBAN'
+    },
+    {
+      name: 'Phones',
+      selector: (row) => (
+        <div onClick={() => handlePhoneData(row.id)}>
+          See All phone_numbers
+        </div>
+      ),
+      sortable: true,
+      visible:true,
+      id:'Phones',
+      label:'phones'
+    }
 
-  // ];
+  ];
 
   const ServiceColumns = [
-    { id: 'serviceName', name: 'Service Name', visible: true, selector: row => row.serviceName },
-    { id: 'serviceDepartment', name: 'Service Department', visible: true, selector: row => row.serviceDepartment },
-    // Add other columns as needed...
+    { id: 'serviceName',label: 'Service Name', name: 'Service Name', visible: true, selector: row => row.serviceName },
+    { id: 'serviceDepartment', label: 'Service Department',name: 'Service Department', visible: true, selector: row => row.serviceDepartment },
+   
   ];
   
   
@@ -282,13 +303,14 @@ export default function CustomersTable() {
   return (
     <>
       <CustomPage
-        data={ServiceData}
-        columns={ServiceColumns}
+        data={customers}
+        columns={columns}
         title="All Customers"
         ButtonName="Create Customer"
         ModalTitle="Create Customer"
         target='#createCustomer'
         buttonAction={() => setIsOpen(true)}
+        
 
       />
       <CustomModal id='createcustomers' title='Create New Customer' isOpen={isOpen} ModalWidth="custom-width-xl" onCancel={handleCancle} headerPadding='default' >

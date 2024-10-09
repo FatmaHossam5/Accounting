@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function AddInvoice({ pageTitle, subTitle, labelName, htmlFor, optionName }) {
+export default function AddInvoice({ pageTitle, subTitle, labelName, htmlFor, optionName,mainTitle,Name }) {
   const [items, setItems] = useState([]);
   const [showTotalCost, setShowTotalCost] = useState(false);
 
@@ -42,13 +42,13 @@ export default function AddInvoice({ pageTitle, subTitle, labelName, htmlFor, op
                 <div className="breadcrumbs-list w-100 mb-3">
                   <ul className="d-flex">
                     <li className="breadcrumbs-item d-flex align-items-center">
-                      Supplier’s Invoices
+                     {mainTitle}
                     </li>
                     <li className="breadcrumbs-item d-flex align-items-center active-breadcrumbs">
                       <span className="breadcrumbs-separetor ms-2">
                         <i className="fa-kit fa-right" />
                       </span>
-                      Create Supplier’s Invoice
+                      Create {mainTitle}
                     </li>
                   </ul>
                 </div>
@@ -76,7 +76,7 @@ export default function AddInvoice({ pageTitle, subTitle, labelName, htmlFor, op
                           <option value="samy">samy</option>
                         </select>
                       </div>
-                      <div className="input-package mt-3 ps-2 d-flex flex-column w-50">
+                      {/* <div className="input-package mt-3 ps-2 d-flex flex-column w-50">
                         <label className="mb-2" htmlFor="cost-center">
                           Cost Center
                         </label>
@@ -87,22 +87,22 @@ export default function AddInvoice({ pageTitle, subTitle, labelName, htmlFor, op
                         >
                           <option value>General cost center</option>
                         </select>
-                      </div>
+                      </div> */}
                     </div>
-                    <div className="input-package mt-3 d-flex flex-column w-100">
-                      <label htmlFor="address">Supplier Address</label>
+                    {/* <div className="input-package mt-3 d-flex flex-column w-100">
+                      <label htmlFor="address">{Name} Address</label>
                       <textarea
                         name="address"
                         id="address"
                         className="px-text-area"
                         placeholder="Enter supplier address"
                       />
-                    </div>
+                    </div> */}
                   </div>
                   <div className="separetor my-4" />
                   <div className="section">
                     <div className="d-flex mt-4">
-                      <h4>Supply Items Details</h4>
+                      <h4>{Name} Items Details</h4>
                       <button
                         type="button"
                         className="px-btn px-blue-btn add-item-btn ms-auto"
@@ -237,7 +237,7 @@ export default function AddInvoice({ pageTitle, subTitle, labelName, htmlFor, op
                           <i className="fa-regular fa-calendar-days fa-xl px-calender-icon" />
                         </div>
                       </div>
-                      <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
+                      {/* <div className="input-package mt-3 pe-2 d-flex flex-column w-50">
                         <label className="mb-2" htmlFor="currency">Currency</label>
                         <select
                           name="currency"
@@ -249,7 +249,7 @@ export default function AddInvoice({ pageTitle, subTitle, labelName, htmlFor, op
                           <option value="euro">Euro</option>
                           <option value="dinar">Dinar</option>
                         </select>
-                      </div>
+                      </div> */}
                       <div className="input-package mt-4 ps-2 d-flex flex-column w-50">
                         <label htmlFor="tax">Tax</label>
                         <input

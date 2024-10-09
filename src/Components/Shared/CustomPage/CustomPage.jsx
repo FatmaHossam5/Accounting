@@ -50,9 +50,10 @@ return selectedOptions.some(option=>item[group].includes(option.value) )
                  
                        <SearchBar value={filterText} onChange={(e)=>setFilterText(e.target.value)} filterGroups={filterOptions} onApply={handleApplyFilter}/>
                         <div className='table-btns d-flex justify-content-end'>
-                        <ManageColumns columns={tableColumns} onColumnToggle={handleColumnToggle} />                        </div>
+                                              </div>
                     <div className="table-btns d-flex justify-content-end ">
-                      <button className="px-btn px-gray-btn text-capitalize d-flex" onClick={toggleDropdown}>
+                    <ManageColumns columns={tableColumns} onColumnToggle={handleColumnToggle} /> 
+                      {/* <button className="px-btn px-gray-btn text-capitalize d-flex" onClick={toggleDropdown}>
                         <div className="btn-icon w-10 me-2">
                           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clipPath="url(#clip0_1247_9410)">
@@ -66,7 +67,7 @@ return selectedOptions.some(option=>item[group].includes(option.value) )
                           </svg>
                         </div> manage
                         columns <i className="fa-kit fa-down ms-2 mt-1" />
-                      </button>
+                      </button> */}
                       <button className="px-btn px-gray-btn text-capitalize d-flex align-items-center justify-content-center ms-3">
                         <div className="btn-icon w-20 pe-1">
 

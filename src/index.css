@@ -545,6 +545,25 @@ label{
     border: 1px solid #BABABA !important;
     cursor: not-allowed;
 }
+.manage .btn-primary{
+    all: unset!important;
+}
+.dropdown-menu-custom{
+    min-width: 100% !important;
+    width: auto;
+   
+}
+.dropdown-menu{
+    position: absolute!important;
+    top: 20%!important;
+    right: 8%!important;
+    width: 14rem!important;
+ 
+}
+.px-btn{
+    padding-left: 10px!important;
+    padding-right: 10px;
+}
 @media screen and (max-width:1400px) {
     .vertical-separetor::after {
         display: none;

@@ -14,6 +14,9 @@ export default function CustomerInvoices() {
       name: "Customer Name",
       selector: (row) =>  row.name ,
       sortable: true,
+      visible:true,
+      id: "Customer Name",
+      label: "Customer Name",
       cell: (row) => (
         <div className="d-flex align-items-center justify-content-between" style={{ minWidth: '150px' }} >
           <span className="text-truncate" style={{ maxWidth: '150px' }}>
@@ -53,36 +56,57 @@ export default function CustomerInvoices() {
       name: "Cost Center",
       selector: (row) => (<div style={{ minWidth: '150px' }}>{row.cost}</div>),
       sortable: true,
+      visible:true,
+      id:"Cost Center",
+      label:"Cost Center",
     },
     {
       name: "Items",
       selector: (row) => row.items,
       sortable: true,
+      visible:true,
+      id:'Items',
+      label:'Items'
     },
     {
       name: "Total Item Cost",
       selector: (row) => row.totalCost,
       sortable: true,
+      visible:true,
+      id:'Total Item Cost',
+      label:'Total Item Cost'
     },
     {
       name: "Currency",
       selector: (row) => row.currency,
       sortable: true,
+      visible:true,
+      id:"Currency",
+      label:'Currency'
     },
     {
       name: "Tax",
       selector: (row) => row.tax,
       sortable: true,
+      visible:true,
+      id:'Tax',
+      label:'Tax'
     },
     {
       name: "Total Invoice",
       selector: (row) => row.totalInvoce,
       sortable: true,
+      visible:true,
+      id:"Total Invoice",
+      label:"Total Invoice"
     },
     {
       name: "Invoice Due Date",
       selector: (row) => row.invoiceInterval,
       sortable: true,
+      visible:true,
+      id: "Invoice Due Date",
+      label:"Invoice Due Date"
     },
   ];
 
