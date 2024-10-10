@@ -118,20 +118,16 @@ export default function AddCustomerInvoice() {
       {fields.map((field, index) => (
         <div key={field.id}>
           {/* Product Select */}
-          {/* <label>Product</label>
+          <label>Product</label>
           <select {...register(`items.${index}.product_id`)}>
             <option value="">Select Product</option>
             {products.map((product) => (
               <option key={product.id} value={product.id}>
-                {product.name}
+                {product.productEn?.name}
               </option>
             ))}
-          </select> */}
-           <label>Product ID</label>
-          <input
-            {...register(`items.${index}.product_id`)}
-            type="text"
-          />
+          </select>
+       
           <label>Count</label>
           <input {...register(`items.${index}.count`)} type="number" />
           <label>Price</label>

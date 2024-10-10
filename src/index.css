@@ -511,6 +511,10 @@ label{
 .modal-footer{
     border-top: none!important;
 }
+.tax .input[type="checkbox"]{
+    height:0!important;
+    margin-top:15px!important
+}
 /* .modal{
     --bs-modal-header-padding: 1rem 4.7rem !important;
 
