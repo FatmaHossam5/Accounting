@@ -10,6 +10,7 @@ import ModalFooter from '../../Shared/ModalFooter/ModalFooter';
 import axios from 'axios';
 import { AuthContext } from '../../Helpers/Context/AuthContextProvider';
 import ManageColumns from '../../Shared/ManageColumns/ManageColumns';
+import { id } from 'date-fns/locale';
 
 export default function Products({ButtonName,buttonAction,target}) {
 
@@ -18,6 +19,7 @@ export default function Products({ButtonName,buttonAction,target}) {
   const{data:categories}=useDataFetch('categories')
   const{data:departments}=useDataFetch('departments')
   const{data:products,refetch}=useDataFetch('products')
+console.log(...products);
 
 const {handleSubmit,formState:{errors,isValid},control,reset}=useForm({
       mode:'onChange',
@@ -85,7 +87,9 @@ const{baseUrl}=useContext(AuthContext);
 
         </div>
       ),
-
+visible:true,
+id:'English Product Name',
+label:'English Product Name',
 
       style: {
         minWidth: '100px',
@@ -96,6 +100,9 @@ const{baseUrl}=useContext(AuthContext);
       name: "Product Brand",
       selector: (row) => row.productEn?.brand,
       sortable: true,
+      visible:true,
+      id:'Product Brand',
+      label:'Product Brand'
     },
     // {
     //   name: "Product Department",
@@ -106,73 +113,54 @@ const{baseUrl}=useContext(AuthContext);
       name: "Product Description",
       selector: (row) => row.productEn?.description,
       sortable: true,
+      visible:true,
+      id:'Product Description',
+      label:'Product Description'
     },
     {
-      name: "Product Branch",
-      selector: (row) => row.branch,
+      name: "Product Brand",
+      selector: (row) => row.productEn?.brand,
       sortable: true,
+      visible:'Product Brand',
+      id:'Product Brand',
+      label:'Product Brand'
     },
-    {
-      name: "Product Category",
-      selector: (row) => row.category,
-      sortable: true,
-    },
-    {
-      name: "Product SubCategory",
-      selector: (row) => row.sub_category,
-      sortable: true,
-    },
+    // {
+    //   name: "Product Category",
+    //   selector: (row) => row.category,
+    //   sortable: true,
+    //   visible:true,
+    //   id:'Product Category',
+    //   label:'Product Category'
+    // },
+    // {
+    //   name: "Product SubCategory",
+    //   selector: (row) => row.sub_category,
+    //   sortable: true,
+    //   visible:true,
+    //   id:'Product SubCategory',
+    //   label:'Product SubCategory'
+    // },
     {
       name: "Product Type",
       selector: (row) => row.type,
       sortable: true,
+      visible:'true',
+      id:'Product Type',
+      label:'Product Type'
     },
-    {
-      name: "Unit Price",
-      selector: (row) => row.price,
-      sortable: true,
-    },
+    // {
+    //   name: "Unit Price",
+    //   selector: (row) => row.price,
+    //   sortable: true,
+    //   visible:true,
+    //   id:'Unit Price',
+    //   label:'Unit Price'
+    // },
   
   ];
-const [visibleColumns,setVisibleColumns]=useState([
-  "English Product Name",
-  "Product Description",
-  "Product Branch",
-  "Product Category",
-  "Product SubCategory",
-  "Product Type",
-  "Unit Price"
-])
-const filteredColumns=columns.filter(col=>visibleColumns.includes(col.name))
-  const serviceFilters = [
-    {
-      label: 'Service Department',
-      name: 'serviceDepartment',
-      options: [
-        { value: 'HR', label: 'HR' },
-        { value: 'IT', label: 'IT' },
-        { value: 'Finance', label: 'Finance' },
-      ],
-    },
-    {
-      label: 'Service Branch',
-      name: 'serviceBranch',
-      options: [
-        { value: 'Branch 1', label: 'Branch 1' },
-        { value: 'Branch 2', label: 'Branch 2' },
-        { value: 'Branch 3', label: 'Branch 3' },
-      ],
-    },
-    {
-      label: 'Service Type',
-      name: 'serviceType',
-      options: [
-        { value: 'Type A', label: 'Type A' },
-        { value: 'Type B', label: 'Type B' },
-        { value: 'Type C', label: 'Type C' },
-      ],
-    },
-  ];
+
+ 
   const AddProduct=(data)=>{
 ;
     setIsSubmitting(true)
@@ -206,6 +194,7 @@ const filteredColumns=columns.filter(col=>visibleColumns.includes(col.name))
             render={({field,fieldState})=>(
               <Input
                type='text'
+               className='w-90'
                label={'Product English Name'}
                 placeholder={'Enter product name'}
                 value={field.value}
@@ -228,6 +217,7 @@ const filteredColumns=columns.filter(col=>visibleColumns.includes(col.name))
             render={({field,fieldState})=>(
               <Input
               type='text'
+               className='w-90'
               value={field.value}
               onChange={field.onChange}
               error={fieldState.error?fieldState.error.message:null}
@@ -255,6 +245,7 @@ const filteredColumns=columns.filter(col=>visibleColumns.includes(col.name))
             render={({field,fieldState})=>(
               <Input
                type='text'
+                className='w-90'
                label={'Brand English Name'}
                 placeholder={'Enter Brand name'}
                 value={field.value}
@@ -268,6 +259,7 @@ const filteredColumns=columns.filter(col=>visibleColumns.includes(col.name))
           <div className='col-md-6'>
             <Controller
             name='brand_ar'
+
             control={control}
             rules={{
               required:'Arabic Brand Name is required! ',
@@ -277,6 +269,7 @@ const filteredColumns=columns.filter(col=>visibleColumns.includes(col.name))
             render={({field,fieldState})=>(
               <Input
               type='text'
+               className='w-90'
               value={field.value}
               onChange={field.onChange}
               error={fieldState.error?fieldState.error.message:null}
@@ -302,6 +295,7 @@ const filteredColumns=columns.filter(col=>visibleColumns.includes(col.name))
             render={({field,fieldState})=>(
               <Input
               type='text'
+               className='w-90'
               value={field.value}
               onChange={field.onChange}
               error={fieldState.error?fieldState.error.message:null}
@@ -324,6 +318,7 @@ const filteredColumns=columns.filter(col=>visibleColumns.includes(col.name))
             render={({field,fieldState})=>(
               <Input
               type='text'
+               className='w-90'
               value={field.value}
               onChange={field.onChange}
               error={fieldState.error?fieldState.error.message:null}
@@ -353,6 +348,7 @@ render={({field,fieldState})=>(
   <Input
    label='TAX'
     placeholder='Enter TAX'
+     className='w-90'
      type='text' 
      value={field.value}
      onChange={field.onChange}
@@ -371,6 +367,7 @@ rules={{
 render={({field,fieldState})=>(
   <Input
    label='Taxable'
+    className='w-90'
     placeholder='Enter Taxable'
      type='text' 
      value={field.value}
@@ -395,6 +392,7 @@ rules={{
 render={({field,fieldState})=>(
   <Input
    label='stock'
+    className='w-90'
     placeholder='Enter stock'
      type='text' 
      value={field.value}
@@ -474,13 +472,9 @@ className2={!isValid?'btn-invalid2':''}
        />
      </form>
       </CustomModal>
-    <ManageColumns
-    columns={columns.map(col=>col.name)}
-    visibleColumns={visibleColumns}
-    setVisibleColumns={setVisibleColumns}
-    />
+ 
       <CustomPage data={[...products]}
-        columns={filteredColumns}
+        columns={columns}
         title='Products'
         ButtonName='Create Product'
         target='#createProduct'

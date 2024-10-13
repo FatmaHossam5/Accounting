@@ -3,18 +3,18 @@
 import React from 'react';
 
 
-const Input = React.forwardRef(({ label, type = 'text', placeholder,value,onChange, ...rest }, ref) => {
+const Input = React.forwardRef(({ label, type = 'text', placeholder,value,onChange,className='', ...rest }, ref) => {
   return (
     <>
-      {label && <label className="mb-2" htmlFor={rest.id}>{label}</label>}
+      {label && <label className="mb-2 d-block" htmlFor={rest.id}>{label}</label>}
       <input
-        ref={ref}  // This forwards the ref from React Hook Form
+        ref={ref}  
         value={value}
         onChange={onChange}
         type={type}
         placeholder={placeholder}
-        className="px-form-input w-100 m-auto"
-        {...rest}  // Spread other props (including register from React Hook Form)
+        className={`px-form-input  m-auto ${className}`}
+        {...rest} 
       />
     </>
   );

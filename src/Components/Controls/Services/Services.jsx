@@ -39,13 +39,18 @@ export default function Services() {
 
       style: {
         minWidth: '100px',
-      }
-
+      },
+      visible: true,
+      id: 'Sevice Name',
+      label: 'Sevice Name'
     },
     {
       name: "Service Description",
       selector: (row) => row.description,
       sortable: true,
+      visible: true,
+      id: 'Service Description',
+      label: 'Service Description'
     },
     {
       name: "Service Department",
@@ -57,36 +62,56 @@ export default function Services() {
       selector: (row) => row.branch
       ,
       sortable: true,
+      visible: true,
+      id: 'Service Branch',
+      label: 'Service Branch'
     },
     {
       name: "Service Type",
       selector: (row) => row.type,
       sortable: true,
+      visible: true,
+      id: 'Service Type',
+      label: 'Service Type'
     },
     {
       name: "Unit Price",
       selector: (row) => row.price,
       sortable: true,
+      visible: true,
+      id: 'Unit Price',
+      label: 'Unit Price'
     },
     {
       name: "Service Daily Income",
       selector: (row) => row.daily,
-      sortable: true,
+      sortable: true, visible: true,
+      id: 'Service Daily Income',
+      label: 'Service Daily Income'
     },
     {
       name: "Service Weekly Income",
       selector: (row) => row.week,
       sortable: true,
+      visible: true,
+      id: 'Service Weekly Income',
+      label: 'Service Weekly Income'
     },
     {
       name: "Service Monthly Income",
       selector: (row) => row.month,
       sortable: true,
+      visible: true,
+      id: 'Service Monthly Income',
+      label: 'Service Monthly Income'
     },
     {
       name: "Service Yearly Income",
       selector: (row) => row.year,
       sortable: true,
+      visible: true,
+      id: 'Service Yearly Income',
+      label: 'Service Yearly Income'
     },
   ];
 
