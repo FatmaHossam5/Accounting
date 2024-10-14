@@ -9,6 +9,7 @@ import useDataFetch from '../../Helpers/CustomFunction/useDataFetch';
 import axios from 'axios';
 import { AuthContext } from '../../Helpers/Context/AuthContextProvider';
 import Input from '../../Shared/Input/Input';
+import ConfirmDelete from '../../Shared/ConfirmDelete/ConfirmDelete';
 
 export default function Taxs() {
 
@@ -16,7 +17,8 @@ export default function Taxs() {
   const [openDropdownId, setopenDropdownId] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [deletedTaxId, setDeletedTaxId] = useState(null);
 
 
   const { baseUrl } = useContext(AuthContext);
@@ -42,7 +44,7 @@ export default function Taxs() {
                   <i className="bi bi-pencil-fill me-2 text-warning" />
                   Update
                 </a>
-                <a className="dropdown-item mt-1" href="#">
+                <a className="dropdown-item mt-1" href="#"  onClick={() => handleDeleteModal(row.id)}>
                   <i className="bi bi-trash-fill me-2 text-danger" />
                   Remove
                 </a>
@@ -135,7 +137,30 @@ export default function Taxs() {
       sortable: true,
     },
   ];
+  const handleDeleteModal = (id) => {
+      
+    setDeletedTaxId(id)
+    setIsDeleteOpen(true)
 
+};
+const handleDeleteCancelled = () => {
+  setIsDeleteOpen(false);  // Close the delete modal
+  setopenDropdownId(null);  // Close the dropdown after action
+}; 
+const DeleteTax = (id) => {
+  axios.delete(`${baseUrl}/taxes/${id}`).then(() => {
+      refetch();
+  }).catch((error) => {
+      console.log(error);
+  })
+};
+const handleDeletedConfirmed = () => {
+  if (deletedTaxId) {
+    DeleteTax(deletedTaxId)
+      setopenDropdownId(null)
+  }
+  setIsDeleteOpen(false)
+};
 
   const { data: taxes, refetch } = useDataFetch('taxes')
   const monthsOptions = [
@@ -197,6 +222,7 @@ export default function Taxs() {
       setIsSubmitting(false)
     })
   }
+
   return (
     <>
       <CustomModal id='createTax' title='Create Tax' isOpen={isOpen} onCancel={() => setIsOpen(false)} ModalWidth='modal-lg' headerPadding='custom' >
@@ -555,6 +581,15 @@ export default function Taxs() {
         target='#createTax'
         buttonAction={() => setIsOpen(true)}
       />
+         {isDeleteOpen && (
+                <ConfirmDelete
+                    isOpen={isDeleteOpen}
+                    onCancel={handleDeleteCancelled}
+                    onConfirm={handleDeletedConfirmed}
+                    deleteMsg={'Tax'}
+
+                />
+            )}
     </>
   )
 }

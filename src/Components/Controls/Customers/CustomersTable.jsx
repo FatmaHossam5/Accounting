@@ -153,17 +153,7 @@ export default function CustomersTable() {
 
   ];
 
-  const ServiceColumns = [
-    { id: 'serviceName',label: 'Service Name', name: 'Service Name', visible: true, selector: row => row.serviceName },
-    { id: 'serviceDepartment', label: 'Service Department',name: 'Service Department', visible: true, selector: row => row.serviceDepartment },
-   
-  ];
-  
-  
-  const ServiceData = [
-    { serviceName: 'Marketing', serviceDepartment: 'Sales' },
-    // Additional data...
-  ];
+
   const handleCountryCodeChange = (event) => {
     setSelectedCountryCode(event.target.value);
   };
@@ -172,6 +162,7 @@ export default function CustomersTable() {
     label: Coun?.countryEn?.name,
     value: Coun?.id
   }))
+
 
   const getAllGovernarates = () => {
     axios.get(`${baseUrl}/governorates`).then((response) => {

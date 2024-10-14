@@ -10,7 +10,7 @@ import Dropdown from '../../Shared/Dropdown/Dropdown'
 import Input from '../../Shared/Input/Input'
 import ModalFooter from '../../Shared/ModalFooter/ModalFooter'
 export default function Countries() {
-    const [openDropdownId, setopenDropdownId] = useState(null)
+    const [openDropdownId, setOpenDropdownId] = useState(null)
     const [isOpen, setIsOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -24,9 +24,15 @@ export default function Countries() {
 
     const columns = [
         {
-            name: " Id",
+            name: "Id",
             selector: (country) => country.id,
             sortable: true,
+            visible:true,
+            id:'Id',
+            label:'Id',
+            style: {
+                minWidth: '100px',
+            },
             cell: (row) => (
                 <div className="d-flex align-items-center ">
                     <span className="me-2">
@@ -35,7 +41,7 @@ export default function Countries() {
                     <Dropdown
 
                         dropdownContent={
-                            <div>
+                            <div onClick={(e) => e.stopPropagation()}>
                                 <a className="dropdown-item" href="#" >
                                     <i className="bi bi-pencil-fill me-2 text-warning" />
                                     Update
@@ -49,27 +55,34 @@ export default function Countries() {
                         }
                         id={row.id}
                         openDropdownId={openDropdownId}
-                        setOpenDropdownId={setopenDropdownId}
+                        setOpenDropdownId={setOpenDropdownId}
+                      
 
                     />
 
                 </div>
             ),
 
-            style: {
-                minWidth: '100px',
-            }
+          
+            
+          
 
         },
         {
             name: "Arabic Name",
             selector: (country) => country?.countryAr?.name,
             sortable: true,
+            visible:true,
+            id:'Arabic Name',
+              label:'Arabic Name'
         },
         {
             name: "English Name",
             selector: (country) => country?.countryEn?.name,
             sortable: true,
+            visible:true,
+            id:'English Name',
+              label:'English Name'
         },
 
 
@@ -81,8 +94,12 @@ export default function Countries() {
 
     const closeModal = () => setIsOpen(false);
     const handleCancle = () => closeModal();
-    const handleDeleteCancelled = () => setIsDeleteOpen(false);
-    {/*Add Country */ }
+    const handleDeleteCancelled = () => {
+        setIsDeleteOpen(false);  // Close the delete modal
+        setOpenDropdownId(null);  // Close the dropdown after action
+      }; 
+      
+      {/*Add Country */ }
     const AddCountry = (data) => {
         setIsSubmitting(true)
         const formData = new FormData();
@@ -109,6 +126,7 @@ export default function Countries() {
 
     {/*Open Delete Modal */ }
     const handleDeleteModal = (id) => {
+      
         setDeletedCountryId(id)
         setIsDeleteOpen(true)
 
@@ -127,7 +145,7 @@ export default function Countries() {
     const handleDeletedConfirmed = () => {
         if (deletedCountryId) {
             DeleteCountry(deletedCountryId)
-            setopenDropdownId(null)
+            setOpenDropdownId(null)
         }
         setIsDeleteOpen(false)
     };
@@ -144,6 +162,7 @@ export default function Countries() {
                 buttonAction={() => setIsOpen(true)}
                 columns={columns}
                 data={countries}
+           
             />
             <CustomModal id='createcountries' title='Create New Country' isOpen={isOpen} className='modal-lg' onCancel={handleCancle} headerPadding='custom' >
                 <form onSubmit={handleSubmit(AddCountry)} >

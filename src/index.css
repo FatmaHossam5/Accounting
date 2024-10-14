@@ -557,13 +557,13 @@ label{
     width: auto;
    
 }
-.dropdown-menu{
+/* .dropdown-menu{
     position: absolute!important;
     top: 20%!important;
     right: 8%!important;
     width: 14rem!important;
  
-}
+} */
 .px-btn{
     padding-left: 10px!important;
     padding-right: 10px;

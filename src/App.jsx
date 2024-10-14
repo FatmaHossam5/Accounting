@@ -30,6 +30,7 @@ import Governorates from './Components/Controls/Governorates/Governorates.jsx'
 import AuthContextProvider from './Components/Helpers/Context/AuthContextProvider.jsx'
 import Cities from './Components/Controls/Cities/Cities.jsx'
 import Industries from './Components/Controls/Industries/Industries.jsx'
+import AddInvoice from './Components/Shared/AddInvoice/AddInvoice.jsx'
 
 
 
@@ -46,7 +47,7 @@ const routes = createBrowserRouter([
       {path:"cInvoice",element:<CustomerInvoices/>},
       {path:"suppliers",element:<Supplier/>},
       {path:"suppliersInvoices",element:<SupplierInvoices/>},
-      {path:'/Add',element:<AddCustomerInvoice/>},
+      {path:'/Add',element:<AddInvoice/>},
       {path:'/AddSupplierInvoice',element:<AddSupplierInvoice/>},
       {path:'/AddReverserInvoice',element:<AddReverseInvoice/>},
 

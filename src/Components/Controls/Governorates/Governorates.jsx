@@ -18,9 +18,9 @@ export default function Governorates() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [deletedGovernarateId, setDeletedGovernarateId] = useState(null);
-    const { handleSubmit, formState: { errors,isValid }, reset, control } = useForm({
-        mode:'onChange',
-        reValidateMode:'onChange',
+    const { handleSubmit, formState: { errors, isValid }, reset, control } = useForm({
+        mode: 'onChange',
+        reValidateMode: 'onChange',
         defaultValues: {
             name_ar: '',
             name_en: '',
@@ -28,7 +28,7 @@ export default function Governorates() {
         }
     });
     const { baseUrl } = useContext(AuthContext);
-    const { data: governorates,refetch } = useDataFetch('governorates');
+    const { data: governorates, refetch } = useDataFetch('governorates');
 
     const columns = [
         {
@@ -67,27 +67,42 @@ export default function Governorates() {
             style: {
                 minWidth: '100px',
             }
-
+            ,
+            visible: true,
+            id: 'id',
+            label: 'Id'
         },
         {
-            name: "English governorates  Name",
+            name: "English governorates Name",
             selector: (data) => data?.governorateAr?.name,
             sortable: true,
+            visible: true,
+            id: 'English governorates Name',
+            label: 'English governorates Name'
         },
         {
             name: "Arabic governorates Name",
             selector: (data) => data?.governorateEn?.name,
             sortable: true,
+            visible: true,
+            id: 'Arabic governorates Name',
+            label: 'Arabic governorates Name'
         },
         {
             name: "Arabic Name",
             selector: (data) => data?.country?.countryAr?.name,
             sortable: true,
+            visible: true,
+            id: 'Arabic  Name',
+            label: 'Arabic  Name'
         },
         {
             name: "English Name",
             selector: (data) => data?.country?.countryEn?.name,
             sortable: true,
+            visible: true,
+            id: 'English  Name',
+            label: 'English  Name'
         },
 
 
@@ -167,7 +182,7 @@ export default function Governorates() {
                 buttonAction={() => setIsOpen(true)}
                 columns={columns}
                 data={governorates}
-                
+
             />
             <CustomModal id='creategovernorates'
                 title='Governarate'
@@ -227,7 +242,7 @@ export default function Governorates() {
                                 name='name_en'
                                 control={control}
                                 rules={{
-                                    required: 'English Name is Required', 
+                                    required: 'English Name is Required',
                                     pattern: { value: /^[A-Za-z\s]+$/, message: 'Only English Letters are allowed' },
                                     validate: {
                                         startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start With a Number'
@@ -252,11 +267,11 @@ export default function Governorates() {
                         onCancle={handleCancle}
                         onSubmit={handleSubmit(AddGovernarates)}
                         isSubmitting={isSubmitting}
-                        isCancelDisabled={isSubmitting||!isValid}
-                        isSaveDisabled={isSubmitting||!isValid}
-                        className={!isValid?'btn-invalid':''}
-                        className2={!isValid?'btn-invalid2':''}
-                         />
+                        isCancelDisabled={isSubmitting || !isValid}
+                        isSaveDisabled={isSubmitting || !isValid}
+                        className={!isValid ? 'btn-invalid' : ''}
+                        className2={!isValid ? 'btn-invalid2' : ''}
+                    />
                 </form>
             </CustomModal>
             {isDeleteOpen && (<ConfirmDelete

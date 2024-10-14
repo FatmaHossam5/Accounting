@@ -8,6 +8,7 @@ import ModalFooter from '../../Shared/ModalFooter/ModalFooter';
 import { Controller, useForm } from 'react-hook-form';
 import axios from 'axios';
 import { AuthContext } from '../../Helpers/Context/AuthContextProvider';
+import ConfirmDelete from '../../Shared/ConfirmDelete/ConfirmDelete';
 
 export default function Categories() {
   const [openDropdownId, setopenDropdownId] = useState(null);
@@ -17,11 +18,16 @@ export default function Categories() {
   const { baseUrl } = useContext(AuthContext);
   const [category, setCategory] = useState([]);
 const[isSubmitting,setIsSubmitting]=useState(false);
+const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+const [deletedCategoryId, setDeletedCategoryId] = useState(null);
   const columns = [
     {
       name: " Id",
       selector: (row) =>  row.id ,
       sortable: true,
+      visible:true,
+      id:'id',
+      label:'id',
       cell: (row) => (
         <div className="d-flex align-items-center ">
           <span className="me-2">
@@ -35,7 +41,7 @@ const[isSubmitting,setIsSubmitting]=useState(false);
                   <i className="bi bi-pencil-fill me-2 text-warning" />
                   Update
                 </a>
-                <a className="dropdown-item mt-1" href="#">
+                <a className="dropdown-item mt-1" href="#"  onClick={() => handleDeleteModal(row.id)}>
                   <i className="bi bi-trash-fill me-2 text-danger" />
                   Remove
                 </a>
@@ -59,6 +65,9 @@ const[isSubmitting,setIsSubmitting]=useState(false);
  {
   name:'Category Name',
   selector:(row)=>row.categoryEn?.name,
+  visible:true,
+  id:'Category Name',
+  label:'Category Name',
   cell:(row)=>(
     <div>
      {`${'-'.repeat(row.level)} ${row.categoryEn?.name}`}
@@ -68,6 +77,9 @@ const[isSubmitting,setIsSubmitting]=useState(false);
  {
   name:"Arabic Name",
   selector:(row)=>row.categoryAr?.name,
+  visible:true,
+  id:'Arabic Name',
+  label:'Arabic Name',
  }
     
   ];
@@ -113,6 +125,13 @@ flatCategories=flatCategories.concat(flatten(subcategory,level+1))
     value:  cat?.id,
     label: cat?.parent?.categoryEn?.name?`${cat?.parent?.categoryEn?.name}>>${cat?.categoryEn?.name}`:cat?.categoryEn?.name
   })))
+
+  const handleDeleteModal = (id) => {
+      
+    setDeletedCategoryId(id)
+    setIsDeleteOpen(true)
+
+};
   // const groupedCategory=category.reduce((acc,curr)=>{
   //   if (!curr.parent){
   //     acc.push({
@@ -161,7 +180,24 @@ flatCategories=flatCategories.concat(flatten(subcategory,level+1))
   }
 
 
-
+  const handleDeleteCancelled = () => {
+    setIsDeleteOpen(false);  // Close the delete modal
+    setopenDropdownId(null);  // Close the dropdown after action
+  }; 
+  const DeleteCategory = (id) => {
+    axios.delete(`${baseUrl}/categories/${id}`).then(() => {
+        getAllCategories();
+    }).catch((error) => {
+        console.log(error);
+    })
+};
+  const handleDeletedConfirmed = () => {
+    if (deletedCategoryId) {
+        DeleteCategory(deletedCategoryId)
+        setopenDropdownId(null)
+    }
+    setIsDeleteOpen(false)
+};
 
 
 
@@ -300,7 +336,15 @@ flatCategories=flatCategories.concat(flatten(subcategory,level+1))
           />
         </form>
       </CustomModal>
+      {isDeleteOpen && (
+                <ConfirmDelete
+                    isOpen={isDeleteOpen}
+                    onCancel={handleDeleteCancelled}
+                    onConfirm={handleDeletedConfirmed}
+                    deleteMsg={'Category'}
 
+                />
+            )}
     </>
   )
 }

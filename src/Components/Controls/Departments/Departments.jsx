@@ -32,6 +32,9 @@ export default function Departments() {
             name: " Id",
             selector: (department) => department.id,
             sortable: true,
+            visible:true,
+            id:'id',
+            label:'id',
             cell: (row) => (
                 <div className="d-flex align-items-center ">
                     <span className="me-2">
@@ -70,11 +73,17 @@ export default function Departments() {
             name: "Arabic Name",
             selector: (department) => department?.DepartmentAr?.name,
             sortable: true,
+            visible:true,
+            id:'Arabic Name',
+            label:'Arabic Name',
         },
         {
             name: "English Name",
             selector: (department) => department?.DepartmentEn?.name,
             sortable: true,
+            visible:true,
+            id:'English Name',
+            label:'English Name',
         },
 
 

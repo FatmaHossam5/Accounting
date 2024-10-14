@@ -9,10 +9,13 @@ import Input from '../../Shared/Input/Input';
 import { Controller, useForm } from 'react-hook-form';
 import ModalFooter from '../../Shared/ModalFooter/ModalFooter';
 import axios from 'axios';
+import ConfirmDelete from '../../Shared/ConfirmDelete/ConfirmDelete';
 
 export default function Companies() {
     const [openDropdownId, setopenDropdownId] = useState(null);
-    const[isSubmitting,setIsSubmitting]=useState(false)
+    const[isSubmitting,setIsSubmitting]=useState(false);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [deletedCompanyId, setDeletedCompanyId] = useState(null);
     const { data: companies,refetch } = useDataFetch('companies');
     const { baseUrl } = useContext(AuthContext);
     const[isOpen,setIsOpen]=useState(false)
@@ -62,7 +65,7 @@ const{control,formState:{errors,isValid},handleSubmit,reset}=useForm(
                                     <i className="bi bi-pencil-fill me-2 text-warning" />
                                     Update
                                 </a>
-                                <a className="dropdown-item mt-1" href="#">
+                                <a className="dropdown-item mt-1" href="#"  onClick={() => handleDeleteModal(row.id)}>
                                     <i className="bi bi-trash-fill me-2 text-danger" />
                                     Remove
                                 </a>
@@ -184,6 +187,30 @@ console.log(formData);
     })
     
    }
+   const handleDeleteModal = (id) => {
+      
+    setDeletedCompanyId(id)
+    setIsDeleteOpen(true)
+
+};
+const handleDeleteCancelled = () => {
+    setIsDeleteOpen(false);  // Close the delete modal
+    setopenDropdownId(null);  // Close the dropdown after action
+  }; 
+  const DeleteCompany = (id) => {
+    axios.delete(`${baseUrl}/companies/${id}`).then(() => {
+        refetch();
+    }).catch((error) => {
+        console.log(error);
+    })
+};
+const handleDeletedConfirmed = () => {
+    if (deletedCompanyId) {
+        DeleteCompany(deletedCompanyId)
+        setopenDropdownId(null)
+    }
+    setIsDeleteOpen(false)
+};
 
     return (
         <>
@@ -392,7 +419,15 @@ console.log(formData);
           />
                 </form>
             </CustomModal> 
+            {isDeleteOpen && (
+                <ConfirmDelete
+                    isOpen={isDeleteOpen}
+                    onCancel={handleDeleteCancelled}
+                    onConfirm={handleDeletedConfirmed}
+                    deleteMsg={'Country'}
 
+                />
+            )}
         </>
 
 

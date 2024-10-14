@@ -2,28 +2,25 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "../../Shared/Dropdown/Dropdown";
 import CustomPage from "../../Shared/CustomPage/CustomPage";
+import useDataFetch from "../../Helpers/CustomFunction/useDataFetch";
 
 export default function CustomerInvoices() {
   const [openDropdownId, setopenDropdownId] = useState(null)
   const navigate = useNavigate();
-  const columns = [
+  const{data:customerProductInvoices}=useDataFetch('customer-product-invoices');
+  console.log(customerProductInvoices);
   
-
-
+  const columns = [
     {
       name: "Customer Name",
-      selector: (row) =>  row.name ,
+      selector: (row) =>  row.customer?.customerEn?.contact_name ,
       sortable: true,
-      visible:true,
-      id: "Customer Name",
-      label: "Customer Name",
       cell: (row) => (
-        <div className="d-flex align-items-center justify-content-between" style={{ minWidth: '150px' }} >
+        <div className="d-flex align-items-center justify-content-between" style={{ minWidth: '150px' }}>
           <span className="text-truncate" style={{ maxWidth: '150px' }}>
-            {row.name}
+          {row.customer?.customerEn?.contact_name }
           </span>
           <Dropdown
-
             dropdownContent={
               <div>
                 <a className="dropdown-item" href="#">
@@ -34,82 +31,39 @@ export default function CustomerInvoices() {
                   <i className="bi bi-trash-fill me-2 text-danger" />
                   Remove
                 </a>
-
               </div>
             }
             id={row.id}
             openDropdownId={openDropdownId}
-            setOpenDropdownId={setopenDropdownId}
+            setOpenDropdownId={setopenDropdownId} 
           />
-
         </div>
       ),
-
-
-
       style: {
         minWidth: '100px',
       }
-
-    },
-    {
-      name: "Cost Center",
-      selector: (row) => (<div style={{ minWidth: '150px' }}>{row.cost}</div>),
-      sortable: true,
-      visible:true,
-      id:"Cost Center",
-      label:"Cost Center",
-    },
-    {
-      name: "Items",
-      selector: (row) => row.items,
-      sortable: true,
-      visible:true,
-      id:'Items',
-      label:'Items'
-    },
-    {
-      name: "Total Item Cost",
-      selector: (row) => row.totalCost,
-      sortable: true,
-      visible:true,
-      id:'Total Item Cost',
-      label:'Total Item Cost'
-    },
-    {
-      name: "Currency",
-      selector: (row) => row.currency,
-      sortable: true,
-      visible:true,
-      id:"Currency",
-      label:'Currency'
-    },
-    {
-      name: "Tax",
-      selector: (row) => row.tax,
-      sortable: true,
-      visible:true,
-      id:'Tax',
-      label:'Tax'
     },
     {
       name: "Total Invoice",
-      selector: (row) => row.totalInvoce,
+      selector: (row) => row.total_invoice,
       sortable: true,
-      visible:true,
-      id:"Total Invoice",
-      label:"Total Invoice"
     },
     {
       name: "Invoice Due Date",
-      selector: (row) => row.invoiceInterval,
+      selector: (row) => new Date(row.due_date).toLocaleDateString(),
       sortable: true,
-      visible:true,
-      id: "Invoice Due Date",
-      label:"Invoice Due Date"
     },
+    {
+      name: "Items",
+      selector: (row) => (Array.isArray(row.items) ? row.items.length : 0),
+      sortable: true,
+    },
+    {
+      name: "Tax",
+      selector: (row) => (Array.isArray(row.items) ? row.items.map(item => item.tax).join(", ") : "N/A"),
+      sortable: true,
+    }
   ];
-
   const data = [
     {
       id: '1',
@@ -191,7 +145,7 @@ export default function CustomerInvoices() {
   return (
     <>
       <CustomPage
-        data={data}
+        data={[...customerProductInvoices]}
         columns={columns}
         title="Invoices"
         ButtonName="Create Customer Invoice"

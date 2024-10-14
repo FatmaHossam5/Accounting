@@ -54,6 +54,7 @@ export default function ManageColumns({ columns, onColumnToggle }) {
     drop='down'
      title={<span>{gridIcon} <span className='mx-2'> Manage Columns </span> {dropdownArrowIcon}</span>} 
      className='px-btn px-gray-btn text-capitalize d-flex manage'
+     onClick={(e) => e.stopPropagation()}
   
      >
 <div className='w-100 p-2 dropdown-menu-custom'>

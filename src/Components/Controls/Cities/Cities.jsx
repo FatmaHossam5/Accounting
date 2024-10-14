@@ -35,6 +35,9 @@ export default function Cities() {
       name: " Id",
       selector: (city) => city.id,
       sortable: true,
+      visible:true,
+      id:'id',
+      label:'id',
       cell: (row) => (
         <div className="d-flex align-items-center ">
           <span className="me-2">
@@ -74,21 +77,33 @@ export default function Cities() {
       name: "English City  Name",
       selector: (City) => City.cityAr?.name,
       sortable: true,
+      visible:true,
+      id:'English City  Name',
+      label:'English City  Name'
     },
     {
       name: "Arabic City Name",
       selector: (City) => City?.cityEn?.name,
       sortable: true,
+      visible:true,
+      id:'Arabic City  Name',
+      label:'Arabic City  Name'
     },
     {
       name: "Arabic Governarate Name",
       selector: (City) => City?.governorate?.governorateAr?.name,
       sortable: true,
+      visible:true,
+      id:'Arabic Governarate  Name',
+      label:'Arabic Governarate  Name'
     },
     {
       name: "English  Governarate Name",
       selector: (City) => City?.governorate?.governorateEn?.name,
       sortable: true,
+      visible:true,
+      id:'English Governarate  Name',
+      label:'English Governarate  Name'
     },
 
 

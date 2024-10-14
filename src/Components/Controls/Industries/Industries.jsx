@@ -34,6 +34,9 @@ export default function Industries() {
             name: " Id",
             selector: (row) => row.id,
             sortable: true,
+            visible:true,
+            id:'id',
+            label:'id',
             cell: (row) => (
                 <div className="d-flex align-items-center ">
                     <span className="me-2">
@@ -72,12 +75,18 @@ export default function Industries() {
             selector: (row) => row?.industryAr?.name
             ,
             sortable: true,
+            visible:true,
+            id:'Arabic Indusrty Name',
+            label:'Arabic Indusrty Name',
         },
         {
             name: "English Indusrty Name",
             selector: (row) => row?.industryEn?.name
             ,
             sortable: true,
+            visible:true,
+            id:'English Indusrty Name',
+            label:'English Indusrty Name',
         },
 
 
