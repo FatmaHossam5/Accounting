@@ -31,6 +31,7 @@ import AuthContextProvider from './Components/Helpers/Context/AuthContextProvide
 import Cities from './Components/Controls/Cities/Cities.jsx'
 import Industries from './Components/Controls/Industries/Industries.jsx'
 import AddInvoice from './Components/Shared/AddInvoice/AddInvoice.jsx'
+import AddCustomer from './Components/Controls/AddCustomer/AddCustomer.jsx'
 
 
 
@@ -45,6 +46,7 @@ const routes = createBrowserRouter([
     children:[
       {index:true, element:<CustomersTable/>},
       {path:"cInvoice",element:<CustomerInvoices/>},
+      {path:'AddCustomer',element:<AddCustomer/>},
       {path:"suppliers",element:<Supplier/>},
       {path:"suppliersInvoices",element:<SupplierInvoices/>},
       {path:'/Add',element:<AddInvoice/>},
