@@ -10,18 +10,21 @@ import 'react-phone-input-2/lib/bootstrap.css';
 
 
 export default function AddCustomer() {
-    const { control, handleSubmit, watch, setValue, formState: { errors } } = useForm();
+    const { control, handleSubmit, watch, setValue, formState: { errors },register } = useForm();
     const { data: countries } = useDataFetch('countries');
     const { data: governorates } = useDataFetch('governorates');
     const { data: cities } = useDataFetch('cities');
     const { data: customers } = useDataFetch('customers');
+    const { data: industries } = useDataFetch('industries');
+    const { data: branches } = useDataFetch('branches');
+const[CustomerOptions,setCustomerOptions]=useState([])
+
     const selectedCountry = watch('country')
     const selectedGovernarate = watch('governarate');
     const isSubCustomer = watch('isSubCustomer');
     const [filteredGovernorates, setFilteredGovernorates] = useState([]);
     const [filteredCities, setFilteredCities] = useState([]);
 
-    console.log(governorates);
 
     const Country = countries.map((country) => (
         {
@@ -29,35 +32,54 @@ export default function AddCustomer() {
             label: country?.countryEn?.name
         }
     ))
+    const Industry = industries.map((industry) => ({
 
+        value: industry.id,
+        label: industry.industryEn?.name
+    }))
+  
+    const Branch = branches.map((branch) => ({
+
+        value: branch.id,
+        label: branch.branchEn?.name
+    }))
     useEffect(() => {
         if (selectedCountry) {
-            const filteredGovernorates = governorates.filter(gov => gov?.country?.id === selectedCountry.value);
+            console.log(selectedCountry);
+
+            const filteredGovernorates = governorates.filter(gov => gov?.country?.id === Number(selectedCountry));
+
+
             setFilteredGovernorates(filteredGovernorates.map(gov => ({
                 value: gov.id,
                 label: gov?.governorateEn?.name
             })))
+            console.log(filteredGovernorates);
 
         }
     }, [selectedCountry, governorates])
     useEffect(() => {
-        if (selectedCountry && selectedGovernarate) {
-            const filteredCities = cities.filter(city => city?.country?.id === selectedCountry.value && city?.governorate?.id === selectedGovernarate.value);
+        if (selectedGovernarate) {
+            const filteredCities = cities.filter(city => city?.governorate?.id === Number(selectedGovernarate));
+
             setFilteredCities(filteredCities.map(city => ({
                 value: city.id,
                 label: city?.cityEn?.name
             })))
 
         }
-    })
+    }, [selectedGovernarate, cities])
     useEffect(() => {
-        if (isSubCustomer) {
-            customers.map((customer) => ({
+        if (isSubCustomer && customers.length > 0) { // Only map customers if checkbox is checked and customers exist
+            const CustomerOptions = customers.map((customer) => ({
                 value: customer.id,
-                label: customer?.customerEn?.contact_name
-            }))
+                label: customer.customerEn?.contact_name
+            }));
+    console.log(CustomerOptions);
+    
+            setCustomerOptions(CustomerOptions); // Assuming you have a state to hold these options
         }
-    }, [])
+    }, [isSubCustomer, customers]);
     const AddCustomer = (data) => {
         console.log(data);
 
@@ -128,11 +150,11 @@ export default function AddCustomer() {
 
                                                                 />
                                                                 {errors.company_name_en && <span className="text-danger">{errors.company_name_en.message}</span>}
-                                                            
+
                                                             </div>
                                                         </div>
                                                         <div className="col-4 gx-0">
-                                                               {/* Company Arabic Input */}
+                                                            {/* Company Arabic Input */}
                                                             <div className="input-package mt-3 px-2">
                                                                 <Controller
                                                                     name="company_name_ar"
@@ -163,23 +185,23 @@ export default function AddCustomer() {
                                                             </div>
                                                         </div>
                                                         <div className="col-4 gx-0">
+                                                            {/* Mobile Number */}
                                                             <div className="input-package mt-3 ps-2">
-                                                            <Controller
-                                                            name='phone_numbers'
-                                                            control={control}
-                                                            render={({field,fieldState})=>(
-                                                                <PhoneInput
-                                                                {...field}
-                                                               
-                                                             
-                                                                placeholder='Enter mobile number'
-                                                                inputProps={{
-                                                                    name:'Phone',
-                                                                    required:true
-                                                                }}
+                                                                <label htmlFor=""> Mobile Number</label>
+                                                                <Controller
+                                                                    name='phone_numbers'
+                                                                    control={control}
+                                                                    render={({ field, fieldState }) => (
+                                                                        <PhoneInput
+                                                                            {...field}
+                                                                            placeholder='Enter mobile number'
+                                                                            inputProps={{
+                                                                                name: 'Phone',
+                                                                                required: true
+                                                                            }}
+                                                                        />
+                                                                    )}
                                                                 />
-                                                            )}
-                                                            />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -190,17 +212,17 @@ export default function AddCustomer() {
                                                     <div className="row">
                                                         <div className="col-4 gx-0">
                                                             <div className="input-package mt-3 pe-2">
-                                                                <Select label='industry' options={[{ value: 'marketing', label: 'marketing' }]} option='Industry' />
+                                                                <Select label='industry' options={[...Industry]} option='Industry' />
                                                             </div>
                                                         </div>
                                                         <div className="col-4 gx-0">
                                                             <div className="input-package mt-3 px-2">
-                                                                <Select label='branch' options={[{ value: 'Branch1', label: 'Branch1' }]} option='Branch' />
+                                                                <Select label='branch' options={[...Branch]} option='Branch' />
                                                             </div>
                                                         </div>
                                                         <div className="col-4 gx-0">
                                                             <div className="input-package mt-3 ps-2">
-                                                                <Input type='text' placeholder="Enter website" label='website' />
+                                                                <Input className='w-95' type='text' placeholder="Enter website" label='website' />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -215,24 +237,55 @@ export default function AddCustomer() {
                                                     <div className="row">
                                                         <div className="col-4 gx-0">
                                                             <div className="input-package mt-3 pe-2">
-                                                                <Select label='Country' options={[{ value: 'Egypt', label: 'Egypt' }]} option='Country' />
+                                                                <Controller
+                                                                    name="country"
+                                                                    control={control}
+                                                                    render={({ field }) => (
+                                                                        <Select
+                                                                            {...field}
+
+                                                                            label='Country' options={[...Country]} option='Country' />)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-4 gx-0">
                                                             <div className="input-package mt-3 px-2">
-                                                                <Select label='Governorate' options={[{ value: 'cairo', label: 'cairo' }]} option='Governorate' />
+
+
+                                                                <Controller
+                                                                    name="governarate"
+                                                                    control={control}
+                                                                    render={({ field }) => (
+                                                                        <Select
+                                                                            {...field}
+
+                                                                            label='Governorate' options={filteredGovernorates} option='Governorate' />
+                                                                    )}
+                                                                />
+
+
+
                                                             </div>
                                                         </div>
                                                         <div className="col-4 gx-0">
                                                             <div className="input-package mt-3 ps-2">
-                                                                <Select label='City' options={[{ value: 'Maadi', label: 'Maadi' }]} option='City' />
+                                                                <Controller
+                                                                    name="cities"
+                                                                    control={control}
+                                                                    render={({ field }) => (
+                                                                        <Select
+                                                                            {...field}
+
+                                                                            label='Cities' options={filteredCities} option='Cities' />
+                                                                    )}
+                                                                />
+
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="form-inputs my-3 w-100">
-                                                <Input type='text' placeholder="Enter Address" label='website' />
+                                                <Input className='w-95' type='text' placeholder="Enter Address" label='website' />
                                             </div>
                                         </div>
                                         <div className="separetor my-4"></div>
@@ -257,11 +310,17 @@ export default function AddCustomer() {
                                             <div className="form-inputs w-50 ps-2">
                                                 <div className="px-gray-border p-2 rounded-2 d-flex w-100 ">
                                                     <div className="input-package d-flex align-items-center ">
-                                                        <input className='me-1' id="is-sub-customer" type="checkbox" ></input>
-                                                        <label for="is-sub-customer">Is sub customer</label>
+                                                    <input
+            className="me-1"
+            id="is-sub-customer"
+            type="checkbox"
+            {...register('isSubCustomer')} // Assuming you're using react-hook-form
+        />
+                                                        <label htmlFor="is-sub-customer">Is sub customer</label>
+
                                                     </div>
                                                     <div className="input-package ms-auto w-50 ">
-                                                        <Select options={[{ value: 'Maadi', label: 'Maadi' }]} option='Select Parent Customer' />
+                                                        <Select options={CustomerOptions} option='Select Parent Customer' />
                                                     </div>
                                                 </div>
                                             </div>
