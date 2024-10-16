@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Input from '../../Shared/Input/Input'
 import Select from '../../Shared/Select/Select'
 import { Controller, useForm } from 'react-hook-form'
@@ -6,24 +6,28 @@ import useDataFetch from '../../Helpers/CustomFunction/useDataFetch';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import 'react-phone-input-2/lib/bootstrap.css';
+import { da, fi } from 'date-fns/locale';
+import axios from 'axios';
+import { AuthContext } from '../../Helpers/Context/AuthContextProvider';
 
 
 
 export default function AddCustomer() {
-    const { control, handleSubmit, watch, setValue, formState: { errors },register } = useForm();
+    const { control, handleSubmit, watch, setValue, formState: { errors }, register } = useForm();
     const { data: countries } = useDataFetch('countries');
     const { data: governorates } = useDataFetch('governorates');
     const { data: cities } = useDataFetch('cities');
     const { data: customers } = useDataFetch('customers');
     const { data: industries } = useDataFetch('industries');
     const { data: branches } = useDataFetch('branches');
-const[CustomerOptions,setCustomerOptions]=useState([])
+    const [CustomerOptions, setCustomerOptions] = useState([])
 
     const selectedCountry = watch('country')
     const selectedGovernarate = watch('governarate');
     const isSubCustomer = watch('isSubCustomer');
     const [filteredGovernorates, setFilteredGovernorates] = useState([]);
     const [filteredCities, setFilteredCities] = useState([]);
+    const { baseUrl } = useContext(AuthContext);
 
 
     const Country = countries.map((country) => (
@@ -37,7 +41,7 @@ const[CustomerOptions,setCustomerOptions]=useState([])
         value: industry.id,
         label: industry.industryEn?.name
     }))
-  
+
     const Branch = branches.map((branch) => ({
 
         value: branch.id,
@@ -75,13 +79,28 @@ const[CustomerOptions,setCustomerOptions]=useState([])
                 value: customer.id,
                 label: customer.customerEn?.contact_name
             }));
-    console.log(CustomerOptions);
-    
+            console.log(CustomerOptions);
+
             setCustomerOptions(CustomerOptions); // Assuming you have a state to hold these options
         }
     }, [isSubCustomer, customers]);
     const AddCustomer = (data) => {
-        console.log(data);
+        const cities = data.cities ? [data.cities] : [];
+        const phone_numbers =data.phone_numbers ? [data.phone_numbers]:[];
+        if(data.isSubCustomer==false||data.isSubCustomer==true)delete(data.isSubCustomer);
+        if(data.country)delete(data.country);  
+         if(data.governarate)delete(data.governarate);
+        const formData ={...data,cities,phone_numbers}
+   
+        axios.post(`${baseUrl}/customers`,formData).then((response)=>{
+            console.log(response);
+            
+        }).catch((error)=>{
+            console.log(error);
+            
+        })
+    
+       
 
     }
     return (
@@ -273,7 +292,8 @@ const[CustomerOptions,setCustomerOptions]=useState([])
                                                                     control={control}
                                                                     render={({ field }) => (
                                                                         <Select
-                                                                            {...field}
+                                                                           value={field.value}
+                                                                           onChange={field.onChange}
 
                                                                             label='Cities' options={filteredCities} option='Cities' />
                                                                     )}
@@ -310,12 +330,12 @@ const[CustomerOptions,setCustomerOptions]=useState([])
                                             <div className="form-inputs w-50 ps-2">
                                                 <div className="px-gray-border p-2 rounded-2 d-flex w-100 ">
                                                     <div className="input-package d-flex align-items-center ">
-                                                    <input
-            className="me-1"
-            id="is-sub-customer"
-            type="checkbox"
-            {...register('isSubCustomer')} // Assuming you're using react-hook-form
-        />
+                                                        <input
+                                                            className="me-1"
+                                                            id="is-sub-customer"
+                                                            type="checkbox"
+                                                            {...register('isSubCustomer')} // Assuming you're using react-hook-form
+                                                        />
                                                         <label htmlFor="is-sub-customer">Is sub customer</label>
 
                                                     </div>
@@ -333,12 +353,51 @@ const[CustomerOptions,setCustomerOptions]=useState([])
                                                     <div className="row">
                                                         <div className="col-4 gx-0">
                                                             <div className="input-package mt-3 pe-2">
-                                                                <Input type='text' placeholder="Enter Contact Name" label='Contact English Name' />
+                                                                <Controller
+                                                                name='contact_name_en'
+                                                                control={control}
+                                                                rules={{
+                                                                 required:'English Contact is required',
+                                                                 pattern: { value: /^[A-Za-z\s]+$/, message: 'Only English Letters are allowed' },
+                                                                 validate: {
+                                                                   startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start With a Number'
+                                                                 }
+                                                                }}
+                                                                render={({field,fieldState})=>(
+                                                                    <Input
+                                                                    {...field}
+                                                                     type='text' 
+                                                                     placeholder="Enter Contact Name" 
+                                                                     label='Contact English Name'
+                                                                     error={fieldState.error ? fieldState.error.message : null} />
+                                                              )}
+                                                                />
+                                                                  {errors.contact_name_en && <span className="text-danger">{errors.contact_name_en.message}</span>}
                                                             </div>
                                                         </div>
                                                         <div className="col-4 gx-0">
                                                             <div className="input-package mt-3 px-2">
-                                                                <Input type='text' placeholder="Enter Contact name" label='Contact Arabic Name' />
+                                                            <Controller
+                                                                name='contact_name_ar'
+                                                                control={control}
+                                                                rules={{
+                                                                 required:'Arabic Contact is required',
+                                                                 pattern: { value: /^[ء-ي\s]+$/, message: 'Only Arabic Letters are allowed' },
+                                                                 validate: {
+                                                                   startsWithNoNumber: value => !/^\d/.test(value) || 'Cannot start With a Number'
+                                                                 }
+                                                                }}
+                                                                render={({field,fieldState})=>(
+                                                                    <Input
+                                                                   value={field.value}
+                                                                   onChange={field.onChange}
+                                                                     type='text' 
+                                                                     placeholder="Enter Arabic Contact Name" 
+                                                                     label='Contact Arabic Name'
+                                                                     error={fieldState.error ? fieldState.error.message : null} />
+    )}
+                                                                />
+                                                                  {errors.contact_name_ar && <span className="text-danger">{errors.contact_name_ar.message}</span>}
                                                             </div>
                                                         </div>
                                                         <div className="col-4 gx-0">
@@ -364,7 +423,25 @@ const[CustomerOptions,setCustomerOptions]=useState([])
                                                         </div>
                                                         <div className="col-4 gx-0">
                                                             <div className="input-package mt-3 ps-2">
-                                                                <Input type='text' placeholder="Enter IBAN" label='IBAN' />
+
+                                                            <Controller
+                                                                name='iban'
+                                                                control={control}
+                                                                rules={{
+                                                                 required:'IBAN is required',
+                                                               
+                                                                }}
+                                                                render={({field,fieldState})=>(
+                                                                    <Input
+                                                                    value={field.value}
+                                                                    onChange={field.onChange}
+                                                                     type='text' 
+                                                                     placeholder="Enter IBAN" 
+                                                                     label='IBAN'
+                                                                     error={fieldState.error ? fieldState.error.message : null} />
+    )}
+                                                                />
+                                                                  {errors.iban && <span className="text-danger">{errors.iban.message}</span>}
                                                             </div>
                                                         </div>
                                                     </div>
