@@ -15,6 +15,7 @@ import ModalFooter from "../../Shared/ModalFooter/ModalFooter";
 import Select from "../../Shared/Select/Select";
 import SelectWithFlag from '../../Shared/SelectWithFlags/SelectWithFlag';
 import ConfirmDelete from "../../Shared/ConfirmDelete/ConfirmDelete";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 export default function CustomersTable() {
@@ -26,6 +27,7 @@ export default function CustomersTable() {
   const [addresses, setAddresses] = useState([{ countryId: 0, governorateId: 0, cities: [] }]);
   const [governarates, setGovernarates] = useState([]);
   const [cities, setCities] = useState([]);
+  const Navigate= useNavigate();
   const { control, formState: { errors, isValid }, handleSubmit, reset } = useForm({
     defaultValues: {
       contact_name_ar: '',
@@ -300,7 +302,7 @@ export default function CustomersTable() {
         ButtonName="Create Customer"
         ModalTitle="Create Customer"
         target='#createCustomer'
-        buttonAction={() => setIsOpen(true)}
+        buttonAction={() => Navigate('/AddCustomer')}
         
 
       />
