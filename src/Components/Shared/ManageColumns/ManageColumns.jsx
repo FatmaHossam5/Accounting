@@ -1,31 +1,8 @@
-import React, { useState } from 'react'
-import { Dropdown, DropdownButton, Form } from 'react-bootstrap';
+// ManageColumns.js
+import React from 'react';
+import { DropdownButton, Form } from 'react-bootstrap';
 
-
-export default function ManageColumns({ columns, onColumnToggle }) {
-  const [visibleColumns, setVisibleColumns] = useState(columns);
-  const [checked, setChecked] = useState(visibleColumns);
-
-
-
-  const handleToggle = (columnId) => {
-    const updatedColumns = visibleColumns.map((col) =>
-      col.id === columnId ? { ...col, visible: !col.visible } : col
-    );
-    setVisibleColumns(updatedColumns);
-    onColumnToggle(updatedColumns);
-  };
-  const handleSelectAll = () => {
-    const allSelected = visibleColumns.every((col) => col.visible);
-    const updatedColumns = visibleColumns.map((col) => ({
-      ...col,
-      visible: !allSelected,
-    }));
-    setVisibleColumns(updatedColumns);
-    onColumnToggle(updatedColumns);
-  };
-
-  {/* SVG Icons */ }
+const ManageColumns = ({ columns, columnVisibility, handleColumnToggle, handleSelectAll }) => {
   const gridIcon = (
     <svg width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g clipPath="url(#clip0_215_904)">
@@ -45,54 +22,42 @@ export default function ManageColumns({ columns, onColumnToggle }) {
 
 
   )
+    return (
+      <DropdownButton
+      id="dropdown-basic-button"
+      drop='down'
+      title={<span>{gridIcon} <span className='mx-2'> Manage Columns </span> {dropdownArrowIcon}</span>}
+      className='px-btn px-gray-btn text-capitalize d-flex manage'
+      onClick={(e) => e.stopPropagation()}
+  >
+      <div className='w-100 p-2 dropdown-menu-custom'>
+          <ul className='w-100 p-2'>
+              {/* Select All Checkbox */}
+              <li className='mb-3'>
+                  <Form.Check
+                      type="checkbox"
+                      label="Select All"
+                      checked={Object.values(columnVisibility).every((visible) => visible)}
+                      onChange={handleSelectAll}
+                      className="px-3"
+                  />
+              </li>
+              {/* Individual Column Checkboxes */}
+              {Object.entries(columnVisibility).map(([key, value]) => (
+                  <li key={key} className='my-3'>
+                      <Form.Check
+                          type="checkbox"
+                          label={columns.find(col => col.id === key)?.label} // Getting the column label by ID
+                          checked={value}
+                          onChange={() => handleColumnToggle(key)}
+                          className="px-3"
+                      />
+                  </li>
+              ))}
+          </ul>
+      </div>
+  </DropdownButton>
+    );
+};
 
-
-
-  return (
-
-    <DropdownButton id="dropdown-basic-button" 
-    drop='down'
-     title={<span>{gridIcon} <span className='mx-2'> Manage Columns </span> {dropdownArrowIcon}</span>} 
-     className='px-btn px-gray-btn text-capitalize d-flex manage'
-     onClick={(e) => e.stopPropagation()}
-  
-     >
-<div className='w-100 p-2 dropdown-menu-custom'>
-<ul className='w-100 p-2'>
-  {/*Select All Checkbox */}
-  <li className='mb-3'>
-  <Form.Check
-        type="checkbox"
-        label="Select All"
-        checked={visibleColumns?.every((col) => col.visible)}
-        onChange={handleSelectAll}
-        className="px-3"
-      />
-  </li>
-  {/* Individual Column Checkboxes */}
-  {visibleColumns.map((col) => (
-    <li key={col.id} className='my-3'>
-        <Form.Check
-          
-          type="checkbox"
-          label={col.label}
-          checked={col.visible}
-          onChange={() => handleToggle(col.id)}
-          className="px-3"
-        />
-    </li>
-
-      ))}
-</ul>
-</div>
-
-
-   
-
-
-
-    </DropdownButton>
-
-
-  )
-}
+export default ManageColumns;

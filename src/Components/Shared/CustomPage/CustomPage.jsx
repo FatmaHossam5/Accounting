@@ -4,7 +4,7 @@ import Table from '../Table/Table'
 import Loader from '../../Template/Loader/Loader'
 import SearchBar from '../SearchBar/SearchBar';
 import ManageColumns from '../ManageColumns/ManageColumns';
-export default function CustomPage({ data, columns, title, ButtonName, target, buttonAction,filterOptions }) {
+export default function CustomPage({ data, columns, title, ButtonName, target, buttonAction,filterOptions,manageColumns  }) {
   const [filterText, setFilterText] = useState('');
   const[filters,setFilters]=useState({});
   const handleApplyFilter=(selectedFilters)=>{
@@ -21,11 +21,7 @@ return selectedOptions.some(option=>item[group].includes(option.value) )
     return matchesSearch&&matchesFiltetr;
   });
 
-  const [selectedColumns, setSelectedColumns] = useState(columns.map(col => col.accessor));
-  const [tableColumns, setTableColumns] = useState(columns);
-  const handleColumnToggle = (updatedColumns) => {
-    setTableColumns(updatedColumns);
-  };
+
 
   return (
     <>
@@ -51,8 +47,8 @@ return selectedOptions.some(option=>item[group].includes(option.value) )
                         <div className='table-btns d-flex justify-content-end'>
                                               </div>
                     <div className="table-btns d-flex justify-content-end ">
-                    <ManageColumns columns={tableColumns} onColumnToggle={handleColumnToggle} /> 
-                  
+                 
+                  {manageColumns}
                       <button className="px-btn px-gray-btn text-capitalize d-flex align-items-center justify-content-center ms-3">
                         <div className="btn-icon w-20 pe-1">
 

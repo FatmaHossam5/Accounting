@@ -9,6 +9,8 @@ import CustomPage from '../../Shared/CustomPage/CustomPage'
 import Dropdown from '../../Shared/Dropdown/Dropdown'
 import Input from '../../Shared/Input/Input'
 import ModalFooter from '../../Shared/ModalFooter/ModalFooter'
+import { DropdownButton,Form  } from 'react-bootstrap'
+import ManageColumns from '../../Shared/ManageColumns/ManageColumns'
 export default function Countries() {
     const [openDropdownId, setOpenDropdownId] = useState(null)
     const [isOpen, setIsOpen] = useState(false);
@@ -21,14 +23,19 @@ export default function Countries() {
         reValidateMode: 'onChange'
     });
     const { baseUrl } = useContext(AuthContext);
+    const [columnVisibility, setColumnVisibility] = useState({
+        id: true,
+        arabicName: true,
+        englishName: true,
+    });
 
     const columns = [
         {
             name: "Id",
             selector: (country) => country.id,
             sortable: true,
-            visible:true,
-            id:'Id',
+            visible:columnVisibility.id,
+            id:'id',
             label:'Id',
             style: {
                 minWidth: '100px',
@@ -72,16 +79,16 @@ export default function Countries() {
             name: "Arabic Name",
             selector: (country) => country?.countryAr?.name,
             sortable: true,
-            visible:true,
-            id:'Arabic Name',
+            visible:columnVisibility.arabicName,
+            id:'arabicName',
               label:'Arabic Name'
         },
         {
             name: "English Name",
             selector: (country) => country?.countryEn?.name,
             sortable: true,
-            visible:true,
-            id:'English Name',
+            visible:columnVisibility.englishName,
+            id:'englishName',
               label:'English Name'
         },
 
@@ -150,7 +157,21 @@ export default function Countries() {
         setIsDeleteOpen(false)
     };
 
-
+    const handleColumnToggle = (column) => {
+        setColumnVisibility((prevState) => ({
+            ...prevState,
+            [column]: !prevState[column],
+        }));
+    };
+ 
+      const handleSelectAll = (e) => {
+        const isChecked = e.target.checked;
+        setColumnVisibility({
+            id: isChecked,
+            arabicName: isChecked,
+            englishName: isChecked,
+        });
+    };
     return (
         <>
 
@@ -160,8 +181,16 @@ export default function Countries() {
                 ModalTitle='Create countries'
                 target='#createcountries'
                 buttonAction={() => setIsOpen(true)}
-                columns={columns}
+                columns={columns.filter(col => col.visible)}
                 data={countries}
+                manageColumns={
+                    <ManageColumns 
+                        columns={columns}
+                        columnVisibility={columnVisibility}
+                        handleColumnToggle={handleColumnToggle}
+                        handleSelectAll={handleSelectAll}
+                    />
+                }
            
             />
             <CustomModal id='createcountries' title='Create New Country' isOpen={isOpen} className='modal-lg' onCancel={handleCancle} headerPadding='custom' >
